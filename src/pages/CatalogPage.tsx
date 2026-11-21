@@ -121,69 +121,90 @@ export function CatalogPage() {
         </div>
       </div>
 
-      <div className="catalog-auto-grid">
-        {filtered.map((release) => {
-          const isPlaying = active?.releaseId === release.id && active.isPlaying
-          return (
-            <article
-              key={release.id}
-              className="prism-card flex flex-col justify-between gap-4 rounded-2xl p-5 transition-transform hover:-translate-y-1"
-            >
-              <div className="space-y-4">
-                <Link to={`/releases/${release.slug}`} className="block">
-                  <AlbumSleeve
-                    release={release}
-                    isPlaying={isPlaying}
-                    onTogglePlay={() => handlePlay(release)}
-                  />
-                </Link>
+      {filtered.length === 0 ? (
+        <div className="prism-card flex flex-col items-center gap-4 rounded-2xl px-6 py-16 text-center">
+          <p className="font-mono text-xs uppercase tracking-[0.18em] text-accent">
+            Catalog A&amp;S — 001 Forthcoming
+          </p>
+          <h2 className="font-serif text-3xl font-medium text-ink">
+            The netlabel shelf is ready for its first real pressing.
+          </h2>
+          <p className="max-w-lg text-sm leading-relaxed text-muted">
+            Demo content has been cleared. Add a verified YouTube, SoundCloud,
+            Spotify, or Bandcamp release from the Submission Desk to launch A&amp;S — 001.
+          </p>
+          <Link
+            to="/submit"
+            className="mt-2 inline-flex min-h-11 items-center rounded-full bg-gradient-to-r from-amber-500 via-pink-600 to-violet-600 px-6 py-2 text-sm font-medium text-white shadow-md hover:brightness-110"
+          >
+            Submit First Release
+          </Link>
+        </div>
+      ) : (
+        <div className="catalog-auto-grid">
+          {filtered.map((release) => {
+            const isPlaying = active?.releaseId === release.id && active.isPlaying
+            return (
+              <article
+                key={release.id}
+                className="prism-card flex flex-col justify-between gap-4 rounded-2xl p-5 transition-transform hover:-translate-y-1"
+              >
+                <div className="space-y-4">
+                  <Link to={`/releases/${release.slug}`} className="block">
+                    <AlbumSleeve
+                      release={release}
+                      isPlaying={isPlaying}
+                      onTogglePlay={() => handlePlay(release)}
+                    />
+                  </Link>
 
-                <div className="space-y-1.5">
-                  <div className="flex items-center justify-between gap-2 font-mono text-[11px] uppercase tracking-[0.14em] text-muted">
-                    <span className="text-accent">{release.catalogNumber}</span>
-                    <span>{release.releaseDate}</span>
+                  <div className="space-y-1.5">
+                    <div className="flex items-center justify-between gap-2 font-mono text-[11px] uppercase tracking-[0.14em] text-muted">
+                      <span className="text-accent">{release.catalogNumber}</span>
+                      <span>{release.releaseDate}</span>
+                    </div>
+
+                    <h2 className="font-serif text-2xl font-medium text-ink">
+                      <Link
+                        to={`/releases/${release.slug}`}
+                        className="hover:text-accent transition-colors"
+                      >
+                        {release.title}
+                      </Link>
+                    </h2>
+
+                    <p className="text-sm text-muted">
+                      {release.artistName} · {release.artistOrigin}
+                    </p>
+
+                    <p className="line-clamp-3 pt-1 text-sm leading-relaxed text-muted">
+                      {release.linerNotes}
+                    </p>
                   </div>
 
-                  <h2 className="font-serif text-2xl font-medium text-ink">
-                    <Link
-                      to={`/releases/${release.slug}`}
-                      className="hover:text-accent transition-colors"
-                    >
-                      {release.title}
-                    </Link>
-                  </h2>
-
-                  <p className="text-sm text-muted">
-                    {release.artistName} · {release.artistOrigin}
-                  </p>
-
-                  <p className="line-clamp-3 pt-1 text-sm leading-relaxed text-muted">
-                    {release.linerNotes}
-                  </p>
+                  <div className="flex flex-wrap gap-1.5">
+                    <Badge variant="default">{release.genre}</Badge>
+                    {release.essentialPick ? (
+                      <Badge variant="accent">Essential Pick</Badge>
+                    ) : null}
+                  </div>
                 </div>
 
-                <div className="flex flex-wrap gap-1.5">
-                  <Badge variant="default">{release.genre}</Badge>
-                  {release.essentialPick ? (
-                    <Badge variant="accent">Essential Pick</Badge>
-                  ) : null}
+                <div className="flex items-center justify-between border-t border-border pt-4 font-mono text-[11px]">
+                  <span className="text-muted">{release.format}</span>
+                  <Link
+                    to={`/releases/${release.slug}`}
+                    className="inline-flex items-center gap-1 uppercase tracking-[0.12em] text-accent hover:underline"
+                  >
+                    Liner Notes
+                    <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
+                  </Link>
                 </div>
-              </div>
-
-              <div className="flex items-center justify-between border-t border-border pt-4 font-mono text-[11px]">
-                <span className="text-muted">{release.format}</span>
-                <Link
-                  to={`/releases/${release.slug}`}
-                  className="inline-flex items-center gap-1 uppercase tracking-[0.12em] text-accent hover:underline"
-                >
-                  Liner Notes
-                  <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
-                </Link>
-              </div>
-            </article>
-          )
-        })}
-      </div>
+              </article>
+            )
+          })}
+        </div>
+      )}
     </div>
   )
 }

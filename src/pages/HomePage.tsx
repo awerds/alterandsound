@@ -114,7 +114,7 @@ export function HomePage() {
           />
 
           <div className="relative z-10 grid grid-cols-1 gap-8 lg:grid-cols-12 lg:items-center lg:gap-12">
-            <div className="flex flex-col gap-5 sm:gap-6 lg:col-span-7 xl:col-span-7">
+            <div className="flex flex-col gap-5 sm:gap-6 lg:col-span-7">
               <div className="flex flex-wrap items-center gap-2">
                 <Badge
                   variant="accent"
@@ -137,9 +137,7 @@ export function HomePage() {
                 className="display-cover font-medium text-ink focus:outline-none"
               >
                 <Link to={`/journal/${coverArticle.slug}`}>
-                  Sound That{' '}
-                  <span className="prism-text italic">Shimmers</span>: Why Sacred
-                  Music Belongs in Full Color
+                  {coverArticle.title}
                 </Link>
               </h1>
 
@@ -184,7 +182,7 @@ export function HomePage() {
               </div>
             </div>
 
-            <div className="flex flex-col gap-5 lg:col-span-5 xl:col-span-5">
+            <div className="flex flex-col gap-5 lg:col-span-5">
               <Link
                 to={`/releases/${coverRelease.slug}`}
                 className="mx-auto block w-full max-w-md lg:max-w-none"
@@ -206,70 +204,167 @@ export function HomePage() {
             </div>
           </div>
         </section>
-      ) : null}
+      ) : (
+        /* Clean Inaugural Launch Stage (Zero Demo Content) */
+        <section className="prism-card relative w-full rounded-3xl p-6 sm:p-10 lg:p-14 xl:p-20">
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute -right-16 -top-24 h-[28rem] w-[28rem] rounded-full blur-[95px] opacity-65"
+            style={{
+              background:
+                'radial-gradient(circle, rgba(255,204,92,0.85) 0%, rgba(244,114,182,0.5) 52%, transparent 74%)',
+            }}
+          />
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute -bottom-24 -left-16 h-[24rem] w-[28rem] rounded-full blur-[95px] opacity-55"
+            style={{
+              background:
+                'radial-gradient(circle, rgba(125,211,252,0.72) 0%, rgba(196,181,253,0.48) 55%, transparent 75%)',
+            }}
+          />
 
-      {/* Full-Width Netlabel Shelf (Swipeable Snap Row on Mobile, 5-Col Showcase on Desktop) */}
-      <section className="space-y-6">
-        <div className="flex flex-wrap items-end justify-between gap-3">
-          <div>
-            <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-accent">
-              The Netlabel Catalog
-            </p>
-            <h2 className="display-section mt-1 text-ink">
-              Collector Editions &amp;{' '}
-              <span className="prism-text italic">New Pressings</span>
-            </h2>
-          </div>
-          <Link
-            to="/catalog"
-            className="inline-flex items-center gap-1.5 rounded-full border border-border bg-surface-elevated px-4 py-2 font-mono text-[11px] uppercase tracking-[0.14em] text-ink hover:border-accent/60 transition-colors"
-          >
-            All Releases ({releases.length})
-            <ArrowUpRight className="h-3.5 w-3.5 text-accent" aria-hidden="true" />
-          </Link>
-        </div>
-
-        {/* Mobile: Horizontal Touch-Snap Vinyl Rack | Desktop: Full-Width 5-Col Grid */}
-        <div className="mobile-snap-row md:grid md:grid-cols-3 md:gap-6 md:overflow-visible lg:grid-cols-5">
-          {releases.slice(0, 5).map((rel) => {
-            const playing =
-              activeTrack?.releaseId === rel.id && Boolean(activeTrack?.isPlaying)
-            return (
-              <article
-                key={rel.id}
-                className="group flex w-[68vw] max-w-[240px] shrink-0 snap-start flex-col gap-3 md:w-auto md:max-w-none md:shrink"
-              >
-                <Link
-                  to={`/releases/${rel.slug}`}
-                  className="block transition-transform duration-300 group-hover:-translate-y-1.5"
+          <div className="relative z-10 grid grid-cols-1 gap-10 lg:grid-cols-12 lg:items-center">
+            <div className="flex flex-col gap-6 lg:col-span-8">
+              <div className="flex flex-wrap items-center gap-2">
+                <Badge
+                  variant="accent"
+                  className="font-mono text-[10px] uppercase tracking-[0.16em]"
                 >
-                  <AlbumSleeve
-                    release={rel}
-                    size="sm"
-                    isPlaying={playing}
-                    onTogglePlay={() => triggerReleasePlay(rel)}
-                  />
-                </Link>
-                <div className="space-y-0.5 px-1">
-                  <div className="flex items-center justify-between gap-2 font-mono text-[10px] uppercase tracking-[0.14em] text-muted">
-                    <span className="text-accent">{rel.catalogNumber}</span>
-                    <span className="truncate">{rel.genre}</span>
+                  <Sparkles className="h-3 w-3 text-accent" aria-hidden="true" />
+                  Inaugural Issue · Now Curating
+                </Badge>
+                <Badge
+                  variant="default"
+                  className="font-mono text-[10px] uppercase tracking-[0.16em]"
+                >
+                  Catalog A&amp;S — 001 Open
+                </Badge>
+              </div>
+
+              <h1
+                id="main-content"
+                tabIndex={-1}
+                className="display-cover font-medium text-ink focus:outline-none"
+              >
+                Sound That <span className="prism-text italic">Shimmers</span>.
+                Great Christian Music, Curated &amp; Released.
+              </h1>
+
+              <p className="max-w-2xl font-editorial text-lg leading-relaxed text-muted sm:text-xl">
+                Altar &amp; Sound is an independent Christian netlabel and music
+                journal dedicated to discovering, reviewing, and sharing radiant
+                music that points listeners to God. Our inaugural catalog and essays
+                are currently in curation.
+              </p>
+
+              <div className="flex flex-col gap-3 pt-2 sm:flex-row sm:flex-wrap sm:items-center">
+                <Button asChild size="lg" variant="accent" className="w-full sm:w-auto">
+                  <Link to="/submit">
+                    Submit a Record
+                    <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                  </Link>
+                </Button>
+                <Button asChild size="lg" variant="outline" className="w-full sm:w-auto">
+                  <Link to="/manifesto">Read the Manifesto</Link>
+                </Button>
+              </div>
+            </div>
+
+            <div className="lg:col-span-4">
+              <div
+                className="relative mx-auto aspect-square w-full max-w-sm overflow-hidden rounded-2xl border border-white/60 p-6 text-white shadow-2xl"
+                style={{
+                  background:
+                    'linear-gradient(135deg, #ff9a3c 0%, #ec4899 50%, #6d28d9 100%)',
+                }}
+              >
+                <div aria-hidden="true" className="shimmer-sweep-layer" />
+                <div className="relative z-10 flex h-full flex-col justify-between">
+                  <div className="flex items-center justify-between font-mono text-[10px] uppercase tracking-[0.18em]">
+                    <span className="rounded-full border border-white/40 bg-black/20 px-2.5 py-0.5 backdrop-blur-md">
+                      A&amp;S — 001
+                    </span>
+                    <span>FORTHCOMING</span>
                   </div>
-                  <h3 className="truncate font-serif text-lg font-medium text-ink">
-                    <Link
-                      to={`/releases/${rel.slug}`}
-                      className="hover:text-accent transition-colors"
-                    >
-                      {rel.title}
-                    </Link>
-                  </h3>
-                  <p className="truncate text-xs text-muted">{rel.artistName}</p>
+                  <div className="space-y-1">
+                    <p className="font-serif text-3xl font-medium leading-tight">
+                      Inaugural Pressing
+                    </p>
+                    <p className="text-xs text-white/85">
+                      Accepting real submissions &amp; features
+                    </p>
+                  </div>
                 </div>
-              </article>
-            )
-          })}
-        </div>
-      </section>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Full-Width Netlabel Shelf */}
+      {releases.length > 0 ? (
+        <section className="space-y-6">
+          <div className="flex flex-wrap items-end justify-between gap-3">
+            <div>
+              <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-accent">
+                The Netlabel Catalog
+              </p>
+              <h2 className="display-section mt-1 text-ink">
+                Collector Editions &amp;{' '}
+                <span className="prism-text italic">New Pressings</span>
+              </h2>
+            </div>
+            <Link
+              to="/catalog"
+              className="inline-flex items-center gap-1.5 rounded-full border border-border bg-surface-elevated px-4 py-2 font-mono text-[11px] uppercase tracking-[0.14em] text-ink hover:border-accent/60 transition-colors"
+            >
+              All Releases ({releases.length})
+              <ArrowUpRight className="h-3.5 w-3.5 text-accent" aria-hidden="true" />
+            </Link>
+          </div>
+
+          <div className="mobile-snap-row md:grid md:grid-cols-3 md:gap-6 md:overflow-visible lg:grid-cols-5">
+            {releases.slice(0, 5).map((rel) => {
+              const playing =
+                activeTrack?.releaseId === rel.id && Boolean(activeTrack?.isPlaying)
+              return (
+                <article
+                  key={rel.id}
+                  className="group flex w-[68vw] max-w-[240px] shrink-0 snap-start flex-col gap-3 md:w-auto md:max-w-none md:shrink"
+                >
+                  <Link
+                    to={`/releases/${rel.slug}`}
+                    className="block transition-transform duration-300 group-hover:-translate-y-1.5"
+                  >
+                    <AlbumSleeve
+                      release={rel}
+                      size="sm"
+                      isPlaying={playing}
+                      onTogglePlay={() => triggerReleasePlay(rel)}
+                    />
+                  </Link>
+                  <div className="space-y-0.5 px-1">
+                    <div className="flex items-center justify-between gap-2 font-mono text-[10px] uppercase tracking-[0.14em] text-muted">
+                      <span className="text-accent">{rel.catalogNumber}</span>
+                      <span className="truncate">{rel.genre}</span>
+                    </div>
+                    <h3 className="truncate font-serif text-lg font-medium text-ink">
+                      <Link
+                        to={`/releases/${rel.slug}`}
+                        className="hover:text-accent transition-colors"
+                      >
+                        {rel.title}
+                      </Link>
+                    </h3>
+                    <p className="truncate text-xs text-muted">{rel.artistName}</p>
+                  </div>
+                </article>
+              )
+            })}
+          </div>
+        </section>
+      ) : null}
 
       <hr className="prism-rule" />
 
@@ -286,53 +381,76 @@ export function HomePage() {
                 <span className="prism-text italic">Journal</span>
               </h2>
             </div>
-            <div className="relative w-full sm:max-w-sm">
-              <label htmlFor="journal-search" className="visually-hidden">
-                Search reviews, essays, and artists
-              </label>
-              <Search
-                className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted"
-                aria-hidden="true"
-              />
-              <input
-                id="journal-search"
-                type="search"
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                placeholder="Search reviews, artists, genres…"
-                className="min-h-11 w-full rounded-full border border-border bg-surface-elevated pl-10 pr-4 text-sm text-ink placeholder:text-muted/75 backdrop-blur-md"
-              />
-            </div>
+
+            {articles.length > 0 ? (
+              <div className="relative w-full sm:max-w-sm">
+                <label htmlFor="journal-search" className="visually-hidden">
+                  Search reviews, essays, and artists
+                </label>
+                <Search
+                  className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted"
+                  aria-hidden="true"
+                />
+                <input
+                  id="journal-search"
+                  type="search"
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                  placeholder="Search reviews, artists, genres…"
+                  className="min-h-11 w-full rounded-full border border-border bg-surface-elevated pl-10 pr-4 text-sm text-ink placeholder:text-muted/75 backdrop-blur-md"
+                />
+              </div>
+            ) : null}
           </div>
 
-          {/* Mobile Horizontal Swipeable Pills | Desktop Balanced Wrap */}
-          <div
-            className="mobile-snap-row sm:pill-row sm:overflow-visible"
-            role="group"
-            aria-label="Filter journal by column"
-          >
-            {CATEGORIES.map((cat) => {
-              const active = selectedCategory === cat
-              return (
-                <button
-                  key={cat}
-                  type="button"
-                  aria-pressed={active}
-                  onClick={() => setSelectedCategory(cat)}
-                  className={`min-h-10 shrink-0 snap-start rounded-full border px-4 py-1.5 font-mono text-[11px] uppercase tracking-[0.12em] transition-all cursor-pointer ${
-                    active
-                      ? 'border-transparent bg-gradient-to-r from-amber-500 via-pink-600 to-violet-600 text-white font-medium shadow-md'
-                      : 'border-border bg-surface-elevated/85 text-muted hover:text-ink hover:border-accent/40'
-                  }`}
-                >
-                  {cat}
-                </button>
-              )
-            })}
-          </div>
+          {articles.length > 0 ? (
+            <div
+              className="mobile-snap-row sm:pill-row sm:overflow-visible"
+              role="group"
+              aria-label="Filter journal by column"
+            >
+              {CATEGORIES.map((cat) => {
+                const active = selectedCategory === cat
+                return (
+                  <button
+                    key={cat}
+                    type="button"
+                    aria-pressed={active}
+                    onClick={() => setSelectedCategory(cat)}
+                    className={`min-h-10 shrink-0 snap-start rounded-full border px-4 py-1.5 font-mono text-[11px] uppercase tracking-[0.12em] transition-all cursor-pointer ${
+                      active
+                        ? 'border-transparent bg-gradient-to-r from-amber-500 via-pink-600 to-violet-600 text-white font-medium shadow-md'
+                        : 'border-border bg-surface-elevated/85 text-muted hover:text-ink hover:border-accent/40'
+                    }`}
+                  >
+                    {cat}
+                  </button>
+                )
+              })}
+            </div>
+          ) : null}
         </div>
 
-        {dispatches.length === 0 ? (
+        {articles.length === 0 ? (
+          <div className="prism-card flex flex-col items-center gap-4 rounded-2xl px-6 py-14 text-center">
+            <p className="font-mono text-xs uppercase tracking-[0.18em] text-accent">
+              Issue 01 · In Preparation
+            </p>
+            <h3 className="font-serif text-3xl font-medium text-ink">
+              Our first reviews, interviews, and catalog pressings are on the way.
+            </h3>
+            <p className="max-w-xl text-sm leading-relaxed text-muted">
+              No placeholder tracks here—ready for real Christian artists, albums,
+              and sessions. Publish your first curated record directly from the
+              Submission Desk.
+            </p>
+            <div className="pt-2">
+              <Button asChild variant="accent">
+                <Link to="/submit">Publish First Entry</Link>
+              </Button>
+            </div>
+          </div>
+        ) : dispatches.length === 0 ? (
           <div className="prism-card rounded-2xl px-6 py-14 text-center space-y-3">
             <p className="font-serif text-2xl text-ink">
               No dispatches match that filter yet.
@@ -376,7 +494,7 @@ export function HomePage() {
                           </Link>
                         </div>
 
-                        <div className="col-span-7 space-y-1.5 min-w-0">
+                        <div className="col-span-7 min-w-0 space-y-1.5">
                           <div className="flex flex-wrap items-center gap-1.5">
                             <span className="font-mono text-[10px] font-medium uppercase tracking-[0.15em] text-accent">
                               {article.category}
@@ -456,7 +574,7 @@ export function HomePage() {
         )}
       </section>
 
-      {/* Radiant Sunlit Opalescent Pitch Banner (Full Width, Bright & Luminous) */}
+      {/* Radiant Sunlit Opalescent Pitch Banner */}
       <section
         className="relative w-full overflow-hidden rounded-3xl border border-white/80 p-7 text-[#161124] shadow-xl sm:p-10 lg:p-14"
         style={{

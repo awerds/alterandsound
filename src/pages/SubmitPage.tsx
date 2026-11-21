@@ -386,34 +386,44 @@ export function SubmitPage() {
               Private prayers and reader notes submitted from articles and release
               pages—keeping community personal and free of public comment noise.
             </p>
-            {notes.map((note) => (
-              <article
-                key={note.id}
-                className="rounded-sm border border-border bg-surface-elevated p-5 space-y-2"
-              >
-                <div className="flex flex-wrap items-center justify-between gap-2 font-mono text-xs text-muted">
-                  <div className="flex items-center gap-2">
-                    <Badge variant="accent">
-                      {note.kind === 'prayer' ? (
-                        <Sparkles className="h-3 w-3" aria-hidden="true" />
-                      ) : (
-                        <HeartHandshake className="h-3 w-3" aria-hidden="true" />
-                      )}
-                      {note.kind === 'prayer' ? 'Prayer' : 'Reader Note'}
-                    </Badge>
-                    <span>
-                      To <strong className="text-ink">{note.recipientName}</strong>
-                      {note.contextTitle ? ` · ${note.contextTitle}` : ''}
-                    </span>
-                  </div>
-                  <span>{note.createdAt}</span>
-                </div>
-                <p className="font-serif text-xl leading-relaxed text-ink">
-                  “{note.message}”
+            {notes.length === 0 ? (
+              <div className="prism-card rounded-2xl p-8 text-center">
+                <p className="font-serif text-2xl text-ink">Inbox is clear.</p>
+                <p className="mt-1 text-sm text-muted">
+                  Private prayers and reader notes sent from published articles or
+                  releases will appear here.
                 </p>
-                <p className="font-mono text-xs text-muted">— {note.senderName}</p>
-              </article>
-            ))}
+              </div>
+            ) : (
+              notes.map((note) => (
+                <article
+                  key={note.id}
+                  className="prism-card rounded-2xl p-5 space-y-2"
+                >
+                  <div className="flex flex-wrap items-center justify-between gap-2 font-mono text-xs text-muted">
+                    <div className="flex items-center gap-2">
+                      <Badge variant="accent">
+                        {note.kind === 'prayer' ? (
+                          <Sparkles className="h-3 w-3" aria-hidden="true" />
+                        ) : (
+                          <HeartHandshake className="h-3 w-3" aria-hidden="true" />
+                        )}
+                        {note.kind === 'prayer' ? 'Prayer' : 'Reader Note'}
+                      </Badge>
+                      <span>
+                        To <strong className="text-ink">{note.recipientName}</strong>
+                        {note.contextTitle ? ` · ${note.contextTitle}` : ''}
+                      </span>
+                    </div>
+                    <span>{note.createdAt}</span>
+                  </div>
+                  <p className="font-serif text-xl leading-relaxed text-ink">
+                    “{note.message}”
+                  </p>
+                  <p className="font-mono text-xs text-muted">— {note.senderName}</p>
+                </article>
+              ))
+            )}
           </div>
         </TabsContent>
       </Tabs>

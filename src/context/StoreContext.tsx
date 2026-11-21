@@ -16,9 +16,9 @@ import type {
 } from '@/types/domain'
 
 const STORAGE_KEYS = {
-  releases: 'altarandsound:netlabel:releases:v3',
-  articles: 'altarandsound:netlabel:articles:v3',
-  notes: 'altarandsound:netlabel:notes:v3',
+  releases: 'altarandsound:netlabel:releases:v4',
+  articles: 'altarandsound:netlabel:articles:v4',
+  notes: 'altarandsound:netlabel:notes:v4',
 } as const
 
 function loadStored<T>(key: string, fallback: T): T {
