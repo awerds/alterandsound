@@ -1,4 +1,5 @@
 import { Pause, Play } from 'lucide-react'
+import { SacredHeartEmblem } from '@/components/SacredHeartEmblem'
 import type { NetlabelRelease } from '@/types/domain'
 import { cn } from '@/lib/utils'
 
@@ -21,6 +22,12 @@ function PrismaticMotif({
   accent: string
 }) {
   switch (motif) {
+    case 'sacred-heart':
+      return (
+        <div className="flex h-full w-full items-center justify-center p-6">
+          <SacredHeartEmblem variant="motif" className="h-4/5 w-4/5 drop-shadow-lg" />
+        </div>
+      )
     case 'arch':
       return (
         <svg viewBox="0 0 400 400" aria-hidden="true" className="h-full w-full">

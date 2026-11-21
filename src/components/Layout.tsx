@@ -4,14 +4,15 @@ import {
   BookOpen,
   Compass,
   Disc3,
+  Flame,
   Moon,
   Pause,
   Radio,
-  Sparkles,
   Sun,
   Upload,
 } from 'lucide-react'
 import { ListeningBar } from '@/components/ListeningBar'
+import { SacredHeartEmblem } from '@/components/SacredHeartEmblem'
 import { Button } from '@/components/ui/button'
 import { subscribePlayer } from '@/lib/audioPreview'
 import { subscribeColorSchemeStorage, toggleColorScheme } from '@/lib/theme'
@@ -34,7 +35,7 @@ const MOBILE_TABS = [
 
 export function Layout({ children }: { children: ReactNode }) {
   const [hasPlayer, setHasPlayer] = useState(false)
-  const [shimmerPaused, setShimmerPaused] = useState(false)
+  const [lightMotionPaused, setLightMotionPaused] = useState(false)
   const location = useLocation()
 
   useEffect(() => {
@@ -51,13 +52,13 @@ export function Layout({ children }: { children: ReactNode }) {
 
   return (
     <div
-      data-shimmer={shimmerPaused ? 'paused' : 'active'}
+      data-shimmer={lightMotionPaused ? 'paused' : 'active'}
       className={cn(
         'relative flex min-h-dvh w-full flex-col bg-bg text-ink isolate',
         hasPlayer ? 'pb-40 md:pb-24' : 'pb-20 md:pb-0'
       )}
     >
-      {/* Radiant Full-Viewport Sunlit Prism Light Field */}
+      {/* Living Love & Light Radiant Backdrop */}
       <div
         aria-hidden="true"
         className="pointer-events-none fixed inset-0 -z-10 overflow-clip"
@@ -66,21 +67,21 @@ export function Layout({ children }: { children: ReactNode }) {
           className="aurora-orb-a absolute -left-[12%] -top-[18%] h-[42rem] w-[48rem] rounded-full blur-[110px]"
           style={{
             background:
-              'radial-gradient(circle, rgba(255,200,87,0.72) 0%, rgba(255,140,192,0.48) 52%, transparent 74%)',
+              'radial-gradient(circle, rgba(251,191,36,0.72) 0%, rgba(244,63,94,0.44) 52%, transparent 74%)',
           }}
         />
         <div
           className="aurora-orb-b absolute -right-[10%] top-[6%] h-[44rem] w-[48rem] rounded-full blur-[120px]"
           style={{
             background:
-              'radial-gradient(circle, rgba(167,139,250,0.58) 0%, rgba(56,189,248,0.48) 55%, transparent 74%)',
+              'radial-gradient(circle, rgba(251,146,60,0.52) 0%, rgba(125,211,252,0.44) 55%, transparent 74%)',
           }}
         />
         <div
           className="aurora-orb-c absolute bottom-[-16%] left-[22%] h-[38rem] w-[56rem] rounded-full blur-[125px]"
           style={{
             background:
-              'radial-gradient(circle, rgba(94,234,212,0.45) 0%, rgba(253,186,116,0.5) 55%, transparent 74%)',
+              'radial-gradient(circle, rgba(244,114,182,0.42) 0%, rgba(253,224,71,0.48) 55%, transparent 74%)',
           }}
         />
       </div>
@@ -92,18 +93,18 @@ export function Layout({ children }: { children: ReactNode }) {
         Skip to main content
       </a>
 
-      {/* Full-Width Luminous Frosted Masthead */}
+      {/* Full-Width Luminous Masthead */}
       <header className="sticky top-0 z-40 w-full border-b border-border bg-surface/85 backdrop-blur-2xl">
         <div className="hidden border-b border-border/60 sm:block">
           <div className="flex w-full items-center justify-between gap-4 px-5 py-1.5 font-mono text-[10px] uppercase tracking-[0.2em] text-muted md:px-10 lg:px-14">
             <span className="inline-flex items-center gap-2">
               <span
                 aria-hidden="true"
-                className="h-1.5 w-1.5 rounded-full bg-gradient-to-r from-amber-400 via-pink-500 to-violet-500"
+                className="h-1.5 w-1.5 rounded-full bg-gradient-to-r from-amber-400 via-rose-500 to-pink-500"
               />
-              Issue No. 01 · Autumn 2026
+              Love &amp; Light · Sacred Heart of Jesus
             </span>
-            <span>Christian Netlabel &amp; Luminous Music Journal</span>
+            <span>Independent Christian Netlabel &amp; Music Journal</span>
             <span>altarandsound.com</span>
           </div>
         </div>
@@ -115,25 +116,9 @@ export function Layout({ children }: { children: ReactNode }) {
           >
             <span
               aria-hidden="true"
-              className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-white/60 bg-gradient-to-br from-amber-400 via-pink-500 to-violet-600 shadow-md"
+              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-amber-200/80 bg-gradient-to-br from-amber-300 via-rose-500 to-rose-700 p-1 shadow-md"
             >
-              <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none">
-                <path
-                  d="M6.5 18V11.5C6.5 8.46 8.96 6 12 6C15.04 6 17.5 8.46 17.5 11.5V18"
-                  stroke="#ffffff"
-                  strokeWidth="1.8"
-                  strokeLinecap="round"
-                />
-                <line
-                  x1="12"
-                  y1="6"
-                  x2="12"
-                  y2="18.5"
-                  stroke="#fde68a"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                />
-              </svg>
+              <SacredHeartEmblem variant="icon" className="h-8 w-8" />
             </span>
             <span className="font-serif text-xl font-medium tracking-tight sm:text-2xl lg:text-[1.75rem]">
               ALTAR <span className="prism-text italic">&amp;</span> SOUND
@@ -161,20 +146,20 @@ export function Layout({ children }: { children: ReactNode }) {
           </nav>
 
           <div className="flex items-center gap-2">
-            {/* WCAG 2.2.2 Pause / Resume Ambient Shimmer Control */}
+            {/* WCAG 2.2.2 Pause / Resume Ambient Light Control */}
             <button
               type="button"
-              onClick={() => setShimmerPaused((prev) => !prev)}
-              aria-label={shimmerPaused ? 'Resume light shimmer' : 'Pause light shimmer'}
+              onClick={() => setLightMotionPaused((prev) => !prev)}
+              aria-label={lightMotionPaused ? 'Resume radiant light motion' : 'Pause radiant light motion'}
               className="inline-flex min-h-9 items-center gap-1.5 rounded-full border border-border bg-surface-elevated px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.14em] text-muted hover:text-ink cursor-pointer"
             >
-              {shimmerPaused ? (
-                <Sparkles className="h-3.5 w-3.5 text-accent" aria-hidden="true" />
+              {lightMotionPaused ? (
+                <Flame className="h-3.5 w-3.5 text-accent" aria-hidden="true" />
               ) : (
                 <Pause className="h-3 w-3 text-accent" aria-hidden="true" />
               )}
               <span className="hidden sm:inline">
-                {shimmerPaused ? 'Shimmer' : 'Still'}
+                {lightMotionPaused ? 'Light' : 'Still'}
               </span>
             </button>
 
@@ -185,11 +170,11 @@ export function Layout({ children }: { children: ReactNode }) {
             >
               <span className="theme-icon-to-dark items-center">
                 <Moon className="h-4 w-4" aria-hidden="true" />
-                <span className="visually-hidden">Switch to twilight dark theme</span>
+                <span className="visually-hidden">Switch to twilight theme</span>
               </span>
               <span className="theme-icon-to-light items-center">
                 <Sun className="h-4 w-4" aria-hidden="true" />
-                <span className="visually-hidden">Switch to sunlit light theme</span>
+                <span className="visually-hidden">Switch to sunlit theme</span>
               </span>
             </button>
 
@@ -199,7 +184,7 @@ export function Layout({ children }: { children: ReactNode }) {
               variant="accent"
               className="hidden rounded-full font-mono text-[11px] uppercase tracking-[0.12em] md:inline-flex"
             >
-              <Link to="/submit">Submit Demo</Link>
+              <Link to="/submit">Submit Record</Link>
             </Button>
           </div>
         </div>
@@ -210,7 +195,7 @@ export function Layout({ children }: { children: ReactNode }) {
         {children}
       </main>
 
-      {/* Full-Width Luminous Footer */}
+      {/* Full-Width Footer Anchored in Love & Light */}
       <footer className="mt-14 w-full border-t border-border bg-surface/85 backdrop-blur-xl">
         <div className="prism-rule" />
         <div className="grid w-full grid-cols-1 gap-8 px-5 py-12 sm:px-6 md:grid-cols-12 md:items-end md:px-10 lg:px-14">
@@ -219,9 +204,9 @@ export function Layout({ children }: { children: ReactNode }) {
               ALTAR <span className="prism-text italic">&amp;</span> SOUND
             </p>
             <p className="max-w-xl text-sm leading-relaxed text-muted">
-              An independent Christian netlabel and luminous music journal
-              discovering, reviewing, and releasing radiant sacred records that
-              open doors to God.
+              An independent Christian netlabel and music journal devoted to{' '}
+              <strong className="font-medium text-ink">Love &amp; Light</strong>—sharing
+              sacred music that reflects the burning mercy of the Sacred Heart of Jesus.
             </p>
           </div>
 
@@ -249,9 +234,9 @@ export function Layout({ children }: { children: ReactNode }) {
 
         <div className="border-t border-border/70 px-5 py-4 text-center text-xs text-muted">
           <span className="font-serif italic text-sm text-ink/90">
-            “The light shines in the darkness, and the darkness has not overcome it.”
+            “Learn from me, for I am gentle and humble in heart, and you will find rest for your souls.”
           </span>{' '}
-          — John 1:5 · Netlabel Catalog A&amp;S · altarandsound.com
+          — Matthew 11:29 · Love &amp; Light · altarandsound.com
         </div>
       </footer>
 
@@ -275,7 +260,7 @@ export function Layout({ children }: { children: ReactNode }) {
                     cn(
                       'flex min-h-12 flex-col items-center justify-center gap-0.5 rounded-xl px-1 py-1 font-mono text-[10px] tracking-wide transition-all',
                       isActive
-                        ? 'bg-gradient-to-r from-amber-500/18 via-pink-500/18 to-violet-500/18 font-medium text-ink'
+                        ? 'bg-gradient-to-r from-amber-500/18 via-rose-500/18 to-pink-500/18 font-medium text-ink'
                         : 'text-muted hover:text-ink'
                     )
                   }

@@ -12,7 +12,13 @@ export type ArticleCategory =
   | 'Live Session'
   | 'Listening Guide'
 
-export type SleeveMotif = 'arch' | 'rings' | 'horizon' | 'monolith' | 'vesper'
+export type SleeveMotif =
+  | 'sacred-heart'
+  | 'arch'
+  | 'rings'
+  | 'horizon'
+  | 'monolith'
+  | 'vesper'
 
 export interface SleevePalette {
   bg: string

@@ -1,79 +1,92 @@
 import { Link } from 'react-router-dom'
-import { BookOpen, Compass, Disc3, Feather, HeartHandshake } from 'lucide-react'
+import { BookOpen, Compass, Disc3, Feather, Flame } from 'lucide-react'
+import { SacredHeartEmblem } from '@/components/SacredHeartEmblem'
 import { Button } from '@/components/ui/button'
 import { usePageTitle } from '@/hooks/usePageTitle'
 
 const PILLARS = [
   {
+    icon: Flame,
+    title: 'The Sacred Heart of Jesus',
+    body: 'At the center of everything we publish is the burning, merciful heart of Christ—gentle, pierced, radiant, and wide open to every soul searching for rest.',
+  },
+  {
     icon: Disc3,
-    title: 'Craft First',
-    body: 'Great Christian music should stand shoulder-to-shoulder with the finest independent records on earth—thoughtful arrangements, honest rooms, zero plastic clichés.',
+    title: 'Craft in Full Light',
+    body: 'Great Christian music belongs in radiant color, standing shoulder-to-shoulder with the finest independent records on earth—honest rooms, fearless artistry, zero clichés.',
   },
   {
     icon: Feather,
-    title: 'Literate Criticism',
-    body: 'We write about faith-driven records with real musical curiosity: liner notes, harmonic texture, recording rooms, and the human stories behind every track.',
-  },
-  {
-    icon: HeartHandshake,
-    title: 'Independent Netlabel',
-    body: 'Catalog numbers A&S—001 and onward champion underheard believers releasing acoustic, classical, gospel, ambient, and folk recordings freely online.',
+    title: 'Literate Music Journalism',
+    body: 'We write about faith-driven records with genuine musical curiosity: liner notes, harmony, texture, and the living testimonies behind every song.',
   },
   {
     icon: Compass,
-    title: 'Hospitality to Seekers',
-    body: 'Beauty disarms cynicism. Every review and release is written so you can send a link to any friend—believer or skeptic—and let the music open the conversation.',
+    title: 'Love & Light to the World',
+    body: 'Beauty disarms cynicism. Every release and essay is crafted so you can share a link with any friend—believer or seeker—and let love and light open the door to God.',
   },
 ]
 
 const SEEKER_READINGS = [
   {
-    ref: 'Psalm 34:18',
-    title: 'When life feels heavy',
-    text: 'The Lord is near to the brokenhearted and saves the crushed in spirit.',
-  },
-  {
     ref: 'Matthew 11:28–29',
-    title: 'When you are tired of performing',
-    text: 'Come to me, all who labor and are heavy laden, and I will give you rest.',
+    title: 'The Heart of Jesus',
+    text: 'Come to me, all who labor and are heavy laden, and I will give you rest. Learn from me, for I am gentle and humble in heart.',
   },
   {
-    ref: 'John 1:14',
-    title: 'Grace and truth together',
-    text: 'And the Word became flesh and dwelt among us… full of grace and truth.',
+    ref: 'John 1:5',
+    title: 'Light that cannot be overcome',
+    text: 'The light shines in the darkness, and the darkness has not overcome it.',
+  },
+  {
+    ref: '1 John 4:16',
+    title: 'Abiding in love',
+    text: 'God is love, and whoever abides in love abides in God, and God abides in him.',
   },
 ]
 
 export function ManifestoPage() {
-  usePageTitle('Manifesto')
+  usePageTitle('Manifesto · Love & Light')
 
   return (
     <div className="w-full space-y-14">
-      <header className="space-y-5 border-b border-border pb-10">
-        <p className="font-mono text-xs uppercase tracking-[0.18em] text-accent">
-          Altar &amp; Sound · Editorial Manifesto
-        </p>
-        <h1
-          id="main-content"
-          tabIndex={-1}
-          className="display-cover font-medium text-ink focus:outline-none"
-        >
-          Finding, curating, and releasing Christian music worth leaning in for.
-        </h1>
-        <p className="editorial-prose text-muted">
-          Altar &amp; Sound began with a simple conviction: the finest sacred music
-          rarely lives inside algorithmic radio charts. It lives in living rooms,
-          wooden chapels, home tape decks, and independent studios—where musicians
-          of faith offer their best work upward in the hope that someone listening
-          might encounter the living God.
-        </p>
+      <header className="prism-card grid grid-cols-1 gap-8 rounded-3xl p-6 sm:p-10 lg:grid-cols-12 lg:items-center lg:p-14">
+        <div className="space-y-5 lg:col-span-8">
+          <p className="font-mono text-xs uppercase tracking-[0.18em] text-accent">
+            Altar &amp; Sound · Love &amp; Light Manifesto
+          </p>
+          <h1
+            id="main-content"
+            tabIndex={-1}
+            className="display-cover font-medium text-ink focus:outline-none"
+          >
+            Finding, curating, and releasing Christian music rooted in{' '}
+            <span className="prism-text italic">Love &amp; Light</span>.
+          </h1>
+          <p className="editorial-prose text-muted">
+            Altar &amp; Sound is an independent netlabel and music journal
+            inspired by the Sacred Heart of Jesus—a furnace of mercy, beauty,
+            and unquenchable light. We seek out musicians offering their highest
+            craft upward so that every song becomes an open doorway to God.
+          </p>
+        </div>
+
+        <div className="flex justify-center lg:col-span-4">
+          <div className="rounded-3xl border border-amber-200/70 bg-gradient-to-br from-amber-100/80 via-rose-100/70 to-amber-50/80 p-6 shadow-inner">
+            <SacredHeartEmblem
+              variant="hero"
+              decorative={false}
+              className="h-48 w-48 sm:h-56 sm:w-56"
+            />
+          </div>
+        </div>
       </header>
 
       <section className="space-y-6">
         <h2 className="font-mono text-xs uppercase tracking-[0.18em] text-accent">
           Our Four Commitments
         </h2>
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-4">
           {PILLARS.map((p) => {
             const Icon = p.icon
             return (
@@ -94,28 +107,27 @@ export function ManifestoPage() {
 
       <section
         id="for-seekers"
-        className="space-y-6 rounded-sm border border-border bg-surface p-7 sm:p-10"
+        className="prism-card space-y-6 rounded-3xl p-7 sm:p-10 lg:p-12"
       >
         <div className="space-y-2">
           <p className="font-mono text-xs uppercase tracking-[0.18em] text-accent">
             For Listeners Exploring Faith
           </p>
-          <h2 className="font-serif text-3xl font-medium text-ink">
-            The God behind these songs
+          <h2 className="font-serif text-3xl font-medium text-ink sm:text-4xl">
+            The Love &amp; Light behind these songs
           </h2>
           <p className="editorial-prose text-base text-muted">
-            You don’t have to pretend to be religious to spend time here. Many of
-            the artists in our catalog write out of real grief, doubt, and wonder—
-            pointing to Jesus not as a slogan, but as a living presence who meets
-            honest people right where they are.
+            You do not have to have everything figured out to spend time here.
+            Every song we curate points toward Jesus—whose Sacred Heart burns
+            with real mercy for the weary, the curious, and the brokenhearted.
           </p>
         </div>
 
-        <div className="space-y-5 pt-2">
+        <div className="grid grid-cols-1 gap-5 pt-2 lg:grid-cols-3">
           {SEEKER_READINGS.map((item) => (
             <blockquote
               key={item.ref}
-              className="border-l-2 border-accent/70 pl-4 space-y-1"
+              className="rounded-2xl border border-border bg-surface-elevated/80 p-5 space-y-2"
             >
               <div className="flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.14em] text-muted">
                 <BookOpen className="h-3.5 w-3.5 text-accent" aria-hidden="true" />
@@ -123,14 +135,16 @@ export function ManifestoPage() {
                   {item.title} · <strong className="text-ink">{item.ref}</strong>
                 </span>
               </div>
-              <p className="font-serif italic text-xl text-ink">“{item.text}”</p>
+              <p className="font-serif italic text-xl leading-relaxed text-ink">
+                “{item.text}”
+              </p>
             </blockquote>
           ))}
         </div>
 
         <div className="flex flex-wrap gap-3 pt-4">
-          <Button asChild variant="default">
-            <Link to="/">Read the Journal</Link>
+          <Button asChild variant="accent">
+            <Link to="/">Explore the Journal</Link>
           </Button>
           <Button asChild variant="outline">
             <Link to="/catalog">Browse Netlabel Catalog</Link>

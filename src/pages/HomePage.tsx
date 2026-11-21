@@ -4,12 +4,13 @@ import {
   ArrowRight,
   ArrowUpRight,
   Disc3,
+  Flame,
   Pause,
   Play,
   Search,
-  Sparkles,
 } from 'lucide-react'
 import { AlbumSleeve } from '@/components/AlbumSleeve'
+import { SacredHeartEmblem } from '@/components/SacredHeartEmblem'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { useStore } from '@/context/StoreContext'
@@ -31,7 +32,7 @@ const CATEGORIES: Array<'All' | ArticleCategory> = [
 ]
 
 export function HomePage() {
-  usePageTitle('Luminous Christian Netlabel & Music Journal')
+  usePageTitle('Love & Light · Christian Netlabel & Music Journal')
   const { articles, releases, getReleaseById } = useStore()
   const [selectedCategory, setSelectedCategory] = useState<'All' | ArticleCategory>('All')
   const [query, setQuery] = useState('')
@@ -93,7 +94,7 @@ export function HomePage() {
 
   return (
     <div className="flex w-full flex-col gap-12 sm:gap-16">
-      {/* Full-Width Luminous Cover Stage */}
+      {/* Full-Width Radiant Cover Stage */}
       {coverArticle && coverRelease ? (
         <section className="prism-card relative w-full rounded-3xl p-5 sm:p-8 lg:p-12 xl:p-16">
           <div
@@ -101,7 +102,7 @@ export function HomePage() {
             className="pointer-events-none absolute -right-16 -top-24 h-[28rem] w-[28rem] rounded-full blur-[95px] opacity-60"
             style={{
               background:
-                'radial-gradient(circle, rgba(255,204,92,0.85) 0%, rgba(244,114,182,0.5) 52%, transparent 74%)',
+                'radial-gradient(circle, rgba(251,191,36,0.85) 0%, rgba(244,63,94,0.48) 52%, transparent 74%)',
             }}
           />
           <div
@@ -109,7 +110,7 @@ export function HomePage() {
             className="pointer-events-none absolute -bottom-24 -left-16 h-[24rem] w-[28rem] rounded-full blur-[95px] opacity-50"
             style={{
               background:
-                'radial-gradient(circle, rgba(125,211,252,0.7) 0%, rgba(196,181,253,0.45) 55%, transparent 75%)',
+                'radial-gradient(circle, rgba(253,186,116,0.7) 0%, rgba(244,114,182,0.45) 55%, transparent 75%)',
             }}
           />
 
@@ -120,8 +121,8 @@ export function HomePage() {
                   variant="accent"
                   className="font-mono text-[10px] uppercase tracking-[0.16em]"
                 >
-                  <Sparkles className="h-3 w-3 text-accent" aria-hidden="true" />
-                  Cover Feature · {coverArticle.issueNumber}
+                  <Flame className="h-3 w-3 text-accent" aria-hidden="true" />
+                  Love &amp; Light · {coverArticle.issueNumber}
                 </Badge>
                 <Badge
                   variant="default"
@@ -205,14 +206,14 @@ export function HomePage() {
           </div>
         </section>
       ) : (
-        /* Clean Inaugural Launch Stage (Zero Demo Content) */
+        /* Sacred Heart of Jesus — Love & Light Inaugural Stage */
         <section className="prism-card relative w-full rounded-3xl p-6 sm:p-10 lg:p-14 xl:p-20">
           <div
             aria-hidden="true"
             className="pointer-events-none absolute -right-16 -top-24 h-[28rem] w-[28rem] rounded-full blur-[95px] opacity-65"
             style={{
               background:
-                'radial-gradient(circle, rgba(255,204,92,0.85) 0%, rgba(244,114,182,0.5) 52%, transparent 74%)',
+                'radial-gradient(circle, rgba(251,191,36,0.88) 0%, rgba(244,63,94,0.48) 52%, transparent 74%)',
             }}
           />
           <div
@@ -220,19 +221,19 @@ export function HomePage() {
             className="pointer-events-none absolute -bottom-24 -left-16 h-[24rem] w-[28rem] rounded-full blur-[95px] opacity-55"
             style={{
               background:
-                'radial-gradient(circle, rgba(125,211,252,0.72) 0%, rgba(196,181,253,0.48) 55%, transparent 75%)',
+                'radial-gradient(circle, rgba(253,186,116,0.72) 0%, rgba(125,211,252,0.48) 55%, transparent 75%)',
             }}
           />
 
           <div className="relative z-10 grid grid-cols-1 gap-10 lg:grid-cols-12 lg:items-center">
-            <div className="flex flex-col gap-6 lg:col-span-8">
+            <div className="flex flex-col gap-6 lg:col-span-7 xl:col-span-8">
               <div className="flex flex-wrap items-center gap-2">
                 <Badge
                   variant="accent"
                   className="font-mono text-[10px] uppercase tracking-[0.16em]"
                 >
-                  <Sparkles className="h-3 w-3 text-accent" aria-hidden="true" />
-                  Inaugural Issue · Now Curating
+                  <Flame className="h-3 w-3 text-accent" aria-hidden="true" />
+                  Sacred Heart of Jesus · Love &amp; Light
                 </Badge>
                 <Badge
                   variant="default"
@@ -247,16 +248,25 @@ export function HomePage() {
                 tabIndex={-1}
                 className="display-cover font-medium text-ink focus:outline-none"
               >
-                Sound That <span className="prism-text italic">Shimmers</span>.
-                Great Christian Music, Curated &amp; Released.
+                Music of{' '}
+                <span className="prism-text italic">Love &amp; Light</span>.
+                Curated for the Heart of Christ.
               </h1>
 
               <p className="max-w-2xl font-editorial text-lg leading-relaxed text-muted sm:text-xl">
                 Altar &amp; Sound is an independent Christian netlabel and music
-                journal dedicated to discovering, reviewing, and sharing radiant
-                music that points listeners to God. Our inaugural catalog and essays
-                are currently in curation.
+                journal inspired by the burning charity and mercy of the Sacred
+                Heart of Jesus—finding, reviewing, and releasing radiant music that
+                brings souls into His light.
               </p>
+
+              <blockquote className="max-w-xl border-l-2 border-accent/70 pl-4 font-serif italic text-xl text-ink/90">
+                “I am the light of the world. Whoever follows me will not walk in
+                darkness, but will have the light of life.”{' '}
+                <span className="not-italic font-mono text-xs uppercase tracking-[0.14em] text-muted">
+                  — John 8:12
+                </span>
+              </blockquote>
 
               <div className="flex flex-col gap-3 pt-2 sm:flex-row sm:flex-wrap sm:items-center">
                 <Button asChild size="lg" variant="accent" className="w-full sm:w-auto">
@@ -271,28 +281,38 @@ export function HomePage() {
               </div>
             </div>
 
-            <div className="lg:col-span-4">
+            {/* Sacred Heart of Jesus Luminous Collector Medallion Card */}
+            <div className="lg:col-span-5 xl:col-span-4">
               <div
-                className="relative mx-auto aspect-square w-full max-w-sm overflow-hidden rounded-2xl border border-white/60 p-6 text-white shadow-2xl"
+                className="relative mx-auto aspect-square w-full max-w-md overflow-hidden rounded-2xl border border-amber-200/80 p-6 text-white shadow-2xl"
                 style={{
                   background:
-                    'linear-gradient(135deg, #ff9a3c 0%, #ec4899 50%, #6d28d9 100%)',
+                    'radial-gradient(circle at 50% 44%, #ff9a3c 0%, #e11d48 56%, #7f1d1d 100%)',
                 }}
               >
                 <div aria-hidden="true" className="shimmer-sweep-layer" />
                 <div className="relative z-10 flex h-full flex-col justify-between">
                   <div className="flex items-center justify-between font-mono text-[10px] uppercase tracking-[0.18em]">
-                    <span className="rounded-full border border-white/40 bg-black/20 px-2.5 py-0.5 backdrop-blur-md">
+                    <span className="rounded-full border border-amber-200/50 bg-black/20 px-2.5 py-0.5 text-amber-100 backdrop-blur-md">
                       A&amp;S — 001
                     </span>
-                    <span>FORTHCOMING</span>
+                    <span className="text-amber-100/90">LOVE &amp; LIGHT</span>
                   </div>
-                  <div className="space-y-1">
-                    <p className="font-serif text-3xl font-medium leading-tight">
-                      Inaugural Pressing
+
+                  <div className="flex items-center justify-center py-2">
+                    <SacredHeartEmblem
+                      variant="hero"
+                      decorative={false}
+                      className="h-48 w-48 drop-shadow-[0_12px_32px_rgba(255,215,100,0.55)] sm:h-56 sm:w-56"
+                    />
+                  </div>
+
+                  <div className="text-center space-y-0.5">
+                    <p className="font-serif text-2xl font-medium tracking-wide">
+                      Sacred Heart · Inaugural Issue
                     </p>
-                    <p className="text-xs text-white/85">
-                      Accepting real submissions &amp; features
+                    <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-amber-100/85">
+                      Cor Jesu Sacratissimum · Now Curating
                     </p>
                   </div>
                 </div>
@@ -419,7 +439,7 @@ export function HomePage() {
                     onClick={() => setSelectedCategory(cat)}
                     className={`min-h-10 shrink-0 snap-start rounded-full border px-4 py-1.5 font-mono text-[11px] uppercase tracking-[0.12em] transition-all cursor-pointer ${
                       active
-                        ? 'border-transparent bg-gradient-to-r from-amber-500 via-pink-600 to-violet-600 text-white font-medium shadow-md'
+                        ? 'border-transparent bg-gradient-to-r from-amber-500 via-rose-600 to-pink-600 text-white font-medium shadow-md'
                         : 'border-border bg-surface-elevated/85 text-muted hover:text-ink hover:border-accent/40'
                     }`}
                   >
@@ -433,16 +453,17 @@ export function HomePage() {
 
         {articles.length === 0 ? (
           <div className="prism-card flex flex-col items-center gap-4 rounded-2xl px-6 py-14 text-center">
+            <SacredHeartEmblem variant="icon" className="h-14 w-14" />
             <p className="font-mono text-xs uppercase tracking-[0.18em] text-accent">
-              Issue 01 · In Preparation
+              Issue 01 · Love &amp; Light
             </p>
             <h3 className="font-serif text-3xl font-medium text-ink">
               Our first reviews, interviews, and catalog pressings are on the way.
             </h3>
             <p className="max-w-xl text-sm leading-relaxed text-muted">
-              No placeholder tracks here—ready for real Christian artists, albums,
-              and sessions. Publish your first curated record directly from the
-              Submission Desk.
+              Ready for real Christian artists, albums, and sessions filled with
+              the love and light of Christ. Publish your first curated record from
+              the Submission Desk.
             </p>
             <div className="pt-2">
               <Button asChild variant="accent">
@@ -574,28 +595,28 @@ export function HomePage() {
         )}
       </section>
 
-      {/* Radiant Sunlit Opalescent Pitch Banner */}
+      {/* Sunlit Sacred Heart Love & Light Pitch Banner */}
       <section
-        className="relative w-full overflow-hidden rounded-3xl border border-white/80 p-7 text-[#161124] shadow-xl sm:p-10 lg:p-14"
+        className="relative w-full overflow-hidden rounded-3xl border border-amber-200/80 p-7 text-[#1a1019] shadow-xl sm:p-10 lg:p-14"
         style={{
           background:
-            'linear-gradient(122deg, #fff3c4 0%, #ffd8ea 38%, #e2d9ff 70%, #cbf5ff 100%)',
+            'linear-gradient(122deg, #fff4cc 0%, #ffe0ea 42%, #fde8d7 74%, #e0f2fe 100%)',
         }}
       >
         <div aria-hidden="true" className="shimmer-sweep-layer" />
         <div className="relative z-10 grid grid-cols-1 gap-6 md:grid-cols-12 md:items-center">
           <div className="space-y-3 md:col-span-8">
-            <div className="inline-flex items-center gap-2 rounded-full border border-[#7c3aed]/25 bg-white/75 px-3.5 py-1 font-mono text-[11px] font-medium uppercase tracking-[0.18em] text-[#6d28d9] backdrop-blur-md">
+            <div className="inline-flex items-center gap-2 rounded-full border border-rose-500/25 bg-white/80 px-3.5 py-1 font-mono text-[11px] font-medium uppercase tracking-[0.18em] text-rose-700 backdrop-blur-md">
               <Disc3 className="h-3.5 w-3.5" aria-hidden="true" />
-              Open Submissions · Netlabel &amp; Journal
+              Open Submissions · Love &amp; Light
             </div>
             <h2 className="font-serif text-3xl font-medium leading-tight sm:text-4xl lg:text-5xl">
-              Making radiant, honest Christian music? Send us the tape.
+              Making Christian music filled with love and light? Send us the tape.
             </h2>
-            <p className="max-w-2xl text-sm leading-relaxed text-[#3b3352] sm:text-base">
+            <p className="max-w-2xl text-sm leading-relaxed text-[#4b3844] sm:text-base">
               Whether it’s an acoustic EP, gospel-jazz session, solo cello, or
-              shimmering ambient hymns—we curate records filled with light and share
-              them with the world.
+              luminous hymns—we curate records that reflect the mercy and burning
+              love of the Sacred Heart of Jesus.
             </p>
           </div>
           <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap md:col-span-4 md:justify-end">
@@ -606,7 +627,7 @@ export function HomePage() {
               asChild
               size="lg"
               variant="outline"
-              className="w-full border-[#161124]/25 bg-white/80 text-[#161124] hover:bg-white sm:w-auto"
+              className="w-full border-[#1a1019]/25 bg-white/85 text-[#1a1019] hover:bg-white sm:w-auto"
             >
               <Link to="/manifesto">Our Manifesto</Link>
             </Button>

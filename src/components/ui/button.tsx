@@ -11,7 +11,7 @@ const buttonVariants = cva(
         default:
           'bg-ink text-bg shadow-md hover:opacity-90 hover:-translate-y-0.5',
         accent:
-          'bg-gradient-to-r from-amber-500 via-pink-600 to-violet-600 text-white shadow-[0_10px_30px_-8px_rgba(219,39,119,0.65)] hover:brightness-110 hover:-translate-y-0.5 border border-white/25',
+          'bg-gradient-to-r from-amber-500 via-rose-600 to-pink-600 text-white shadow-[0_10px_30px_-8px_rgba(225,29,72,0.58)] hover:brightness-110 hover:-translate-y-0.5 border border-white/25',
         outline:
           'border border-border bg-surface-elevated/80 text-ink backdrop-blur-md hover:border-accent/60 hover:bg-surface-elevated',
         subtle:
