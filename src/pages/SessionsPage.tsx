@@ -36,7 +36,7 @@ export function SessionsPage() {
         </Button>
       </header>
 
-      <div className="space-y-10">
+      <div className="grid w-full grid-cols-1 gap-7 2xl:grid-cols-2">
         {releases.map((release) => {
           const articles = getArticlesForRelease(release.id)
           return (

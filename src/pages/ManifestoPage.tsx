@@ -48,7 +48,7 @@ export function ManifestoPage() {
   usePageTitle('Manifesto')
 
   return (
-    <div className="mx-auto max-w-4xl space-y-16">
+    <div className="w-full space-y-14">
       <header className="space-y-5 border-b border-border pb-10">
         <p className="font-mono text-xs uppercase tracking-[0.18em] text-accent">
           Altar &amp; Sound · Editorial Manifesto

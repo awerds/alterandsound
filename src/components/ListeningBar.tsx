@@ -20,24 +20,24 @@ export function ListeningBar() {
   return (
     <aside
       aria-label="Audio listening bar"
-      className="pointer-events-none fixed inset-x-0 bottom-4 z-50 px-4 sm:px-6"
+      className="pointer-events-none fixed inset-x-0 bottom-[4.75rem] z-50 px-3 sm:px-6 md:bottom-4"
     >
       <div
-        className="pointer-events-auto relative mx-auto flex max-w-4xl items-center justify-between gap-4 overflow-hidden rounded-2xl border border-border bg-surface-elevated px-4 py-3 shadow-2xl backdrop-blur-2xl sm:px-5"
+        className="pointer-events-auto relative mx-auto flex w-full max-w-5xl items-center justify-between gap-3 overflow-hidden rounded-2xl border border-border bg-surface-elevated px-3.5 py-2.5 shadow-2xl backdrop-blur-2xl sm:px-5 sm:py-3"
         style={{
-          boxShadow: `0 22px 60px -14px ${active.sleevePalette.glow}, inset 0 1px 0 rgba(255,255,255,0.35)`,
+          boxShadow: `0 22px 60px -14px ${active.sleevePalette.glow}, inset 0 1px 0 rgba(255,255,255,0.65)`,
         }}
       >
-        {/* Subtle track-colored ambient glow inside dock */}
+        {/* Track-colored iridescent tint */}
         <div
           aria-hidden="true"
           style={{
-            background: `linear-gradient(90deg, ${active.sleevePalette.bg}38 0%, ${active.sleevePalette.via}26 45%, transparent 100%)`,
+            background: `linear-gradient(90deg, ${active.sleevePalette.bg}30 0%, ${active.sleevePalette.via}22 45%, transparent 100%)`,
           }}
           className="pointer-events-none absolute inset-0"
         />
 
-        <div className="relative z-10 flex min-w-0 items-center gap-3.5">
+        <div className="relative z-10 flex min-w-0 items-center gap-3">
           <button
             type="button"
             onClick={toggleCurrentTrack}
@@ -45,7 +45,7 @@ export function ListeningBar() {
             style={{
               background: `linear-gradient(135deg, ${active.sleevePalette.bg}, ${active.sleevePalette.via})`,
             }}
-            className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-white/40 text-white shadow-lg transition-transform hover:scale-105 cursor-pointer"
+            className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/50 text-white shadow-lg transition-transform hover:scale-105 sm:h-11 sm:w-11 cursor-pointer"
           >
             {active.isPlaying ? (
               <Pause className="h-4 w-4 fill-current" aria-hidden="true" />
@@ -78,8 +78,7 @@ export function ListeningBar() {
           </div>
         </div>
 
-        <div className="relative z-10 flex shrink-0 items-center gap-4">
-          {/* Luminous Equalizer Bars */}
+        <div className="relative z-10 flex shrink-0 items-center gap-3">
           <div
             aria-hidden="true"
             className="hidden h-5 items-end gap-[3px] sm:flex"

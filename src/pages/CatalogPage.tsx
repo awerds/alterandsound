@@ -61,8 +61,8 @@ export function CatalogPage() {
   }
 
   return (
-    <div className="space-y-10">
-      <header className="max-w-2xl space-y-3">
+    <div className="w-full space-y-10">
+      <header className="max-w-3xl space-y-3">
         <p className="font-mono text-xs uppercase tracking-[0.18em] text-accent">
           Altar &amp; Sound Discography
         </p>
@@ -71,7 +71,7 @@ export function CatalogPage() {
           tabIndex={-1}
           className="display-cover font-medium text-ink focus:outline-none"
         >
-          Netlabel Catalog
+          Netlabel <span className="prism-text italic">Catalog</span>
         </h1>
         <p className="font-editorial text-lg leading-relaxed text-muted">
           Numbered digital releases, live room sessions, and curated streams—free to
@@ -80,17 +80,21 @@ export function CatalogPage() {
       </header>
 
       <div className="flex flex-col gap-4 border-y border-border py-4 sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex flex-wrap gap-2" role="group" aria-label="Filter catalog by genre">
+        <div
+          className="mobile-snap-row sm:pill-row sm:overflow-visible"
+          role="group"
+          aria-label="Filter catalog by genre"
+        >
           {genres.map((g) => (
             <button
               key={g}
               type="button"
               aria-pressed={genre === g}
               onClick={() => setGenre(g)}
-              className={`min-h-9 rounded-sm px-3 py-1.5 font-mono text-[11px] uppercase tracking-[0.12em] transition-colors cursor-pointer ${
+              className={`min-h-10 shrink-0 snap-start rounded-full border px-4 py-1.5 font-mono text-[11px] uppercase tracking-[0.12em] transition-all cursor-pointer ${
                 genre === g
-                  ? 'bg-ink text-bg font-medium'
-                  : 'text-muted hover:bg-surface hover:text-ink'
+                  ? 'border-transparent bg-gradient-to-r from-amber-500 via-pink-600 to-violet-600 text-white font-medium shadow-md'
+                  : 'border-border bg-surface-elevated/85 text-muted hover:text-ink'
               }`}
             >
               {g}
@@ -103,7 +107,7 @@ export function CatalogPage() {
             Search catalog by album, artist, or catalog number
           </label>
           <Search
-            className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted"
+            className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted"
             aria-hidden="true"
           />
           <input
@@ -112,12 +116,12 @@ export function CatalogPage() {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Album, artist, A&S—001…"
-            className="min-h-10 w-full rounded-sm border border-border bg-bg pl-9 pr-3 text-sm text-ink placeholder:text-muted/75"
+            className="min-h-11 w-full rounded-full border border-border bg-surface-elevated pl-10 pr-4 text-sm text-ink placeholder:text-muted/75"
           />
         </div>
       </div>
 
-      <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="catalog-auto-grid">
         {filtered.map((release) => {
           const isPlaying = active?.releaseId === release.id && active.isPlaying
           return (
@@ -153,7 +157,7 @@ export function CatalogPage() {
                     {release.artistName} · {release.artistOrigin}
                   </p>
 
-                  <p className="line-clamp-3 text-sm leading-relaxed text-muted pt-1">
+                  <p className="line-clamp-3 pt-1 text-sm leading-relaxed text-muted">
                     {release.linerNotes}
                   </p>
                 </div>

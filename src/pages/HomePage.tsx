@@ -92,28 +92,41 @@ export function HomePage() {
   }
 
   return (
-    <div className="flex flex-col gap-16">
-      {/* Flagship Luminous Cover Stage */}
+    <div className="flex w-full flex-col gap-12 sm:gap-16">
+      {/* Full-Width Luminous Cover Stage */}
       {coverArticle && coverRelease ? (
-        <section className="prism-card relative rounded-3xl p-6 sm:p-10 lg:p-12">
-          {/* Radiant Cathedral Backlight Inside Hero */}
+        <section className="prism-card relative w-full rounded-3xl p-5 sm:p-8 lg:p-12 xl:p-16">
           <div
             aria-hidden="true"
-            className="pointer-events-none absolute -right-20 -top-24 h-96 w-96 rounded-full blur-[90px] opacity-45"
+            className="pointer-events-none absolute -right-16 -top-24 h-[28rem] w-[28rem] rounded-full blur-[95px] opacity-60"
             style={{
               background:
-                'radial-gradient(circle, rgba(255,176,71,0.75) 0%, rgba(236,72,153,0.45) 55%, transparent 75%)',
+                'radial-gradient(circle, rgba(255,204,92,0.85) 0%, rgba(244,114,182,0.5) 52%, transparent 74%)',
+            }}
+          />
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute -bottom-24 -left-16 h-[24rem] w-[28rem] rounded-full blur-[95px] opacity-50"
+            style={{
+              background:
+                'radial-gradient(circle, rgba(125,211,252,0.7) 0%, rgba(196,181,253,0.45) 55%, transparent 75%)',
             }}
           />
 
-          <div className="relative z-10 grid grid-cols-1 gap-10 lg:grid-cols-12 lg:items-center">
-            <div className="flex flex-col gap-6 lg:col-span-7">
-              <div className="flex flex-wrap items-center gap-2.5">
-                <Badge variant="accent" className="font-mono text-[10px] uppercase tracking-[0.16em]">
+          <div className="relative z-10 grid grid-cols-1 gap-8 lg:grid-cols-12 lg:items-center lg:gap-12">
+            <div className="flex flex-col gap-5 sm:gap-6 lg:col-span-7 xl:col-span-7">
+              <div className="flex flex-wrap items-center gap-2">
+                <Badge
+                  variant="accent"
+                  className="font-mono text-[10px] uppercase tracking-[0.16em]"
+                >
                   <Sparkles className="h-3 w-3 text-accent" aria-hidden="true" />
                   Cover Feature · {coverArticle.issueNumber}
                 </Badge>
-                <Badge variant="default" className="font-mono text-[10px] uppercase tracking-[0.16em]">
+                <Badge
+                  variant="default"
+                  className="font-mono text-[10px] uppercase tracking-[0.16em]"
+                >
                   {coverRelease.catalogNumber}
                 </Badge>
               </div>
@@ -123,18 +136,18 @@ export function HomePage() {
                 tabIndex={-1}
                 className="display-cover font-medium text-ink focus:outline-none"
               >
-                <Link to={`/journal/${coverArticle.slug}`} className="group">
+                <Link to={`/journal/${coverArticle.slug}`}>
                   Sound That{' '}
                   <span className="prism-text italic">Shimmers</span>: Why Sacred
                   Music Belongs in Full Color
                 </Link>
               </h1>
 
-              <p className="max-w-xl font-editorial text-lg leading-relaxed text-muted sm:text-xl">
+              <p className="max-w-2xl font-editorial text-base leading-relaxed text-muted sm:text-xl">
                 {coverArticle.dek}
               </p>
 
-              <div className="flex flex-wrap items-center gap-x-4 gap-y-1 font-mono text-xs text-muted">
+              <div className="flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-xs text-muted">
                 <span className="font-medium text-ink">By {coverArticle.author}</span>
                 <span aria-hidden="true">·</span>
                 <span>{coverArticle.publishedAt}</span>
@@ -142,8 +155,8 @@ export function HomePage() {
                 <span>{coverArticle.readingTime}</span>
               </div>
 
-              <div className="flex flex-wrap items-center gap-3 pt-1">
-                <Button asChild size="lg" variant="accent">
+              <div className="flex flex-col gap-3 pt-1 sm:flex-row sm:flex-wrap sm:items-center">
+                <Button asChild size="lg" variant="accent" className="w-full sm:w-auto">
                   <Link to={`/journal/${coverArticle.slug}`}>
                     Read Cover Feature
                     <ArrowRight className="h-4 w-4" aria-hidden="true" />
@@ -153,6 +166,7 @@ export function HomePage() {
                   type="button"
                   size="lg"
                   variant="outline"
+                  className="w-full sm:w-auto"
                   onClick={() => triggerReleasePlay(coverRelease)}
                 >
                   {activeTrack?.releaseId === coverRelease.id && activeTrack.isPlaying ? (
@@ -170,8 +184,11 @@ export function HomePage() {
               </div>
             </div>
 
-            <div className="flex flex-col gap-5 lg:col-span-5">
-              <Link to={`/releases/${coverRelease.slug}`} className="block">
+            <div className="flex flex-col gap-5 lg:col-span-5 xl:col-span-5">
+              <Link
+                to={`/releases/${coverRelease.slug}`}
+                className="mx-auto block w-full max-w-md lg:max-w-none"
+              >
                 <AlbumSleeve
                   release={coverRelease}
                   size="lg"
@@ -183,7 +200,7 @@ export function HomePage() {
                   onTogglePlay={() => triggerReleasePlay(coverRelease)}
                 />
               </Link>
-              <blockquote className="rounded-2xl border border-border bg-surface/70 px-5 py-4 font-serif italic text-lg leading-snug text-ink/90 backdrop-blur-md">
+              <blockquote className="rounded-2xl border border-border bg-surface-elevated/85 px-5 py-4 font-serif italic text-lg leading-snug text-ink/90 backdrop-blur-md">
                 “{coverArticle.pullQuote}”
               </blockquote>
             </div>
@@ -191,9 +208,9 @@ export function HomePage() {
         </section>
       ) : null}
 
-      {/* Luminous Netlabel Catalog Shelf */}
-      <section className="space-y-7">
-        <div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-end">
+      {/* Full-Width Netlabel Shelf (Swipeable Snap Row on Mobile, 5-Col Showcase on Desktop) */}
+      <section className="space-y-6">
+        <div className="flex flex-wrap items-end justify-between gap-3">
           <div>
             <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-accent">
               The Netlabel Catalog
@@ -207,17 +224,21 @@ export function HomePage() {
             to="/catalog"
             className="inline-flex items-center gap-1.5 rounded-full border border-border bg-surface-elevated px-4 py-2 font-mono text-[11px] uppercase tracking-[0.14em] text-ink hover:border-accent/60 transition-colors"
           >
-            Full Discography ({releases.length})
+            All Releases ({releases.length})
             <ArrowUpRight className="h-3.5 w-3.5 text-accent" aria-hidden="true" />
           </Link>
         </div>
 
-        <div className="grid grid-cols-2 gap-5 sm:grid-cols-3 lg:grid-cols-5">
+        {/* Mobile: Horizontal Touch-Snap Vinyl Rack | Desktop: Full-Width 5-Col Grid */}
+        <div className="mobile-snap-row md:grid md:grid-cols-3 md:gap-6 md:overflow-visible lg:grid-cols-5">
           {releases.slice(0, 5).map((rel) => {
             const playing =
               activeTrack?.releaseId === rel.id && Boolean(activeTrack?.isPlaying)
             return (
-              <article key={rel.id} className="group flex flex-col gap-3">
+              <article
+                key={rel.id}
+                className="group flex w-[68vw] max-w-[240px] shrink-0 snap-start flex-col gap-3 md:w-auto md:max-w-none md:shrink"
+              >
                 <Link
                   to={`/releases/${rel.slug}`}
                   className="block transition-transform duration-300 group-hover:-translate-y-1.5"
@@ -252,8 +273,8 @@ export function HomePage() {
 
       <hr className="prism-rule" />
 
-      {/* Editorial Dispatches — Flagship Music Blog */}
-      <section className="space-y-8">
+      {/* Full-Width Editorial Dispatches — Flagship Music Blog */}
+      <section className="space-y-7">
         <div className="flex flex-col gap-5">
           <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
             <div>
@@ -265,7 +286,7 @@ export function HomePage() {
                 <span className="prism-text italic">Journal</span>
               </h2>
             </div>
-            <div className="relative w-full sm:max-w-xs">
+            <div className="relative w-full sm:max-w-sm">
               <label htmlFor="journal-search" className="visually-hidden">
                 Search reviews, essays, and artists
               </label>
@@ -279,14 +300,14 @@ export function HomePage() {
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder="Search reviews, artists, genres…"
-                className="min-h-10 w-full rounded-full border border-border bg-surface-elevated pl-10 pr-4 text-sm text-ink placeholder:text-muted/75 backdrop-blur-md"
+                className="min-h-11 w-full rounded-full border border-border bg-surface-elevated pl-10 pr-4 text-sm text-ink placeholder:text-muted/75 backdrop-blur-md"
               />
             </div>
           </div>
 
-          {/* Pill Column Filters */}
+          {/* Mobile Horizontal Swipeable Pills | Desktop Balanced Wrap */}
           <div
-            className="flex flex-wrap gap-2"
+            className="mobile-snap-row sm:pill-row sm:overflow-visible"
             role="group"
             aria-label="Filter journal by column"
           >
@@ -298,10 +319,10 @@ export function HomePage() {
                   type="button"
                   aria-pressed={active}
                   onClick={() => setSelectedCategory(cat)}
-                  className={`min-h-9 rounded-full border px-4 py-1.5 font-mono text-[11px] uppercase tracking-[0.12em] transition-all cursor-pointer ${
+                  className={`min-h-10 shrink-0 snap-start rounded-full border px-4 py-1.5 font-mono text-[11px] uppercase tracking-[0.12em] transition-all cursor-pointer ${
                     active
                       ? 'border-transparent bg-gradient-to-r from-amber-500 via-pink-600 to-violet-600 text-white font-medium shadow-md'
-                      : 'border-border bg-surface-elevated/75 text-muted hover:text-ink hover:border-accent/40'
+                      : 'border-border bg-surface-elevated/85 text-muted hover:text-ink hover:border-accent/40'
                   }`}
                 >
                   {cat}
@@ -328,46 +349,35 @@ export function HomePage() {
             </Button>
           </div>
         ) : (
-          <div className="grid grid-cols-1 gap-7 md:grid-cols-2">
-            {dispatches.map((article, index) => {
+          <div className="journal-auto-grid">
+            {dispatches.map((article) => {
               const release = getReleaseById(article.releaseId)
               const isPlaying =
                 Boolean(release) &&
                 activeTrack?.releaseId === release?.id &&
                 Boolean(activeTrack?.isPlaying)
-              const isLead = index === 0 && selectedCategory === 'All' && !query
 
               return (
                 <article
                   key={article.id}
-                  className={`prism-card flex flex-col justify-between gap-5 rounded-2xl p-6 transition-transform hover:-translate-y-1 ${
-                    isLead
-                      ? 'md:col-span-2 md:grid md:grid-cols-12 md:items-center md:gap-8 sm:p-8'
-                      : ''
-                  }`}
+                  className="prism-card flex flex-col justify-between gap-5 rounded-2xl p-5 transition-transform hover:-translate-y-1 sm:p-6"
                 >
-                  {release ? (
-                    <div
-                      className={
-                        isLead
-                          ? 'md:col-span-4'
-                          : 'grid grid-cols-12 items-center gap-4'
-                      }
-                    >
-                      <div className={isLead ? '' : 'col-span-5'}>
-                        <Link to={`/releases/${release.slug}`} className="block">
-                          <AlbumSleeve
-                            release={release}
-                            size="sm"
-                            isPlaying={isPlaying}
-                            onTogglePlay={() => triggerReleasePlay(release)}
-                          />
-                        </Link>
-                      </div>
+                  <div className="space-y-4">
+                    {release ? (
+                      <div className="grid grid-cols-12 items-center gap-4">
+                        <div className="col-span-5">
+                          <Link to={`/releases/${release.slug}`} className="block">
+                            <AlbumSleeve
+                              release={release}
+                              size="sm"
+                              isPlaying={isPlaying}
+                              onTogglePlay={() => triggerReleasePlay(release)}
+                            />
+                          </Link>
+                        </div>
 
-                      {!isLead ? (
-                        <div className="col-span-7 space-y-1.5">
-                          <div className="flex flex-wrap items-center gap-2">
+                        <div className="col-span-7 space-y-1.5 min-w-0">
+                          <div className="flex flex-wrap items-center gap-1.5">
                             <span className="font-mono text-[10px] font-medium uppercase tracking-[0.15em] text-accent">
                               {article.category}
                             </span>
@@ -377,37 +387,21 @@ export function HomePage() {
                               </Badge>
                             ) : null}
                           </div>
-                          <p className="font-mono text-[11px] text-ink">
+                          <p className="truncate font-mono text-[11px] font-medium text-ink">
                             {release.catalogNumber}
                           </p>
-                          <p className="text-xs text-muted">{release.artistName}</p>
+                          <p className="truncate text-xs text-muted">
+                            {release.artistName}
+                          </p>
                           <p className="font-mono text-[10px] text-muted">
-                            {article.publishedAt} · {article.readingTime}
+                            {article.readingTime}
                           </p>
                         </div>
-                      ) : null}
-                    </div>
-                  ) : null}
+                      </div>
+                    ) : null}
 
-                  <div
-                    className={`flex flex-col justify-between gap-4 ${
-                      isLead ? 'md:col-span-8' : ''
-                    }`}
-                  >
-                    <div className="space-y-3">
-                      {isLead ? (
-                        <div className="flex flex-wrap items-center gap-2.5 font-mono text-[11px] uppercase tracking-[0.16em]">
-                          <span className="text-accent">{article.category}</span>
-                          {article.rating ? (
-                            <Badge variant="accent" className="font-mono">
-                              {article.rating}
-                            </Badge>
-                          ) : null}
-                          <span className="text-muted">· {article.publishedAt}</span>
-                        </div>
-                      ) : null}
-
-                      <h3 className="font-serif text-2xl font-medium leading-snug text-ink sm:text-3xl">
+                    <div className="space-y-2">
+                      <h3 className="font-serif text-2xl font-medium leading-snug text-ink">
                         <Link
                           to={`/journal/${article.slug}`}
                           className="hover:text-accent transition-colors"
@@ -420,39 +414,39 @@ export function HomePage() {
                         {article.dek}
                       </p>
                     </div>
+                  </div>
 
-                    <div className="flex flex-wrap items-center justify-between gap-3 border-t border-border/80 pt-4">
-                      <span className="font-mono text-[11px] text-muted">
-                        By {article.author}
-                      </span>
-                      <div className="flex items-center gap-4">
-                        {release ? (
-                          <button
-                            type="button"
-                            onClick={() => triggerReleasePlay(release)}
-                            aria-label={
-                              isPlaying
-                                ? `Pause ${release.title}`
-                                : `Listen to ${release.title}`
-                            }
-                            className="inline-flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-[0.12em] text-muted hover:text-ink cursor-pointer"
-                          >
-                            {isPlaying ? (
-                              <Pause className="h-3.5 w-3.5 text-accent" aria-hidden="true" />
-                            ) : (
-                              <Play className="h-3.5 w-3.5 text-accent" aria-hidden="true" />
-                            )}
-                            {isPlaying ? 'Pause' : 'Listen'}
-                          </button>
-                        ) : null}
-                        <Link
-                          to={`/journal/${article.slug}`}
-                          className="inline-flex items-center gap-1 font-mono text-[11px] font-medium uppercase tracking-[0.14em] text-accent hover:underline"
+                  <div className="flex flex-wrap items-center justify-between gap-3 border-t border-border/80 pt-4">
+                    <span className="font-mono text-[11px] text-muted">
+                      By {article.author}
+                    </span>
+                    <div className="flex items-center gap-4">
+                      {release ? (
+                        <button
+                          type="button"
+                          onClick={() => triggerReleasePlay(release)}
+                          aria-label={
+                            isPlaying
+                              ? `Pause ${release.title}`
+                              : `Listen to ${release.title}`
+                          }
+                          className="inline-flex min-h-9 items-center gap-1.5 font-mono text-[11px] uppercase tracking-[0.12em] text-muted hover:text-ink cursor-pointer"
                         >
-                          Read Dispatch
-                          <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
-                        </Link>
-                      </div>
+                          {isPlaying ? (
+                            <Pause className="h-3.5 w-3.5 text-accent" aria-hidden="true" />
+                          ) : (
+                            <Play className="h-3.5 w-3.5 text-accent" aria-hidden="true" />
+                          )}
+                          {isPlaying ? 'Pause' : 'Listen'}
+                        </button>
+                      ) : null}
+                      <Link
+                        to={`/journal/${article.slug}`}
+                        className="inline-flex min-h-9 items-center gap-1 font-mono text-[11px] font-medium uppercase tracking-[0.14em] text-accent hover:underline"
+                      >
+                        Read
+                        <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
+                      </Link>
                     </div>
                   </div>
                 </article>
@@ -462,41 +456,39 @@ export function HomePage() {
         )}
       </section>
 
-      {/* Luminous Flagship Netlabel Pitch Banner */}
-      <section className="relative overflow-hidden rounded-3xl border border-white/25 bg-gradient-to-br from-[#1d1138] via-[#4a124e] to-[#9a3412] p-8 text-white shadow-2xl sm:p-12">
+      {/* Radiant Sunlit Opalescent Pitch Banner (Full Width, Bright & Luminous) */}
+      <section
+        className="relative w-full overflow-hidden rounded-3xl border border-white/80 p-7 text-[#161124] shadow-xl sm:p-10 lg:p-14"
+        style={{
+          background:
+            'linear-gradient(122deg, #fff3c4 0%, #ffd8ea 38%, #e2d9ff 70%, #cbf5ff 100%)',
+        }}
+      >
         <div aria-hidden="true" className="shimmer-sweep-layer" />
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute -right-12 -top-12 h-72 w-72 rounded-full bg-amber-300/30 blur-3xl"
-        />
         <div className="relative z-10 grid grid-cols-1 gap-6 md:grid-cols-12 md:items-center">
           <div className="space-y-3 md:col-span-8">
-            <div className="inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-3 py-1 font-mono text-[11px] uppercase tracking-[0.18em] text-amber-200 backdrop-blur-md">
+            <div className="inline-flex items-center gap-2 rounded-full border border-[#7c3aed]/25 bg-white/75 px-3.5 py-1 font-mono text-[11px] font-medium uppercase tracking-[0.18em] text-[#6d28d9] backdrop-blur-md">
               <Disc3 className="h-3.5 w-3.5" aria-hidden="true" />
               Open Submissions · Netlabel &amp; Journal
             </div>
-            <h2 className="font-serif text-3xl font-medium leading-tight sm:text-4xl">
+            <h2 className="font-serif text-3xl font-medium leading-tight sm:text-4xl lg:text-5xl">
               Making radiant, honest Christian music? Send us the tape.
             </h2>
-            <p className="max-w-xl text-sm leading-relaxed text-white/85">
-              Whether it’s an acoustic EP, jazz-gospel session, solo cello, or
+            <p className="max-w-2xl text-sm leading-relaxed text-[#3b3352] sm:text-base">
+              Whether it’s an acoustic EP, gospel-jazz session, solo cello, or
               shimmering ambient hymns—we curate records filled with light and share
               them with the world.
             </p>
           </div>
-          <div className="flex flex-wrap gap-3 md:col-span-4 md:justify-end">
-            <Button
-              asChild
-              size="lg"
-              className="bg-white text-[#140e24] hover:bg-amber-50"
-            >
+          <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap md:col-span-4 md:justify-end">
+            <Button asChild size="lg" variant="accent" className="w-full sm:w-auto">
               <Link to="/submit">Submit a Record</Link>
             </Button>
             <Button
               asChild
               size="lg"
               variant="outline"
-              className="border-white/40 bg-white/10 text-white hover:bg-white/20"
+              className="w-full border-[#161124]/25 bg-white/80 text-[#161124] hover:bg-white sm:w-auto"
             >
               <Link to="/manifesto">Our Manifesto</Link>
             </Button>

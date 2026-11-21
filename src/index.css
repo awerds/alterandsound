@@ -1,35 +1,36 @@
 @import "tailwindcss";
 
 :root {
-  /* Luminous Cathedral Prism — Light Mode (Opalescent Pearl & Sunlit Gold) */
-  --bg-light: #fcfaff;
+  /* Sunlit Cathedral Prism — Radiant Light Default (Pure Pearl, Sunlight & Color) */
+  --bg-light: #fffdf9;
   --surface-light: rgba(255, 255, 255, 0.72);
-  --surface-elevated-light: rgba(255, 255, 255, 0.86);
-  --ink-light: #120f1c;
-  --muted-light: #514a63;
+  --surface-elevated-light: rgba(255, 255, 255, 0.88);
+  --ink-light: #161124;
+  --muted-light: #564d6b;
   --accent-light: #7c3aed;
-  --accent-warm-light: #c26d18;
+  --accent-warm-light: #d97706;
   --accent-ink-light: #ffffff;
-  --border-light: rgba(124, 58, 237, 0.16);
+  --border-light: rgba(139, 92, 246, 0.18);
   --danger-light: #be123c;
   --danger-bg-light: #fff1f2;
   --success-light: #047857;
 
-  /* Luminous Cathedral Prism — Dark Mode (Cosmic Obsidian & Stained-Glass Radiance) */
-  --bg-dark: #07060e;
-  --surface-dark: rgba(21, 18, 36, 0.68);
-  --surface-elevated-dark: rgba(26, 22, 46, 0.82);
-  --ink-dark: #f8f5ff;
-  --muted-dark: #b4acc9;
-  --accent-dark: #f5b963;
-  --accent-warm-dark: #ff80b5;
-  --accent-ink-dark: #100c1a;
-  --border-dark: rgba(255, 255, 255, 0.14);
+  /* Luminous Twilight — Optional Evening Mode (Royal Indigo & Bright Stained Glass) */
+  --bg-dark: #17132b;
+  --surface-dark: rgba(34, 27, 62, 0.72);
+  --surface-elevated-dark: rgba(42, 34, 76, 0.84);
+  --ink-dark: #fbf9ff;
+  --muted-dark: #c9c0e0;
+  --accent-dark: #ffcb6b;
+  --accent-warm-dark: #ff85c0;
+  --accent-ink-dark: #17132b;
+  --border-dark: rgba(255, 255, 255, 0.2);
   --danger-dark: #fb7185;
-  --danger-bg-dark: #2c1018;
+  --danger-bg-dark: #3b1320;
   --success-dark: #34d399;
 
-  /* Fallback tokens for browsers without light-dark() */
+  /* Radiant Light is the default sunlit identity; Twilight activates via toggle */
+  color-scheme: light;
   --bg: var(--bg-light);
   --surface: var(--surface-light);
   --surface-elevated: var(--surface-elevated-light);
@@ -42,24 +43,6 @@
   --danger: var(--danger-light);
   --danger-bg: var(--danger-bg-light);
   --success: var(--success-light);
-
-  @media (prefers-color-scheme: dark) {
-    --bg: var(--bg-dark);
-    --surface: var(--surface-dark);
-    --surface-elevated: var(--surface-elevated-dark);
-    --ink: var(--ink-dark);
-    --muted: var(--muted-dark);
-    --accent: var(--accent-dark);
-    --accent-warm: var(--accent-warm-dark);
-    --accent-ink: var(--accent-ink-dark);
-    --border: var(--border-dark);
-    --danger: var(--danger-dark);
-    --danger-bg: var(--danger-bg-dark);
-    --success: var(--success-dark);
-  }
-
-  /* Base declaration MUST stay light dark so CSS follows OS preference without JS */
-  color-scheme: light dark;
 
   &:has(> head > meta[name="color-scheme"][content="dark"]) {
     color-scheme: dark;
@@ -75,37 +58,6 @@
     --danger: var(--danger-dark);
     --danger-bg: var(--danger-bg-dark);
     --success: var(--success-dark);
-  }
-
-  &:has(> head > meta[name="color-scheme"][content="light"]) {
-    color-scheme: light;
-    --bg: var(--bg-light);
-    --surface: var(--surface-light);
-    --surface-elevated: var(--surface-elevated-light);
-    --ink: var(--ink-light);
-    --muted: var(--muted-light);
-    --accent: var(--accent-light);
-    --accent-warm: var(--accent-warm-light);
-    --accent-ink: var(--accent-ink-light);
-    --border: var(--border-light);
-    --danger: var(--danger-light);
-    --danger-bg: var(--danger-bg-light);
-    --success: var(--success-light);
-  }
-
-  @supports (color: light-dark(white, black)) {
-    --bg: light-dark(var(--bg-light), var(--bg-dark));
-    --surface: light-dark(var(--surface-light), var(--surface-dark));
-    --surface-elevated: light-dark(var(--surface-elevated-light), var(--surface-elevated-dark));
-    --ink: light-dark(var(--ink-light), var(--ink-dark));
-    --muted: light-dark(var(--muted-light), var(--muted-dark));
-    --accent: light-dark(var(--accent-light), var(--accent-dark));
-    --accent-warm: light-dark(var(--accent-warm-light), var(--accent-warm-dark));
-    --accent-ink: light-dark(var(--accent-ink-light), var(--accent-ink-dark));
-    --border: light-dark(var(--border-light), var(--border-dark));
-    --danger: light-dark(var(--danger-light), var(--danger-dark));
-    --danger-bg: light-dark(var(--danger-bg-light), var(--danger-bg-dark));
-    --success: light-dark(var(--success-light), var(--success-dark));
   }
 
   accent-color: var(--accent);
@@ -158,10 +110,11 @@
 
   body {
     margin: 0;
-    min-height: 100dvh;
+    min-block-size: 100dvh;
+    inline-size: 100%;
     background-color: var(--bg);
     color: var(--ink);
-    overflow-x: hidden;
+    overflow-x: clip;
     overflow-wrap: break-word;
   }
 
@@ -177,32 +130,32 @@
 }
 
 /* ================================================================
-   LIVING STAINED-GLASS PRISM LIGHT CANVAS (GPU Compositor Only)
+   LIVING SUNLIT PRISM LIGHT FIELD (GPU Compositor Only)
    ================================================================ */
 @keyframes prism-drift-a {
   0%, 100% {
     transform: translate3d(-4%, -3%, 0) scale(1);
   }
   50% {
-    transform: translate3d(6%, 5%, 0) scale(1.12);
+    transform: translate3d(7%, 6%, 0) scale(1.14);
   }
 }
 
 @keyframes prism-drift-b {
   0%, 100% {
-    transform: translate3d(5%, 4%, 0) scale(1.06);
+    transform: translate3d(6%, 4%, 0) scale(1.06);
   }
   50% {
-    transform: translate3d(-6%, -5%, 0) scale(0.95);
+    transform: translate3d(-7%, -5%, 0) scale(0.95);
   }
 }
 
 @keyframes prism-drift-c {
   0%, 100% {
-    transform: translate3d(0%, 2%, 0) scale(1);
+    transform: translate3d(-2%, 2%, 0) scale(1);
   }
   50% {
-    transform: translate3d(4%, -6%, 0) scale(1.14);
+    transform: translate3d(5%, -6%, 0) scale(1.15);
   }
 }
 
@@ -217,18 +170,18 @@
 
 @keyframes shimmer-sweep {
   0% {
-    transform: translate3d(-120%, 0, 0) skewX(-22deg);
+    transform: translate3d(-130%, 0, 0) skewX(-22deg);
     opacity: 0;
   }
-  20% {
-    opacity: 0.55;
+  18% {
+    opacity: 0.72;
   }
-  50% {
-    transform: translate3d(220%, 0, 0) skewX(-22deg);
+  48% {
+    transform: translate3d(230%, 0, 0) skewX(-22deg);
     opacity: 0;
   }
   100% {
-    transform: translate3d(220%, 0, 0) skewX(-22deg);
+    transform: translate3d(230%, 0, 0) skewX(-22deg);
     opacity: 0;
   }
 }
@@ -243,23 +196,23 @@
 }
 
 .aurora-orb-a {
-  opacity: 0.48;
+  opacity: 0.72;
   @media (prefers-reduced-motion: no-preference) {
-    animation: prism-drift-a 18s ease-in-out infinite;
+    animation: prism-drift-a 16s ease-in-out infinite;
   }
 }
 
 .aurora-orb-b {
-  opacity: 0.44;
+  opacity: 0.68;
   @media (prefers-reduced-motion: no-preference) {
-    animation: prism-drift-b 22s ease-in-out infinite;
+    animation: prism-drift-b 20s ease-in-out infinite;
   }
 }
 
 .aurora-orb-c {
-  opacity: 0.42;
+  opacity: 0.64;
   @media (prefers-reduced-motion: no-preference) {
-    animation: prism-drift-c 26s ease-in-out infinite;
+    animation: prism-drift-c 24s ease-in-out infinite;
   }
 }
 
@@ -286,13 +239,13 @@
   animation-play-state: paused !important;
 }
 
-/* Liquid Prismatic Text & Specular Foil Surfaces */
+/* Liquid Iridescent Prism Text */
 .prism-text {
   background-image: linear-gradient(
-    108deg,
+    105deg,
     #d97706 0%,
-    #e11d74 34%,
-    #7c3aed 68%,
+    #ec4899 34%,
+    #7c3aed 66%,
     #0284c7 100%
   );
   -webkit-background-clip: text;
@@ -300,35 +253,13 @@
   color: transparent;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root:not(:has(> head > meta[name="color-scheme"][content="light"])) .prism-text {
-    background-image: linear-gradient(
-      108deg,
-      #ffd480 0%,
-      #ff86c8 35%,
-      #a78bfa 68%,
-      #5eead4 100%
-    );
-  }
-}
-
 :root:has(> head > meta[name="color-scheme"][content="dark"]) .prism-text {
   background-image: linear-gradient(
-    108deg,
-    #ffd480 0%,
+    105deg,
+    #ffe082 0%,
     #ff86c8 35%,
-    #a78bfa 68%,
+    #c4b5fd 68%,
     #5eead4 100%
-  );
-}
-
-:root:has(> head > meta[name="color-scheme"][content="light"]) .prism-text {
-  background-image: linear-gradient(
-    108deg,
-    #c2650a 0%,
-    #db2777 35%,
-    #6d28d9 68%,
-    #0284c7 100%
   );
 }
 
@@ -339,25 +270,33 @@
   }
 }
 
-/* Frosted Crystal Prism Card with Specular Sheen */
+/* Luminous Crystal Prism Card with Specular Sheen */
 .prism-card {
   position: relative;
-  overflow: hidden;
+  overflow: clip;
   background: var(--surface-elevated);
   border: 1px solid var(--border);
-  backdrop-filter: blur(22px) saturate(165%);
-  -webkit-backdrop-filter: blur(22px) saturate(165%);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.35),
-    0 18px 46px -22px rgba(91, 33, 182, 0.22);
+    inset 0 1px 0 rgba(255, 255, 255, 0.8),
+    0 20px 50px -24px rgba(124, 58, 237, 0.2),
+    0 8px 24px -12px rgba(245, 158, 11, 0.14);
   transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.3s ease, box-shadow 0.35s ease;
 }
 
-.prism-card:hover {
-  border-color: color-mix(in oklab, var(--accent) 55%, transparent);
+:root:has(> head > meta[name="color-scheme"][content="dark"]) .prism-card {
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.5),
-    0 24px 60px -20px rgba(124, 58, 237, 0.32);
+    inset 0 1px 0 rgba(255, 255, 255, 0.22),
+    0 22px 52px -20px rgba(0, 0, 0, 0.45);
+}
+
+.prism-card:hover {
+  border-color: color-mix(in oklab, var(--accent) 52%, transparent);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    0 26px 64px -22px rgba(124, 58, 237, 0.28),
+    0 12px 30px -14px rgba(236, 72, 153, 0.2);
 }
 
 .prism-card::after {
@@ -368,17 +307,17 @@
   background: linear-gradient(
     115deg,
     transparent 20%,
-    rgba(255, 255, 255, 0.22) 45%,
-    rgba(255, 214, 138, 0.16) 52%,
+    rgba(255, 255, 255, 0.52) 45%,
+    rgba(255, 226, 150, 0.28) 52%,
     transparent 75%
   );
-  transform: translate3d(-120%, 0, 0) skewX(-22deg);
+  transform: translate3d(-130%, 0, 0) skewX(-22deg);
   transition: transform 0.85s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .prism-card:hover::after {
   @media (prefers-reduced-motion: no-preference) {
-    transform: translate3d(130%, 0, 0) skewX(-22deg);
+    transform: translate3d(135%, 0, 0) skewX(-22deg);
   }
 }
 
@@ -388,14 +327,14 @@
   pointer-events: none;
   background: linear-gradient(
     110deg,
-    transparent 25%,
-    rgba(255, 255, 255, 0.3) 48%,
-    rgba(255, 212, 128, 0.26) 52%,
-    transparent 72%
+    transparent 24%,
+    rgba(255, 255, 255, 0.48) 48%,
+    rgba(255, 232, 163, 0.36) 53%,
+    transparent 74%
   );
-  transform: translate3d(-120%, 0, 0) skewX(-22deg);
+  transform: translate3d(-130%, 0, 0) skewX(-22deg);
   @media (prefers-reduced-motion: no-preference) {
-    animation: shimmer-sweep 7.5s ease-in-out infinite;
+    animation: shimmer-sweep 7s ease-in-out infinite;
   }
 }
 
@@ -406,18 +345,53 @@
   background: linear-gradient(
     90deg,
     transparent,
-    rgba(245, 185, 99, 0.7),
-    rgba(244, 114, 182, 0.7),
-    rgba(139, 92, 246, 0.7),
-    rgba(56, 189, 248, 0.7),
+    rgba(245, 158, 11, 0.72),
+    rgba(236, 72, 153, 0.72),
+    rgba(124, 58, 237, 0.72),
+    rgba(14, 165, 233, 0.72),
     transparent
   );
+}
+
+/* Responsive Full-Width Intrinsic Grids */
+.catalog-auto-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 270px), 1fr));
+  gap: 1.75rem;
+}
+
+.journal-auto-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 350px), 1fr));
+  gap: 1.75rem;
+}
+
+/* Balanced pill wrapping on desktop */
+.pill-row {
+  display: flex;
+  flex-wrap: wrap;
+  flex-wrap: balance;
+  gap: 0.5rem;
+}
+
+/* Mobile horizontal snap scroller */
+.mobile-snap-row {
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+  padding-bottom: 0.5rem;
+}
+.mobile-snap-row::-webkit-scrollbar {
+  display: none;
 }
 
 /* Fluid Editorial Display Scale (max <= 2.5x min for WCAG 1.4.4 200% zoom) */
 .display-cover {
   font-family: var(--font-serif);
-  font-size: clamp(2.4rem, 1.45rem + 3.6vw, 5.2rem);
+  font-size: clamp(2.35rem, 1.35rem + 3.5vw, 5.4rem);
   line-height: 1.01;
   letter-spacing: -0.024em;
   text-wrap: balance;
@@ -425,7 +399,7 @@
 
 .display-section {
   font-family: var(--font-serif);
-  font-size: clamp(1.85rem, 1.3rem + 1.9vw, 3.2rem);
+  font-size: clamp(1.85rem, 1.25rem + 1.8vw, 3.35rem);
   line-height: 1.08;
   letter-spacing: -0.018em;
   text-wrap: balance;
@@ -433,9 +407,9 @@
 
 .editorial-prose {
   font-family: var(--font-editorial);
-  max-width: 64ch;
+  max-width: 65ch;
   font-size: 1.125rem;
-  line-height: 1.78;
+  line-height: 1.8;
 }
 
 .editorial-prose p,
@@ -505,25 +479,9 @@
   display: none;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root:not(:has(> head > meta[name="color-scheme"][content="light"])) .theme-icon-to-dark {
-    display: none;
-  }
-  :root:not(:has(> head > meta[name="color-scheme"][content="light"])) .theme-icon-to-light {
-    display: inline-flex;
-  }
-}
-
 :root:has(> head > meta[name="color-scheme"][content="dark"]) .theme-icon-to-dark {
   display: none;
 }
 :root:has(> head > meta[name="color-scheme"][content="dark"]) .theme-icon-to-light {
   display: inline-flex;
-}
-
-:root:has(> head > meta[name="color-scheme"][content="light"]) .theme-icon-to-dark {
-  display: inline-flex;
-}
-:root:has(> head > meta[name="color-scheme"][content="light"]) .theme-icon-to-light {
-  display: none;
 }

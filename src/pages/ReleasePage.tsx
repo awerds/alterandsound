@@ -85,7 +85,7 @@ export function ReleasePage() {
       </div>
 
       {/* Record Sleeve + Tracklist Header */}
-      <header className="grid grid-cols-1 gap-10 border-b border-border pb-12 lg:grid-cols-12 lg:items-start">
+      <header className="prism-card grid w-full grid-cols-1 gap-8 rounded-3xl p-6 sm:p-10 lg:grid-cols-12 lg:items-center lg:gap-12">
         <div className="lg:col-span-5">
           <AlbumSleeve
             release={release}
