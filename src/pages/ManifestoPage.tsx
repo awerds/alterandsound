@@ -69,6 +69,14 @@ export function ManifestoPage() {
             and unquenchable light. We seek out musicians offering their highest
             craft upward so that every song becomes an open doorway to God.
           </p>
+          <div className="flex flex-col gap-3 pt-2 sm:flex-row sm:flex-wrap">
+            <Button asChild size="lg" variant="accent" className="w-full sm:w-auto">
+              <Link to="/journal">Explore the Journal</Link>
+            </Button>
+            <Button asChild size="lg" variant="outline" className="w-full sm:w-auto">
+              <Link to="/submit">Submit Music</Link>
+            </Button>
+          </div>
         </div>
 
         <div className="flex justify-center lg:col-span-4">
@@ -144,7 +152,7 @@ export function ManifestoPage() {
 
         <div className="flex flex-wrap gap-3 pt-4">
           <Button asChild variant="accent">
-            <Link to="/">Explore the Journal</Link>
+            <Link to="/journal">Explore the Journal</Link>
           </Button>
           <Button asChild variant="outline">
             <Link to="/submit">Submit Music</Link>

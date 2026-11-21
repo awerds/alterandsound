@@ -13,11 +13,12 @@ export function App() {
       <BrowserRouter basename={import.meta.env.BASE_URL}>
         <Layout>
           <Routes>
-            <Route path="/" element={<HomePage />} />
+            <Route path="/" element={<ManifestoPage />} />
+            <Route path="/manifesto" element={<Navigate to="/" replace />} />
+            <Route path="/journal" element={<HomePage />} />
             <Route path="/journal/:slug" element={<ArticlePage />} />
             <Route path="/sessions" element={<SessionsPage />} />
             <Route path="/submit" element={<SubmitPage />} />
-            <Route path="/manifesto" element={<ManifestoPage />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </Layout>

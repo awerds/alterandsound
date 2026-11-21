@@ -403,7 +403,7 @@ export function HomePage() {
                 variant="outline"
                 className="w-full border-[#1a1019]/25 bg-white/85 text-[#1a1019] hover:bg-white sm:w-auto"
               >
-                <Link to="/manifesto">Our Manifesto</Link>
+                <Link to="/">Our Manifesto</Link>
               </Button>
             </div>
           </div>

@@ -16,16 +16,16 @@ import { subscribeColorSchemeStorage, toggleColorScheme } from '@/lib/theme'
 import { cn } from '@/lib/utils'
 
 const NAV_ITEMS = [
-  { to: '/', label: 'Journal', icon: BookOpen, end: true },
+  { to: '/', label: 'Manifesto', icon: Compass, end: true },
+  { to: '/journal', label: 'Journal', icon: BookOpen, end: false },
   { to: '/sessions', label: 'Listen', icon: Radio, end: false },
-  { to: '/manifesto', label: 'Manifesto', icon: Compass, end: false },
 ]
 
 const MOBILE_TABS = [
-  { to: '/', label: 'Journal', icon: BookOpen, end: true },
+  { to: '/', label: 'Home', icon: Compass, end: true },
+  { to: '/journal', label: 'Journal', icon: BookOpen, end: false },
   { to: '/sessions', label: 'Listen', icon: Radio, end: false },
   { to: '/submit', label: 'Submit', icon: Upload, end: false },
-  { to: '/manifesto', label: 'Ethos', icon: Compass, end: false },
 ]
 
 export function Layout({ children }: { children: ReactNode }) {
@@ -203,6 +203,9 @@ export function Layout({ children }: { children: ReactNode }) {
             className="flex flex-wrap gap-x-6 gap-y-2 font-mono text-xs uppercase tracking-[0.12em] text-muted md:col-span-5 md:justify-end"
           >
             <Link to="/" className="hover:text-ink">
+              Manifesto
+            </Link>
+            <Link to="/journal" className="hover:text-ink">
               Journal
             </Link>
             <Link to="/sessions" className="hover:text-ink">
@@ -210,9 +213,6 @@ export function Layout({ children }: { children: ReactNode }) {
             </Link>
             <Link to="/submit" className="hover:text-ink">
               Submit
-            </Link>
-            <Link to="/manifesto" className="hover:text-ink">
-              Manifesto
             </Link>
           </nav>
         </div>

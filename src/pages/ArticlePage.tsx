@@ -25,7 +25,7 @@ export function ArticlePage() {
           Feature not found
         </h1>
         <Button asChild variant="outline">
-          <Link to="/">Return to Journal</Link>
+          <Link to="/journal">Return to Journal</Link>
         </Button>
       </div>
     )
@@ -46,7 +46,7 @@ export function ArticlePage() {
     <article className="w-full space-y-12">
       <div>
         <Link
-          to="/"
+          to="/journal"
           className="inline-flex min-h-10 items-center gap-1.5 font-mono text-xs uppercase tracking-[0.14em] text-muted hover:text-ink"
         >
           <ArrowLeft className="h-3.5 w-3.5" aria-hidden="true" />
@@ -214,7 +214,7 @@ export function ArticlePage() {
               <p className="text-xs leading-relaxed text-muted">
                 Read a calm, honest introduction to the love and light of Jesus.{' '}
                 <Link
-                  to="/manifesto#for-seekers"
+                  to="/#for-seekers"
                   className="text-ink underline decoration-accent underline-offset-4 hover:text-accent"
                 >
                   Explore Faith →
