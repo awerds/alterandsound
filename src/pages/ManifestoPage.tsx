@@ -147,7 +147,7 @@ export function ManifestoPage() {
             <Link to="/">Explore the Journal</Link>
           </Button>
           <Button asChild variant="outline">
-            <Link to="/catalog">Browse Netlabel Catalog</Link>
+            <Link to="/submit">Submit Music</Link>
           </Button>
         </div>
       </section>

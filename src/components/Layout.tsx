@@ -3,7 +3,6 @@ import { Link, NavLink, useLocation } from 'react-router-dom'
 import {
   BookOpen,
   Compass,
-  Disc3,
   Flame,
   Moon,
   Pause,
@@ -11,39 +10,30 @@ import {
   Sun,
   Upload,
 } from 'lucide-react'
-import { ListeningBar } from '@/components/ListeningBar'
 import { SacredHeartEmblem } from '@/components/SacredHeartEmblem'
 import { Button } from '@/components/ui/button'
-import { subscribePlayer } from '@/lib/audioPreview'
 import { subscribeColorSchemeStorage, toggleColorScheme } from '@/lib/theme'
 import { cn } from '@/lib/utils'
 
 const NAV_ITEMS = [
   { to: '/', label: 'Journal', icon: BookOpen, end: true },
-  { to: '/catalog', label: 'Catalog', icon: Disc3, end: false },
-  { to: '/sessions', label: 'Sessions', icon: Radio, end: false },
+  { to: '/sessions', label: 'Listen', icon: Radio, end: false },
   { to: '/manifesto', label: 'Manifesto', icon: Compass, end: false },
 ]
 
 const MOBILE_TABS = [
   { to: '/', label: 'Journal', icon: BookOpen, end: true },
-  { to: '/catalog', label: 'Catalog', icon: Disc3, end: false },
-  { to: '/sessions', label: 'Sessions', icon: Radio, end: false },
+  { to: '/sessions', label: 'Listen', icon: Radio, end: false },
   { to: '/submit', label: 'Submit', icon: Upload, end: false },
   { to: '/manifesto', label: 'Ethos', icon: Compass, end: false },
 ]
 
 export function Layout({ children }: { children: ReactNode }) {
-  const [hasPlayer, setHasPlayer] = useState(false)
   const [lightMotionPaused, setLightMotionPaused] = useState(false)
   const location = useLocation()
 
   useEffect(() => {
     return subscribeColorSchemeStorage()
-  }, [])
-
-  useEffect(() => {
-    return subscribePlayer((st) => setHasPlayer(Boolean(st)))
   }, [])
 
   useEffect(() => {
@@ -53,10 +43,7 @@ export function Layout({ children }: { children: ReactNode }) {
   return (
     <div
       data-shimmer={lightMotionPaused ? 'paused' : 'active'}
-      className={cn(
-        'relative flex min-h-dvh w-full flex-col bg-bg text-ink isolate',
-        hasPlayer ? 'pb-40 md:pb-24' : 'pb-20 md:pb-0'
-      )}
+      className="relative flex min-h-dvh w-full flex-col bg-bg pb-20 text-ink isolate md:pb-0"
     >
       {/* Living Love & Light Radiant Backdrop */}
       <div
@@ -104,7 +91,7 @@ export function Layout({ children }: { children: ReactNode }) {
               />
               Love &amp; Light · Sacred Heart of Jesus
             </span>
-            <span>Independent Christian Netlabel &amp; Music Journal</span>
+            <span>Christian Music Journal &amp; Independent Artist Spotlight</span>
             <span>altarandsound.com</span>
           </div>
         </div>
@@ -184,7 +171,7 @@ export function Layout({ children }: { children: ReactNode }) {
               variant="accent"
               className="hidden rounded-full font-mono text-[11px] uppercase tracking-[0.12em] md:inline-flex"
             >
-              <Link to="/submit">Submit Record</Link>
+              <Link to="/submit">Submit Music</Link>
             </Button>
           </div>
         </div>
@@ -195,7 +182,7 @@ export function Layout({ children }: { children: ReactNode }) {
         {children}
       </main>
 
-      {/* Full-Width Footer Anchored in Love & Light */}
+      {/* Full-Width Footer */}
       <footer className="mt-14 w-full border-t border-border bg-surface/85 backdrop-blur-xl">
         <div className="prism-rule" />
         <div className="grid w-full grid-cols-1 gap-8 px-5 py-12 sm:px-6 md:grid-cols-12 md:items-end md:px-10 lg:px-14">
@@ -204,9 +191,10 @@ export function Layout({ children }: { children: ReactNode }) {
               ALTAR <span className="prism-text italic">&amp;</span> SOUND
             </p>
             <p className="max-w-xl text-sm leading-relaxed text-muted">
-              An independent Christian netlabel and music journal devoted to{' '}
-              <strong className="font-medium text-ink">Love &amp; Light</strong>—sharing
-              sacred music that reflects the burning mercy of the Sacred Heart of Jesus.
+              A Christian music journal and emerging netlabel devoted to{' '}
+              <strong className="font-medium text-ink">Love &amp; Light</strong>—discovering,
+              reviewing, and promoting independent artists whose music points
+              hearts to Jesus.
             </p>
           </div>
 
@@ -217,11 +205,8 @@ export function Layout({ children }: { children: ReactNode }) {
             <Link to="/" className="hover:text-ink">
               Journal
             </Link>
-            <Link to="/catalog" className="hover:text-ink">
-              Catalog
-            </Link>
             <Link to="/sessions" className="hover:text-ink">
-              Sessions
+              Listen
             </Link>
             <Link to="/submit" className="hover:text-ink">
               Submit
@@ -240,15 +225,13 @@ export function Layout({ children }: { children: ReactNode }) {
         </div>
       </footer>
 
-      <ListeningBar />
-
       {/* Dedicated Mobile App Bottom Tab Bar */}
       <nav
         aria-label="Mobile"
         style={{ paddingBottom: 'max(0.45rem, env(safe-area-inset-bottom))' }}
         className="fixed inset-x-0 bottom-0 z-40 border-t border-border bg-surface-elevated/92 px-2 pt-1.5 backdrop-blur-2xl md:hidden"
       >
-        <ul className="grid grid-cols-5 gap-1">
+        <ul className="grid grid-cols-4 gap-1">
           {MOBILE_TABS.map((item) => {
             const Icon = item.icon
             return (

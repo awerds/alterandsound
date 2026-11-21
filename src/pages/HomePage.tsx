@@ -1,105 +1,73 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import {
   ArrowRight,
   ArrowUpRight,
-  Disc3,
   Flame,
-  Pause,
-  Play,
+  Music2,
   Search,
 } from 'lucide-react'
-import { AlbumSleeve } from '@/components/AlbumSleeve'
+import { ArtistLinksCard } from '@/components/ArtistLinksCard'
+import { EmbeddedTrackCard } from '@/components/EmbeddedTrackCard'
+import { EncourageDialog } from '@/components/EncourageDialog'
 import { SacredHeartEmblem } from '@/components/SacredHeartEmblem'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { useStore } from '@/context/StoreContext'
 import { usePageTitle } from '@/hooks/usePageTitle'
-import {
-  playOrToggleTrack,
-  subscribePlayer,
-  type ActiveTrackState,
-} from '@/lib/audioPreview'
-import type { ArticleCategory, NetlabelRelease } from '@/types/domain'
+import type { ArticleCategory } from '@/types/domain'
 
 const CATEGORIES: Array<'All' | ArticleCategory> = [
   'All',
+  'Artist Spotlight',
   'Album Review',
   'Essay',
   'Artist Interview',
-  'Live Session',
   'Listening Guide',
 ]
 
 export function HomePage() {
-  usePageTitle('Love & Light · Christian Netlabel & Music Journal')
-  const { articles, releases, getReleaseById } = useStore()
+  usePageTitle('Love & Light · Christian Music Journal')
+  const { articles } = useStore()
   const [selectedCategory, setSelectedCategory] = useState<'All' | ArticleCategory>('All')
   const [query, setQuery] = useState('')
-  const [activeTrack, setActiveTrack] = useState<ActiveTrackState | null>(null)
-
-  useEffect(() => {
-    return subscribePlayer(setActiveTrack)
-  }, [])
 
   const coverArticle = useMemo(
     () => articles.find((a) => a.coverStory) ?? articles[0],
     [articles]
   )
-  const coverRelease = coverArticle
-    ? getReleaseById(coverArticle.releaseId) ?? releases[0]
-    : releases[0]
+  const leadTrack = coverArticle?.featuredTracks[0]
 
-  const dispatches = useMemo(() => {
+  const filteredArticles = useMemo(() => {
     const q = query.trim().toLowerCase()
     return articles.filter((art) => {
       if (selectedCategory !== 'All' && art.category !== selectedCategory) {
         return false
       }
       if (!q) return true
-      const rel = getReleaseById(art.releaseId)
       return [
         art.title,
         art.dek,
-        art.author,
+        art.artistName,
+        art.genre,
         art.category,
         ...art.tags,
-        rel?.artistName ?? '',
-        rel?.genre ?? '',
+        ...art.forFansOf,
       ]
         .join(' ')
         .toLowerCase()
         .includes(q)
     })
-  }, [articles, selectedCategory, query, getReleaseById])
-
-  const triggerReleasePlay = (release: NetlabelRelease) => {
-    const first = release.tracks[0]
-    if (!first) return
-    playOrToggleTrack(
-      {
-        trackId: first.id,
-        releaseId: release.id,
-        releaseSlug: release.slug,
-        catalogNumber: release.catalogNumber,
-        title: first.title,
-        artistName: release.artistName,
-        duration: first.duration,
-        musicalKey: first.musicalKey,
-        sleevePalette: release.sleevePalette,
-      },
-      first.previewChords
-    )
-  }
+  }, [articles, selectedCategory, query])
 
   return (
     <div className="flex w-full flex-col gap-12 sm:gap-16">
-      {/* Full-Width Radiant Cover Stage */}
-      {coverArticle && coverRelease ? (
+      {/* Flagship Cover Feature Stage */}
+      {coverArticle ? (
         <section className="prism-card relative w-full rounded-3xl p-5 sm:p-8 lg:p-12 xl:p-16">
           <div
             aria-hidden="true"
-            className="pointer-events-none absolute -right-16 -top-24 h-[28rem] w-[28rem] rounded-full blur-[95px] opacity-60"
+            className="pointer-events-none absolute -right-16 -top-24 h-[28rem] w-[28rem] rounded-full blur-[95px] opacity-65"
             style={{
               background:
                 'radial-gradient(circle, rgba(251,191,36,0.85) 0%, rgba(244,63,94,0.48) 52%, transparent 74%)',
@@ -110,25 +78,33 @@ export function HomePage() {
             className="pointer-events-none absolute -bottom-24 -left-16 h-[24rem] w-[28rem] rounded-full blur-[95px] opacity-50"
             style={{
               background:
-                'radial-gradient(circle, rgba(253,186,116,0.7) 0%, rgba(244,114,182,0.45) 55%, transparent 75%)',
+                'radial-gradient(circle, rgba(253,186,116,0.72) 0%, rgba(125,211,252,0.46) 55%, transparent 75%)',
             }}
           />
 
           <div className="relative z-10 grid grid-cols-1 gap-8 lg:grid-cols-12 lg:items-center lg:gap-12">
-            <div className="flex flex-col gap-5 sm:gap-6 lg:col-span-7">
+            <div className="flex flex-col gap-5 sm:gap-6 lg:col-span-6 xl:col-span-7">
               <div className="flex flex-wrap items-center gap-2">
                 <Badge
                   variant="accent"
                   className="font-mono text-[10px] uppercase tracking-[0.16em]"
                 >
                   <Flame className="h-3 w-3 text-accent" aria-hidden="true" />
-                  Love &amp; Light · {coverArticle.issueNumber}
+                  {coverArticle.category} · {coverArticle.issueNumber}
                 </Badge>
+                {coverArticle.rating ? (
+                  <Badge
+                    variant="default"
+                    className="font-mono text-[10px] uppercase tracking-[0.16em]"
+                  >
+                    {coverArticle.rating}
+                  </Badge>
+                ) : null}
                 <Badge
-                  variant="default"
-                  className="font-mono text-[10px] uppercase tracking-[0.16em]"
+                  variant="outline"
+                  className="font-mono text-[10px] uppercase tracking-[0.14em]"
                 >
-                  {coverRelease.catalogNumber}
+                  {coverArticle.artistOrigin}
                 </Badge>
               </div>
 
@@ -137,7 +113,10 @@ export function HomePage() {
                 tabIndex={-1}
                 className="display-cover font-medium text-ink focus:outline-none"
               >
-                <Link to={`/journal/${coverArticle.slug}`}>
+                <Link
+                  to={`/journal/${coverArticle.slug}`}
+                  className="hover:opacity-90 transition-opacity"
+                >
                   {coverArticle.title}
                 </Link>
               </h1>
@@ -147,7 +126,7 @@ export function HomePage() {
               </p>
 
               <div className="flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-xs text-muted">
-                <span className="font-medium text-ink">By {coverArticle.author}</span>
+                <span className="font-medium text-ink">{coverArticle.author}</span>
                 <span aria-hidden="true">·</span>
                 <span>{coverArticle.publishedAt}</span>
                 <span aria-hidden="true">·</span>
@@ -157,244 +136,95 @@ export function HomePage() {
               <div className="flex flex-col gap-3 pt-1 sm:flex-row sm:flex-wrap sm:items-center">
                 <Button asChild size="lg" variant="accent" className="w-full sm:w-auto">
                   <Link to={`/journal/${coverArticle.slug}`}>
-                    Read Cover Feature
+                    Read Full Artist Spotlight
                     <ArrowRight className="h-4 w-4" aria-hidden="true" />
                   </Link>
                 </Button>
-                <Button
-                  type="button"
-                  size="lg"
-                  variant="outline"
-                  className="w-full sm:w-auto"
-                  onClick={() => triggerReleasePlay(coverRelease)}
-                >
-                  {activeTrack?.releaseId === coverRelease.id && activeTrack.isPlaying ? (
-                    <>
-                      <Pause className="h-4 w-4 fill-current text-accent" aria-hidden="true" />
-                      Pause {coverRelease.catalogNumber}
-                    </>
-                  ) : (
-                    <>
-                      <Play className="h-4 w-4 fill-current text-accent" aria-hidden="true" />
-                      Listen to {coverRelease.catalogNumber}
-                    </>
-                  )}
-                </Button>
+                <EncourageDialog
+                  recipientName={coverArticle.artistName}
+                  contextTitle={coverArticle.title}
+                  triggerLabel={`Pray for ${coverArticle.artistName}`}
+                  triggerVariant="outline"
+                  triggerSize="lg"
+                />
+              </div>
+
+              {/* Direct Artist Promotion Strip right on the Front Page */}
+              <div className="space-y-2 border-t border-border/80 pt-5">
+                <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-muted">
+                  Stream &amp; Follow {coverArticle.artistName}
+                </p>
+                <ArtistLinksCard
+                  artistName={coverArticle.artistName}
+                  artistOrigin={coverArticle.artistOrigin}
+                  genre={coverArticle.genre}
+                  outlets={coverArticle.outlets}
+                  compact
+                />
               </div>
             </div>
 
-            <div className="flex flex-col gap-5 lg:col-span-5">
-              <Link
-                to={`/releases/${coverRelease.slug}`}
-                className="mx-auto block w-full max-w-md lg:max-w-none"
-              >
-                <AlbumSleeve
-                  release={coverRelease}
-                  size="lg"
-                  showVinyl
-                  isPlaying={
-                    activeTrack?.releaseId === coverRelease.id &&
-                    Boolean(activeTrack?.isPlaying)
-                  }
-                  onTogglePlay={() => triggerReleasePlay(coverRelease)}
+            {/* Right Column: Live Playable Lead YouTube Video + Editorial Pull Quote */}
+            <div className="flex flex-col gap-5 lg:col-span-6 xl:col-span-5">
+              {leadTrack ? (
+                <EmbeddedTrackCard
+                  track={leadTrack}
+                  artistName={coverArticle.artistName}
+                  featured
+                  showNotes={false}
                 />
-              </Link>
-              <blockquote className="rounded-2xl border border-border bg-surface-elevated/85 px-5 py-4 font-serif italic text-lg leading-snug text-ink/90 backdrop-blur-md">
+              ) : null}
+              <blockquote className="rounded-2xl border border-border bg-surface-elevated/88 px-5 py-4 font-serif italic text-lg leading-snug text-ink/90 backdrop-blur-md">
                 “{coverArticle.pullQuote}”
               </blockquote>
             </div>
           </div>
         </section>
-      ) : (
-        /* Sacred Heart of Jesus — Love & Light Inaugural Stage */
-        <section className="prism-card relative w-full rounded-3xl p-6 sm:p-10 lg:p-14 xl:p-20">
-          <div
-            aria-hidden="true"
-            className="pointer-events-none absolute -right-16 -top-24 h-[28rem] w-[28rem] rounded-full blur-[95px] opacity-65"
-            style={{
-              background:
-                'radial-gradient(circle, rgba(251,191,36,0.88) 0%, rgba(244,63,94,0.48) 52%, transparent 74%)',
-            }}
-          />
-          <div
-            aria-hidden="true"
-            className="pointer-events-none absolute -bottom-24 -left-16 h-[24rem] w-[28rem] rounded-full blur-[95px] opacity-55"
-            style={{
-              background:
-                'radial-gradient(circle, rgba(253,186,116,0.72) 0%, rgba(125,211,252,0.48) 55%, transparent 75%)',
-            }}
-          />
+      ) : null}
 
-          <div className="relative z-10 grid grid-cols-1 gap-10 lg:grid-cols-12 lg:items-center">
-            <div className="flex flex-col gap-6 lg:col-span-7 xl:col-span-8">
-              <div className="flex flex-wrap items-center gap-2">
-                <Badge
-                  variant="accent"
-                  className="font-mono text-[10px] uppercase tracking-[0.16em]"
-                >
-                  <Flame className="h-3 w-3 text-accent" aria-hidden="true" />
-                  Sacred Heart of Jesus · Love &amp; Light
-                </Badge>
-                <Badge
-                  variant="default"
-                  className="font-mono text-[10px] uppercase tracking-[0.16em]"
-                >
-                  Catalog A&amp;S — 001 Open
-                </Badge>
-              </div>
-
-              <h1
-                id="main-content"
-                tabIndex={-1}
-                className="display-cover font-medium text-ink focus:outline-none"
-              >
-                Music of{' '}
-                <span className="prism-text italic">Love &amp; Light</span>.
-                Curated for the Heart of Christ.
-              </h1>
-
-              <p className="max-w-2xl font-editorial text-lg leading-relaxed text-muted sm:text-xl">
-                Altar &amp; Sound is an independent Christian netlabel and music
-                journal inspired by the burning charity and mercy of the Sacred
-                Heart of Jesus—finding, reviewing, and releasing radiant music that
-                brings souls into His light.
-              </p>
-
-              <blockquote className="max-w-xl border-l-2 border-accent/70 pl-4 font-serif italic text-xl text-ink/90">
-                “I am the light of the world. Whoever follows me will not walk in
-                darkness, but will have the light of life.”{' '}
-                <span className="not-italic font-mono text-xs uppercase tracking-[0.14em] text-muted">
-                  — John 8:12
-                </span>
-              </blockquote>
-
-              <div className="flex flex-col gap-3 pt-2 sm:flex-row sm:flex-wrap sm:items-center">
-                <Button asChild size="lg" variant="accent" className="w-full sm:w-auto">
-                  <Link to="/submit">
-                    Submit a Record
-                    <ArrowRight className="h-4 w-4" aria-hidden="true" />
-                  </Link>
-                </Button>
-                <Button asChild size="lg" variant="outline" className="w-full sm:w-auto">
-                  <Link to="/manifesto">Read the Manifesto</Link>
-                </Button>
-              </div>
-            </div>
-
-            {/* Sacred Heart of Jesus Luminous Collector Medallion Card */}
-            <div className="lg:col-span-5 xl:col-span-4">
-              <div
-                className="relative mx-auto aspect-square w-full max-w-md overflow-hidden rounded-2xl border border-amber-200/80 p-6 text-white shadow-2xl"
-                style={{
-                  background:
-                    'radial-gradient(circle at 50% 44%, #ff9a3c 0%, #e11d48 56%, #7f1d1d 100%)',
-                }}
-              >
-                <div aria-hidden="true" className="shimmer-sweep-layer" />
-                <div className="relative z-10 flex h-full flex-col justify-between">
-                  <div className="flex items-center justify-between font-mono text-[10px] uppercase tracking-[0.18em]">
-                    <span className="rounded-full border border-amber-200/50 bg-black/20 px-2.5 py-0.5 text-amber-100 backdrop-blur-md">
-                      A&amp;S — 001
-                    </span>
-                    <span className="text-amber-100/90">LOVE &amp; LIGHT</span>
-                  </div>
-
-                  <div className="flex items-center justify-center py-2">
-                    <SacredHeartEmblem
-                      variant="hero"
-                      decorative={false}
-                      className="h-48 w-48 drop-shadow-[0_12px_32px_rgba(255,215,100,0.55)] sm:h-56 sm:w-56"
-                    />
-                  </div>
-
-                  <div className="text-center space-y-0.5">
-                    <p className="font-serif text-2xl font-medium tracking-wide">
-                      Sacred Heart · Inaugural Issue
-                    </p>
-                    <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-amber-100/85">
-                      Cor Jesu Sacratissimum · Now Curating
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* Full-Width Netlabel Shelf */}
-      {releases.length > 0 ? (
+      {/* Standout Tracks Showcase for the Cover Artist */}
+      {coverArticle && coverArticle.featuredTracks.length > 0 ? (
         <section className="space-y-6">
-          <div className="flex flex-wrap items-end justify-between gap-3">
+          <div className="flex flex-wrap items-end justify-between gap-4">
             <div>
               <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-accent">
-                The Netlabel Catalog
+                Essential Listening · {coverArticle.artistName}
               </p>
               <h2 className="display-section mt-1 text-ink">
-                Collector Editions &amp;{' '}
-                <span className="prism-text italic">New Pressings</span>
+                Recent Songs Bringing{' '}
+                <span className="prism-text italic">Love &amp; Light</span>
               </h2>
             </div>
             <Link
-              to="/catalog"
+              to={`/journal/${coverArticle.slug}`}
               className="inline-flex items-center gap-1.5 rounded-full border border-border bg-surface-elevated px-4 py-2 font-mono text-[11px] uppercase tracking-[0.14em] text-ink hover:border-accent/60 transition-colors"
             >
-              All Releases ({releases.length})
+              Read Full Review &amp; Story
               <ArrowUpRight className="h-3.5 w-3.5 text-accent" aria-hidden="true" />
             </Link>
           </div>
 
-          <div className="mobile-snap-row md:grid md:grid-cols-3 md:gap-6 md:overflow-visible lg:grid-cols-5">
-            {releases.slice(0, 5).map((rel) => {
-              const playing =
-                activeTrack?.releaseId === rel.id && Boolean(activeTrack?.isPlaying)
-              return (
-                <article
-                  key={rel.id}
-                  className="group flex w-[68vw] max-w-[240px] shrink-0 snap-start flex-col gap-3 md:w-auto md:max-w-none md:shrink"
-                >
-                  <Link
-                    to={`/releases/${rel.slug}`}
-                    className="block transition-transform duration-300 group-hover:-translate-y-1.5"
-                  >
-                    <AlbumSleeve
-                      release={rel}
-                      size="sm"
-                      isPlaying={playing}
-                      onTogglePlay={() => triggerReleasePlay(rel)}
-                    />
-                  </Link>
-                  <div className="space-y-0.5 px-1">
-                    <div className="flex items-center justify-between gap-2 font-mono text-[10px] uppercase tracking-[0.14em] text-muted">
-                      <span className="text-accent">{rel.catalogNumber}</span>
-                      <span className="truncate">{rel.genre}</span>
-                    </div>
-                    <h3 className="truncate font-serif text-lg font-medium text-ink">
-                      <Link
-                        to={`/releases/${rel.slug}`}
-                        className="hover:text-accent transition-colors"
-                      >
-                        {rel.title}
-                      </Link>
-                    </h3>
-                    <p className="truncate text-xs text-muted">{rel.artistName}</p>
-                  </div>
-                </article>
-              )
-            })}
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-4">
+            {coverArticle.featuredTracks.map((track) => (
+              <EmbeddedTrackCard
+                key={track.id}
+                track={track}
+                artistName={coverArticle.artistName}
+              />
+            ))}
           </div>
         </section>
       ) : null}
 
       <hr className="prism-rule" />
 
-      {/* Full-Width Editorial Dispatches — Flagship Music Blog */}
+      {/* Journal Dispatches & Reviews Archive */}
       <section className="space-y-7">
         <div className="flex flex-col gap-5">
           <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
             <div>
               <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-accent">
-                Criticism · Conversations · Guides
+                Reviews · Spotlights · Interviews
               </p>
               <h2 className="display-section mt-1 text-ink">
                 Latest from the{' '}
@@ -402,79 +232,55 @@ export function HomePage() {
               </h2>
             </div>
 
-            {articles.length > 0 ? (
-              <div className="relative w-full sm:max-w-sm">
-                <label htmlFor="journal-search" className="visually-hidden">
-                  Search reviews, essays, and artists
-                </label>
-                <Search
-                  className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted"
-                  aria-hidden="true"
-                />
-                <input
-                  id="journal-search"
-                  type="search"
-                  value={query}
-                  onChange={(e) => setQuery(e.target.value)}
-                  placeholder="Search reviews, artists, genres…"
-                  className="min-h-11 w-full rounded-full border border-border bg-surface-elevated pl-10 pr-4 text-sm text-ink placeholder:text-muted/75 backdrop-blur-md"
-                />
-              </div>
-            ) : null}
+            <div className="relative w-full sm:max-w-sm">
+              <label htmlFor="journal-search" className="visually-hidden">
+                Search reviews, essays, and artists
+              </label>
+              <Search
+                className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted"
+                aria-hidden="true"
+              />
+              <input
+                id="journal-search"
+                type="search"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder="Search artists, reviews, genres…"
+                className="min-h-11 w-full rounded-full border border-border bg-surface-elevated pl-10 pr-4 text-sm text-ink placeholder:text-muted/75 backdrop-blur-md"
+              />
+            </div>
           </div>
 
-          {articles.length > 0 ? (
-            <div
-              className="mobile-snap-row sm:pill-row sm:overflow-visible"
-              role="group"
-              aria-label="Filter journal by column"
-            >
-              {CATEGORIES.map((cat) => {
-                const active = selectedCategory === cat
-                return (
-                  <button
-                    key={cat}
-                    type="button"
-                    aria-pressed={active}
-                    onClick={() => setSelectedCategory(cat)}
-                    className={`min-h-10 shrink-0 snap-start rounded-full border px-4 py-1.5 font-mono text-[11px] uppercase tracking-[0.12em] transition-all cursor-pointer ${
-                      active
-                        ? 'border-transparent bg-gradient-to-r from-amber-500 via-rose-600 to-pink-600 text-white font-medium shadow-md'
-                        : 'border-border bg-surface-elevated/85 text-muted hover:text-ink hover:border-accent/40'
-                    }`}
-                  >
-                    {cat}
-                  </button>
-                )
-              })}
-            </div>
-          ) : null}
+          <div
+            className="mobile-snap-row sm:pill-row sm:overflow-visible"
+            role="group"
+            aria-label="Filter journal by column"
+          >
+            {CATEGORIES.map((cat) => {
+              const active = selectedCategory === cat
+              return (
+                <button
+                  key={cat}
+                  type="button"
+                  aria-pressed={active}
+                  onClick={() => setSelectedCategory(cat)}
+                  className={`min-h-10 shrink-0 snap-start rounded-full border px-4 py-1.5 font-mono text-[11px] uppercase tracking-[0.12em] transition-all cursor-pointer ${
+                    active
+                      ? 'border-transparent bg-gradient-to-r from-amber-500 via-rose-600 to-pink-600 text-white font-medium shadow-md'
+                      : 'border-border bg-surface-elevated/85 text-muted hover:text-ink hover:border-accent/40'
+                  }`}
+                >
+                  {cat}
+                </button>
+              )
+            })}
+          </div>
         </div>
 
-        {articles.length === 0 ? (
-          <div className="prism-card flex flex-col items-center gap-4 rounded-2xl px-6 py-14 text-center">
-            <SacredHeartEmblem variant="icon" className="h-14 w-14" />
-            <p className="font-mono text-xs uppercase tracking-[0.18em] text-accent">
-              Issue 01 · Love &amp; Light
-            </p>
-            <h3 className="font-serif text-3xl font-medium text-ink">
-              Our first reviews, interviews, and catalog pressings are on the way.
-            </h3>
-            <p className="max-w-xl text-sm leading-relaxed text-muted">
-              Ready for real Christian artists, albums, and sessions filled with
-              the love and light of Christ. Publish your first curated record from
-              the Submission Desk.
-            </p>
-            <div className="pt-2">
-              <Button asChild variant="accent">
-                <Link to="/submit">Publish First Entry</Link>
-              </Button>
-            </div>
-          </div>
-        ) : dispatches.length === 0 ? (
+        {filteredArticles.length === 0 ? (
           <div className="prism-card rounded-2xl px-6 py-14 text-center space-y-3">
             <p className="font-serif text-2xl text-ink">
-              No dispatches match that filter yet.
+              No journal entries match that filter yet.
             </p>
             <Button
               type="button"
@@ -484,60 +290,46 @@ export function HomePage() {
                 setQuery('')
               }}
             >
-              Show All Dispatches
+              Show All Entries
             </Button>
           </div>
         ) : (
           <div className="journal-auto-grid">
-            {dispatches.map((article) => {
-              const release = getReleaseById(article.releaseId)
-              const isPlaying =
-                Boolean(release) &&
-                activeTrack?.releaseId === release?.id &&
-                Boolean(activeTrack?.isPlaying)
-
+            {filteredArticles.map((article) => {
+              const thumb = article.featuredTracks[0]?.thumbnailUrl
               return (
                 <article
                   key={article.id}
                   className="prism-card flex flex-col justify-between gap-5 rounded-2xl p-5 transition-transform hover:-translate-y-1 sm:p-6"
                 >
                   <div className="space-y-4">
-                    {release ? (
-                      <div className="grid grid-cols-12 items-center gap-4">
-                        <div className="col-span-5">
-                          <Link to={`/releases/${release.slug}`} className="block">
-                            <AlbumSleeve
-                              release={release}
-                              size="sm"
-                              isPlaying={isPlaying}
-                              onTogglePlay={() => triggerReleasePlay(release)}
-                            />
-                          </Link>
-                        </div>
-
-                        <div className="col-span-7 min-w-0 space-y-1.5">
-                          <div className="flex flex-wrap items-center gap-1.5">
-                            <span className="font-mono text-[10px] font-medium uppercase tracking-[0.15em] text-accent">
-                              {article.category}
-                            </span>
-                            {article.rating ? (
-                              <Badge variant="accent" className="font-mono text-[10px]">
-                                {article.rating}
-                              </Badge>
-                            ) : null}
-                          </div>
-                          <p className="truncate font-mono text-[11px] font-medium text-ink">
-                            {release.catalogNumber}
-                          </p>
-                          <p className="truncate text-xs text-muted">
-                            {release.artistName}
-                          </p>
-                          <p className="font-mono text-[10px] text-muted">
-                            {article.readingTime}
-                          </p>
-                        </div>
-                      </div>
+                    {thumb ? (
+                      <Link
+                        to={`/journal/${article.slug}`}
+                        className="block aspect-video w-full overflow-hidden rounded-xl border border-border"
+                      >
+                        <img
+                          src={thumb}
+                          alt={`${article.artistName} — ${article.title}`}
+                          loading="lazy"
+                          className="h-full w-full object-cover transition-transform duration-500 hover:scale-105"
+                        />
+                      </Link>
                     ) : null}
+
+                    <div className="flex flex-wrap items-center gap-2">
+                      <span className="font-mono text-[10px] font-medium uppercase tracking-[0.15em] text-accent">
+                        {article.category}
+                      </span>
+                      {article.rating ? (
+                        <Badge variant="accent" className="font-mono text-[10px]">
+                          {article.rating}
+                        </Badge>
+                      ) : null}
+                      <span className="font-mono text-[10px] text-muted">
+                        · {article.readingTime}
+                      </span>
+                    </div>
 
                     <div className="space-y-2">
                       <h3 className="font-serif text-2xl font-medium leading-snug text-ink">
@@ -548,7 +340,6 @@ export function HomePage() {
                           {article.title}
                         </Link>
                       </h3>
-
                       <p className="font-editorial text-base leading-relaxed text-muted">
                         {article.dek}
                       </p>
@@ -557,36 +348,15 @@ export function HomePage() {
 
                   <div className="flex flex-wrap items-center justify-between gap-3 border-t border-border/80 pt-4">
                     <span className="font-mono text-[11px] text-muted">
-                      By {article.author}
+                      {article.artistName} · {article.artistOrigin}
                     </span>
-                    <div className="flex items-center gap-4">
-                      {release ? (
-                        <button
-                          type="button"
-                          onClick={() => triggerReleasePlay(release)}
-                          aria-label={
-                            isPlaying
-                              ? `Pause ${release.title}`
-                              : `Listen to ${release.title}`
-                          }
-                          className="inline-flex min-h-9 items-center gap-1.5 font-mono text-[11px] uppercase tracking-[0.12em] text-muted hover:text-ink cursor-pointer"
-                        >
-                          {isPlaying ? (
-                            <Pause className="h-3.5 w-3.5 text-accent" aria-hidden="true" />
-                          ) : (
-                            <Play className="h-3.5 w-3.5 text-accent" aria-hidden="true" />
-                          )}
-                          {isPlaying ? 'Pause' : 'Listen'}
-                        </button>
-                      ) : null}
-                      <Link
-                        to={`/journal/${article.slug}`}
-                        className="inline-flex min-h-9 items-center gap-1 font-mono text-[11px] font-medium uppercase tracking-[0.14em] text-accent hover:underline"
-                      >
-                        Read
-                        <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
-                      </Link>
-                    </div>
+                    <Link
+                      to={`/journal/${article.slug}`}
+                      className="inline-flex min-h-9 items-center gap-1 font-mono text-[11px] font-medium uppercase tracking-[0.14em] text-accent hover:underline"
+                    >
+                      Read Review
+                      <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
+                    </Link>
                   </div>
                 </article>
               )
@@ -595,7 +365,7 @@ export function HomePage() {
         )}
       </section>
 
-      {/* Sunlit Sacred Heart Love & Light Pitch Banner */}
+      {/* Artist Value Proposition & Submission Callout */}
       <section
         className="relative w-full overflow-hidden rounded-3xl border border-amber-200/80 p-7 text-[#1a1019] shadow-xl sm:p-10 lg:p-14"
         style={{
@@ -604,33 +374,38 @@ export function HomePage() {
         }}
       >
         <div aria-hidden="true" className="shimmer-sweep-layer" />
-        <div className="relative z-10 grid grid-cols-1 gap-6 md:grid-cols-12 md:items-center">
-          <div className="space-y-3 md:col-span-8">
+        <div className="relative z-10 grid grid-cols-1 gap-8 lg:grid-cols-12 lg:items-center">
+          <div className="space-y-3 lg:col-span-7">
             <div className="inline-flex items-center gap-2 rounded-full border border-rose-500/25 bg-white/80 px-3.5 py-1 font-mono text-[11px] font-medium uppercase tracking-[0.18em] text-rose-700 backdrop-blur-md">
-              <Disc3 className="h-3.5 w-3.5" aria-hidden="true" />
-              Open Submissions · Love &amp; Light
+              <Music2 className="h-3.5 w-3.5" aria-hidden="true" />
+              For Christian Artists · Free Editorial Features
             </div>
             <h2 className="font-serif text-3xl font-medium leading-tight sm:text-4xl lg:text-5xl">
-              Making Christian music filled with love and light? Send us the tape.
+              Want your music reviewed, embedded, and shared in Love &amp; Light?
             </h2>
             <p className="max-w-2xl text-sm leading-relaxed text-[#4b3844] sm:text-base">
-              Whether it’s an acoustic EP, gospel-jazz session, solo cello, or
-              luminous hymns—we curate records that reflect the mercy and burning
-              love of the Sacred Heart of Jesus.
+              Every Altar &amp; Sound feature gives independent Christian artists
+              thoughtful long-form criticism, playable YouTube &amp; streaming
+              embeds, direct links to every outlet, and a shareable editorial
+              page rooted in the mercy of the Sacred Heart of Jesus—100% free.
             </p>
           </div>
-          <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap md:col-span-4 md:justify-end">
-            <Button asChild size="lg" variant="accent" className="w-full sm:w-auto">
-              <Link to="/submit">Submit a Record</Link>
-            </Button>
-            <Button
-              asChild
-              size="lg"
-              variant="outline"
-              className="w-full border-[#1a1019]/25 bg-white/85 text-[#1a1019] hover:bg-white sm:w-auto"
-            >
-              <Link to="/manifesto">Our Manifesto</Link>
-            </Button>
+
+          <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center lg:col-span-5 lg:justify-end">
+            <SacredHeartEmblem variant="icon" className="hidden h-16 w-16 shrink-0 xl:block" />
+            <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
+              <Button asChild size="lg" variant="accent" className="w-full sm:w-auto">
+                <Link to="/submit">Submit Your Music</Link>
+              </Button>
+              <Button
+                asChild
+                size="lg"
+                variant="outline"
+                className="w-full border-[#1a1019]/25 bg-white/85 text-[#1a1019] hover:bg-white sm:w-auto"
+              >
+                <Link to="/manifesto">Our Manifesto</Link>
+              </Button>
+            </div>
           </div>
         </div>
       </section>

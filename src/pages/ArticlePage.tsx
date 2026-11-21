@@ -1,9 +1,10 @@
 import { useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
-import { ArrowLeft, BookOpen, Check, Share2, Sparkles } from 'lucide-react'
-import { AlbumSleeve } from '@/components/AlbumSleeve'
+import { ArrowLeft, BookOpen, Check, Flame, Share2, Sparkles } from 'lucide-react'
+import { ArtistLinksCard } from '@/components/ArtistLinksCard'
+import { EmbeddedTrackCard } from '@/components/EmbeddedTrackCard'
 import { EncourageDialog } from '@/components/EncourageDialog'
-import { ReleasePlayer } from '@/components/ReleasePlayer'
+import { SacredHeartEmblem } from '@/components/SacredHeartEmblem'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { useStore } from '@/context/StoreContext'
@@ -11,18 +12,17 @@ import { usePageTitle } from '@/hooks/usePageTitle'
 
 export function ArticlePage() {
   const { slug } = useParams<{ slug: string }>()
-  const { getArticleBySlug, getReleaseById, articles } = useStore()
+  const { getArticleBySlug, articles } = useStore()
   const article = slug ? getArticleBySlug(slug) : undefined
-  const release = article ? getReleaseById(article.releaseId) : undefined
   const [copied, setCopied] = useState(false)
 
-  usePageTitle(article ? article.title : 'Article Not Found')
+  usePageTitle(article ? `${article.artistName} — ${article.title}` : 'Article Not Found')
 
   if (!article) {
     return (
       <div className="mx-auto max-w-xl py-16 text-center space-y-4">
         <h1 id="main-content" tabIndex={-1} className="font-serif text-4xl text-ink">
-          Dispatch not found
+          Feature not found
         </h1>
         <Button asChild variant="outline">
           <Link to="/">Return to Journal</Link>
@@ -31,7 +31,8 @@ export function ArticlePage() {
     )
   }
 
-  const related = articles.filter((a) => a.id !== article.id).slice(0, 3)
+  const leadTrack = article.featuredTracks[0]
+  const moreArticles = articles.filter((a) => a.id !== article.id).slice(0, 3)
 
   const handleCopy = async () => {
     try {
@@ -55,15 +56,19 @@ export function ArticlePage() {
 
       {/* Full-Width Magazine Header */}
       <header className="prism-card w-full space-y-5 rounded-3xl p-6 sm:p-10 lg:p-12">
-        <div className="flex flex-wrap items-center gap-3 font-mono text-xs uppercase tracking-[0.16em] text-accent">
-          <span>{article.issueNumber}</span>
-          <span aria-hidden="true">·</span>
-          <span>{article.category}</span>
+        <div className="flex flex-wrap items-center gap-2.5 font-mono text-xs uppercase tracking-[0.16em] text-accent">
+          <span className="inline-flex items-center gap-1.5">
+            <Flame className="h-3.5 w-3.5" aria-hidden="true" />
+            {article.issueNumber} · {article.category}
+          </span>
           {article.rating ? (
             <Badge variant="accent" className="font-mono">
-              Score / Pick: {article.rating}
+              {article.rating}
             </Badge>
           ) : null}
+          <Badge variant="default" className="font-mono">
+            {article.artistName} · {article.artistOrigin}
+          </Badge>
         </div>
 
         <h1
@@ -91,9 +96,10 @@ export function ArticlePage() {
 
           <div className="flex flex-wrap items-center gap-2">
             <EncourageDialog
-              recipientName={release ? release.artistName : article.author}
+              recipientName={article.artistName}
               contextTitle={article.title}
-              triggerLabel="Send Prayer / Note"
+              triggerLabel={`Pray for ${article.artistName}`}
+              triggerVariant="accent"
             />
             <Button type="button" variant="outline" size="sm" onClick={handleCopy}>
               {copied ? (
@@ -104,7 +110,7 @@ export function ArticlePage() {
               ) : (
                 <>
                   <Share2 className="h-3.5 w-3.5" aria-hidden="true" />
-                  Share Piece
+                  Share Feature
                 </>
               )}
             </Button>
@@ -112,17 +118,23 @@ export function ArticlePage() {
         </div>
       </header>
 
-      {/* Full-Width Two-Column Editorial Spread */}
+      {/* Full-Width Editorial Spread + Sticky Artist Promotion Sidebar */}
       <div className="grid w-full grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-14">
         <div className="space-y-8 lg:col-span-8">
-          {release ? <ReleasePlayer release={release} /> : null}
+          {leadTrack ? (
+            <EmbeddedTrackCard
+              track={leadTrack}
+              artistName={article.artistName}
+              featured
+            />
+          ) : null}
 
           <div className="editorial-prose space-y-6 text-ink/92">
             {article.paragraphs.map((para, idx) => (
               <div key={idx} className="space-y-6">
                 <p className={idx === 0 ? 'editorial-dropcap' : ''}>{para}</p>
                 {idx === 1 ? (
-                  <blockquote className="my-8 rounded-2xl border border-border bg-surface-elevated/85 px-6 py-6 font-serif italic text-2xl leading-snug text-ink sm:text-3xl">
+                  <blockquote className="my-8 rounded-2xl border border-border bg-surface-elevated/88 px-6 py-6 font-serif italic text-2xl leading-snug text-ink sm:text-3xl">
                     “{article.pullQuote}”
                   </blockquote>
                 ) : null}
@@ -130,11 +142,21 @@ export function ArticlePage() {
             ))}
           </div>
 
+          {/* Editorial Verdict Box */}
+          <section className="prism-card max-w-[65ch] rounded-2xl p-6 space-y-2">
+            <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-accent">
+              Altar &amp; Sound Editorial Verdict
+            </p>
+            <p className="font-serif text-xl leading-relaxed text-ink">
+              {article.verdict}
+            </p>
+          </section>
+
           {article.scriptureRef ? (
-            <blockquote className="prism-card rounded-2xl p-6 space-y-2 max-w-[65ch]">
+            <blockquote className="prism-card max-w-[65ch] rounded-2xl p-6 space-y-2">
               <div className="flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.16em] text-accent">
                 <BookOpen className="h-3.5 w-3.5" aria-hidden="true" />
-                Liner Scripture · {article.scriptureRef}
+                Love &amp; Light Scripture Anchor · {article.scriptureRef}
               </div>
               {article.scriptureExcerpt ? (
                 <p className="font-serif italic text-xl leading-relaxed text-ink">
@@ -151,93 +173,106 @@ export function ArticlePage() {
           </div>
         </div>
 
-        {/* Sticky Record Dossier Sidebar */}
+        {/* Sticky Artist Promotion & Streaming Links Dossier */}
         <aside className="space-y-6 lg:col-span-4">
-          {release ? (
-            <div className="prism-card sticky top-24 space-y-5 rounded-2xl p-5 sm:p-6">
-              <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-accent">
-                Featured Record · {release.catalogNumber}
+          <div className="sticky top-24 space-y-6">
+            <ArtistLinksCard
+              artistName={article.artistName}
+              artistOrigin={article.artistOrigin}
+              genre={article.genre}
+              outlets={article.outlets}
+              forFansOf={article.forFansOf}
+            />
+
+            <div className="prism-card space-y-3 rounded-2xl p-5">
+              <div className="flex items-center gap-3">
+                <SacredHeartEmblem variant="icon" className="h-10 w-10 shrink-0" />
+                <div>
+                  <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-accent">
+                    Are You an Artist?
+                  </p>
+                  <p className="font-serif text-xl text-ink">
+                    Get Featured on Altar &amp; Sound
+                  </p>
+                </div>
+              </div>
+              <p className="text-xs leading-relaxed text-muted">
+                We spotlight Christian musicians with in-depth reviews, embedded
+                music players, and direct links to all your streaming channels—free
+                of charge.
               </p>
-
-              <Link to={`/releases/${release.slug}`} className="block">
-                <AlbumSleeve release={release} size="sm" />
-              </Link>
-
-              <div className="space-y-1">
-                <h2 className="font-serif text-2xl font-medium text-ink">
-                  <Link
-                    to={`/releases/${release.slug}`}
-                    className="hover:text-accent transition-colors"
-                  >
-                    {release.title}
-                  </Link>
-                </h2>
-                <p className="text-sm text-muted">
-                  {release.artistName} · {release.artistOrigin}
-                </p>
-                <p className="font-mono text-xs text-muted">
-                  {release.format} · {release.releaseDate}
-                </p>
-              </div>
-
-              <div className="space-y-2 border-t border-border pt-4">
-                <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-muted">
-                  Credits
-                </p>
-                <ul className="space-y-1 text-xs leading-relaxed text-muted">
-                  {release.credits.map((c) => (
-                    <li key={c}>{c}</li>
-                  ))}
-                </ul>
-              </div>
-
-              <Button asChild variant="outline" className="w-full">
-                <Link to={`/releases/${release.slug}`}>Open Full Liner Notes</Link>
+              <Button asChild variant="outline" size="sm" className="w-full">
+                <Link to="/submit">Submit Your Music</Link>
               </Button>
-
-              <div className="border-t border-border pt-4 space-y-1.5">
-                <p className="inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.14em] text-accent">
-                  <Sparkles className="h-3 w-3" aria-hidden="true" />
-                  Curious about faith?
-                </p>
-                <p className="text-xs leading-relaxed text-muted">
-                  New to the stories behind these songs?{' '}
-                  <Link
-                    to="/manifesto#for-seekers"
-                    className="text-ink underline decoration-accent underline-offset-4 hover:text-accent"
-                  >
-                    Read our quiet guide →
-                  </Link>
-                </p>
-              </div>
             </div>
-          ) : null}
+
+            <div className="rounded-2xl border border-border bg-surface/80 p-5 space-y-1.5 backdrop-blur-md">
+              <p className="inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.14em] text-accent">
+                <Sparkles className="h-3 w-3" aria-hidden="true" />
+                Moved by these songs?
+              </p>
+              <p className="text-xs leading-relaxed text-muted">
+                Read a calm, honest introduction to the love and light of Jesus.{' '}
+                <Link
+                  to="/manifesto#for-seekers"
+                  className="text-ink underline decoration-accent underline-offset-4 hover:text-accent"
+                >
+                  Explore Faith →
+                </Link>
+              </p>
+            </div>
+          </div>
         </aside>
       </div>
 
-      {/* Continue Reading */}
-      <section className="w-full space-y-5 border-t border-border pt-10">
-        <h2 className="font-mono text-xs uppercase tracking-[0.18em] text-muted">
-          Continue Reading
-        </h2>
-        <div className="journal-auto-grid">
-          {related.map((item) => (
-            <Link
-              key={item.id}
-              to={`/journal/${item.slug}`}
-              className="prism-card group rounded-2xl p-6 space-y-2 transition-transform hover:-translate-y-1"
-            >
-              <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-accent">
-                {item.category} · {item.readingTime}
-              </p>
-              <h3 className="font-serif text-2xl font-medium text-ink group-hover:text-accent transition-colors">
-                {item.title}
-              </h3>
-              <p className="line-clamp-2 text-sm text-muted">{item.dek}</p>
-            </Link>
-          ))}
-        </div>
-      </section>
+      {/* Full Track-by-Track Playable Listening Guide */}
+      {article.featuredTracks.length > 1 ? (
+        <section className="w-full space-y-6 border-t border-border pt-10">
+          <div>
+            <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-accent">
+              Track-by-Track Listening Guide
+            </p>
+            <h2 className="display-section mt-1 text-ink">
+              Essential {article.artistName} Songs to Play &amp; Share
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+            {article.featuredTracks.map((track) => (
+              <EmbeddedTrackCard
+                key={track.id}
+                track={track}
+                artistName={article.artistName}
+              />
+            ))}
+          </div>
+        </section>
+      ) : null}
+
+      {moreArticles.length > 0 ? (
+        <section className="w-full space-y-5 border-t border-border pt-10">
+          <h2 className="font-mono text-xs uppercase tracking-[0.18em] text-muted">
+            More from the Journal
+          </h2>
+          <div className="journal-auto-grid">
+            {moreArticles.map((item) => (
+              <Link
+                key={item.id}
+                to={`/journal/${item.slug}`}
+                className="prism-card group rounded-2xl p-6 space-y-2 transition-transform hover:-translate-y-1"
+              >
+                <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-accent">
+                  {item.category} · {item.readingTime}
+                </p>
+                <h3 className="font-serif text-2xl font-medium text-ink group-hover:text-accent transition-colors">
+                  {item.title}
+                </h3>
+                <p className="line-clamp-2 text-sm text-muted">{item.dek}</p>
+              </Link>
+            ))}
+          </div>
+        </section>
+      ) : null}
     </article>
   )
 }

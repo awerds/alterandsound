@@ -3,65 +3,36 @@ export type MediaProvider =
   | 'soundcloud'
   | 'spotify'
   | 'bandcamp'
-  | 'studio-preview'
 
 export type ArticleCategory =
+  | 'Artist Spotlight'
   | 'Album Review'
   | 'Essay'
   | 'Artist Interview'
-  | 'Live Session'
   | 'Listening Guide'
 
-export type SleeveMotif =
-  | 'sacred-heart'
-  | 'arch'
-  | 'rings'
-  | 'horizon'
-  | 'monolith'
-  | 'vesper'
-
-export interface SleevePalette {
-  bg: string
-  via: string
-  to: string
-  fg: string
-  accent: string
-  glow: string
+export interface ArtistOutlets {
+  youtube?: string
+  spotify?: string
+  appleMusic?: string
+  instagram?: string
+  tiktok?: string
+  bandcamp?: string
+  website?: string
 }
 
-export interface TrackItem {
+export interface FeaturedTrack {
   id: string
-  number: string
   title: string
-  duration: string
-  musicalKey: string
-  previewChords: number[][]
-}
-
-export interface NetlabelRelease {
-  id: string
-  catalogNumber: string // e.g., "A&S — 001"
-  slug: string
-  title: string
-  artistName: string
-  artistOrigin: string
-  releaseDate: string
-  format: string
-  genre: string
-  moods: string[]
   provider: MediaProvider
   sourceUrl: string
-  embedUrl?: string
+  embedUrl: string
   thumbnailUrl?: string
-  sleeveMotif: SleeveMotif
-  sleevePalette: SleevePalette
-  linerNotes: string
-  faithNote: string
+  releaseDate: string
+  tractionLabel?: string
   scriptureRef?: string
   scriptureExcerpt?: string
-  credits: string[]
-  tracks: TrackItem[]
-  essentialPick?: boolean
+  reviewNote: string
 }
 
 export interface JournalArticle {
@@ -71,17 +42,23 @@ export interface JournalArticle {
   category: ArticleCategory
   title: string
   dek: string
+  artistName: string
+  artistOrigin: string
+  genre: string
+  forFansOf: string[]
   author: string
   authorRole: string
   publishedAt: string
   readingTime: string
   coverStory?: boolean
   rating?: string
-  releaseId: string
   pullQuote: string
+  verdict: string
   paragraphs: string[]
   scriptureRef?: string
   scriptureExcerpt?: string
+  outlets: ArtistOutlets
+  featuredTracks: FeaturedTrack[]
   tags: string[]
 }
 
@@ -90,7 +67,7 @@ export interface ReaderNote {
   recipientName: string
   contextTitle?: string
   senderName: string
-  kind: 'prayer' | 'note' | 'pitch'
+  kind: 'prayer' | 'note'
   message: string
   createdAt: string
 }

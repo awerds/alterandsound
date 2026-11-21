@@ -1,7 +1,7 @@
 import type { MediaProvider } from '@/types/domain'
 
 export interface ParsedEmbed {
-  provider: Exclude<MediaProvider, 'studio-preview'>
+  provider: MediaProvider
   embedUrl: string
   embedId: string
   thumbnailUrl?: string
@@ -111,7 +111,5 @@ export function getProviderLabel(provider: MediaProvider): string {
       return 'Spotify'
     case 'bandcamp':
       return 'Bandcamp'
-    case 'studio-preview':
-      return 'Studio Preview'
   }
 }
