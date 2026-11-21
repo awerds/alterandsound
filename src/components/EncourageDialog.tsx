@@ -13,27 +13,23 @@ import { useStore } from '@/context/StoreContext'
 import { attachDeferredValidation } from '@/lib/formValidation'
 
 interface EncourageDialogProps {
-  recipientId: string
   recipientName: string
-  workId?: string
-  workTitle?: string
+  contextTitle?: string
   triggerLabel?: string
   triggerVariant?: 'outline' | 'subtle' | 'ghost' | 'accent' | 'default'
   triggerSize?: 'default' | 'sm' | 'lg'
 }
 
 export function EncourageDialog({
-  recipientId,
   recipientName,
-  workId,
-  workTitle,
-  triggerLabel = 'Pray / Encourage',
+  contextTitle,
+  triggerLabel = 'Send Prayer / Note',
   triggerVariant = 'outline',
   triggerSize = 'sm',
 }: EncourageDialogProps) {
-  const { addEncouragement } = useStore()
+  const { addReaderNote } = useStore()
   const [open, setOpen] = useState(false)
-  const [kind, setKind] = useState<'prayer' | 'encouragement'>('prayer')
+  const [kind, setKind] = useState<'prayer' | 'note'>('prayer')
   const [senderName, setSenderName] = useState('')
   const [message, setMessage] = useState('')
   const [submitted, setSubmitted] = useState(false)
@@ -48,16 +44,13 @@ export function EncourageDialog({
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (!e.currentTarget.checkValidity()) {
-      const firstInvalid = e.currentTarget.querySelector<HTMLElement>(':invalid')
-      firstInvalid?.focus()
+      e.currentTarget.querySelector<HTMLElement>(':invalid')?.focus()
       return
     }
-    addEncouragement({
-      recipientId,
+    addReaderNote({
       recipientName,
-      workId,
-      workTitle,
-      senderName: senderName.trim() || 'A listener',
+      contextTitle,
+      senderName: senderName.trim() || 'A reader',
       kind,
       message: message.trim(),
     })
@@ -85,32 +78,37 @@ export function EncourageDialog({
       <DialogContent>
         <DialogHeader>
           <DialogTitle>
-            {submitted ? 'Sent with grace' : `Encourage ${recipientName}`}
+            {submitted ? 'Delivered quietly' : `Write to ${recipientName}`}
           </DialogTitle>
           <DialogDescription>
             {submitted
-              ? `Your ${kind} note was delivered privately to ${recipientName}'s Studio Inbox.`
-              : workTitle
-                ? `Private note regarding “${workTitle}”. Notes on Altar & Sound are never public clout—they go straight to the musician.`
-                : 'Notes on Altar & Sound are private to the musician—built for real fellowship, not public metrics.'}
+              ? `Your ${kind} was placed in the Altar & Sound Editorial Inbox for ${recipientName}.`
+              : contextTitle
+                ? `Regarding “${contextTitle}”. Reader notes are private—built for encouragement and prayer rather than public comment threads.`
+                : 'Reader notes on Altar & Sound are private—built for genuine encouragement and prayer.'}
           </DialogDescription>
         </DialogHeader>
 
         {submitted ? (
           <div className="flex flex-col items-start gap-4 pt-2">
-            <div className="flex items-center gap-2 rounded-sm border border-border bg-surface px-4 py-3 text-sm text-ink w-full">
-              <Check className="h-4 w-4 text-success shrink-0" aria-hidden="true" />
-              <span>You can also view sent notes in the Studio Inbox preview.</span>
+            <div className="flex w-full items-center gap-2 rounded-sm border border-border bg-surface px-4 py-3 text-sm text-ink">
+              <Check className="h-4 w-4 shrink-0 text-success" aria-hidden="true" />
+              <span>Visible in the Editorial Inbox on the Submit page.</span>
             </div>
             <Button type="button" onClick={() => handleOpenChange(false)}>
               Done
             </Button>
           </div>
         ) : (
-          <form ref={formRef} onSubmit={handleSubmit} noValidate className="flex flex-col gap-4 pt-1">
+          <form
+            ref={formRef}
+            onSubmit={handleSubmit}
+            noValidate
+            className="flex flex-col gap-4 pt-1"
+          >
             <fieldset className="flex flex-col gap-2">
-              <legend className="text-xs font-medium uppercase tracking-[0.12em] text-muted">
-                Type of note
+              <legend className="font-mono text-[11px] uppercase tracking-[0.14em] text-muted">
+                Note Kind
               </legend>
               <div className="grid grid-cols-2 gap-2">
                 <button
@@ -128,26 +126,26 @@ export function EncourageDialog({
                 </button>
                 <button
                   type="button"
-                  aria-pressed={kind === 'encouragement'}
-                  onClick={() => setKind('encouragement')}
+                  aria-pressed={kind === 'note'}
+                  onClick={() => setKind('note')}
                   className={`flex min-h-10 items-center justify-center gap-2 rounded-sm border px-3 py-2 text-sm transition-colors cursor-pointer ${
-                    kind === 'encouragement'
+                    kind === 'note'
                       ? 'border-accent bg-accent/12 text-ink font-medium'
                       : 'border-border bg-transparent text-muted hover:text-ink'
                   }`}
                 >
                   <HeartHandshake className="h-3.5 w-3.5" aria-hidden="true" />
-                  Encouragement
+                  Reader Note
                 </button>
               </div>
             </fieldset>
 
             <div className="flex flex-col">
               <label htmlFor={`${uid}-name`} className="text-sm font-medium text-ink">
-                Your name <span className="text-muted font-normal">(optional)</span>
+                Your name <span className="font-normal text-muted">(optional)</span>
               </label>
               <span id={`${uid}-name-hint`} className="mb-1.5 text-xs text-muted">
-                Leave blank to send anonymously as “A listener”.
+                Leave blank to sign as “A reader”.
               </span>
               <input
                 id={`${uid}-name`}
@@ -158,7 +156,7 @@ export function EncourageDialog({
                 onChange={(e) => setSenderName(e.target.value)}
                 aria-describedby={`${uid}-name-hint`}
                 placeholder="e.g., Jordan"
-                className="rounded-sm border border-border bg-bg px-3 py-2 text-sm text-ink"
+                className="min-h-10 rounded-sm border border-border bg-bg px-3 text-sm text-ink"
               />
             </div>
 
@@ -167,7 +165,7 @@ export function EncourageDialog({
                 {kind === 'prayer' ? 'Your prayer' : 'Your note'}
               </label>
               <span id={`${uid}-msg-hint`} className="mb-1.5 text-xs text-muted">
-                At least 10 characters. Kept private to the artist.
+                At least 10 characters. Kept private.
               </span>
               <textarea
                 id={`${uid}-msg`}
@@ -181,8 +179,8 @@ export function EncourageDialog({
                 data-error={`${uid}-msg-error`}
                 placeholder={
                   kind === 'prayer'
-                    ? 'Praying that God uses this song to bring peace to everyone who hears it…'
-                    : 'Thank you for sharing both your craft and your story…'
+                    ? 'Praying that this record brings stillness and faith to every listener…'
+                    : 'Thank you for sharing this music with such care and honesty…'
                 }
                 className="field-input rounded-sm border border-border bg-bg px-3 py-2 text-sm text-ink"
               />
@@ -190,16 +188,20 @@ export function EncourageDialog({
                 <span role="img" aria-label="Error">
                   !
                 </span>{' '}
-                Please write at least 10 characters so your note feels personal.
+                Please write at least 10 characters before sending.
               </div>
             </div>
 
             <div className="flex items-center justify-end gap-2 pt-2">
-              <Button type="button" variant="ghost" onClick={() => handleOpenChange(false)}>
+              <Button
+                type="button"
+                variant="ghost"
+                onClick={() => handleOpenChange(false)}
+              >
                 Cancel
               </Button>
               <Button type="submit" variant="accent">
-                Send {kind === 'prayer' ? 'Prayer' : 'Encouragement'}
+                Send {kind === 'prayer' ? 'Prayer' : 'Note'}
               </Button>
             </div>
           </form>

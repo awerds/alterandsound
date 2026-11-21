@@ -1,23 +1,30 @@
 import { useEffect, useState, type ReactNode } from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import { Menu, Moon, Sun, X } from 'lucide-react'
+import { ListeningBar } from '@/components/ListeningBar'
 import { Button } from '@/components/ui/button'
+import { subscribePlayer } from '@/lib/audioPreview'
 import { subscribeColorSchemeStorage, toggleColorScheme } from '@/lib/theme'
 import { cn } from '@/lib/utils'
 
 const NAV_ITEMS = [
-  { to: '/', label: 'Showcase', end: true },
-  { to: '/artists', label: 'Musicians', end: false },
-  { to: '/collabs', label: 'Collabs', end: false },
-  { to: '/about', label: 'Mission', end: false },
+  { to: '/', label: 'Journal', end: true },
+  { to: '/catalog', label: 'Catalog', end: false },
+  { to: '/sessions', label: 'Sessions', end: false },
+  { to: '/manifesto', label: 'Manifesto', end: false },
 ]
 
 export function Layout({ children }: { children: ReactNode }) {
   const [mobileOpen, setMobileOpen] = useState(false)
+  const [hasPlayer, setHasPlayer] = useState(false)
   const location = useLocation()
 
   useEffect(() => {
     return subscribeColorSchemeStorage()
+  }, [])
+
+  useEffect(() => {
+    return subscribePlayer((st) => setHasPlayer(Boolean(st)))
   }, [])
 
   useEffect(() => {
@@ -26,7 +33,12 @@ export function Layout({ children }: { children: ReactNode }) {
   }, [location.pathname])
 
   return (
-    <div className="flex min-h-dvh flex-col bg-bg text-ink">
+    <div
+      className={cn(
+        'flex min-h-dvh flex-col bg-bg text-ink',
+        hasPlayer && 'pb-20'
+      )}
+    >
       <a
         href="#main-content"
         className="visually-hidden fixed left-4 top-4 z-[100] rounded-sm bg-ink px-4 py-2 text-sm font-medium text-bg"
@@ -34,56 +46,31 @@ export function Layout({ children }: { children: ReactNode }) {
         Skip to main content
       </a>
 
-      <header className="sticky top-0 z-40 border-b border-border bg-bg/90 backdrop-blur-md">
-        <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-4 sm:px-8">
+      {/* Magazine Publication Masthead */}
+      <header className="border-b border-border bg-bg">
+        {/* Top edition hairline bar */}
+        <div className="border-b border-border/70">
+          <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-2 font-mono text-[10px] uppercase tracking-[0.18em] text-muted sm:px-8">
+            <span>Issue No. 01 · Autumn 2026</span>
+            <span className="hidden sm:inline">
+              Independent Christian Netlabel &amp; Music Journal
+            </span>
+            <span>altarandsound.com</span>
+          </div>
+        </div>
+
+        {/* Masthead Brand + Primary Navigation */}
+        <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-5 sm:px-8">
           <Link
             to="/"
-            className="inline-flex items-center gap-2.5 text-ink hover:opacity-85 transition-opacity"
+            className="group inline-flex items-baseline gap-2.5 text-ink hover:opacity-85 transition-opacity"
           >
-            <svg
-              aria-hidden="true"
-              viewBox="0 0 32 32"
-              className="h-7 w-7 shrink-0"
-              fill="none"
-            >
-              <rect
-                width="32"
-                height="32"
-                rx="5"
-                className="fill-surface stroke-border"
-                strokeWidth="1.2"
-              />
-              <path
-                d="M10 23V13.5C10 10.1863 12.6863 7.5 16 7.5C19.3137 7.5 22 10.1863 22 13.5V23"
-                className="stroke-accent"
-                strokeWidth="1.6"
-                strokeLinecap="round"
-              />
-              <line
-                x1="16"
-                y1="7.5"
-                x2="16"
-                y2="24.5"
-                className="stroke-accent"
-                strokeWidth="1.4"
-                strokeLinecap="round"
-              />
-              <line
-                x1="8"
-                y1="23"
-                x2="24"
-                y2="23"
-                className="stroke-ink"
-                strokeWidth="1.4"
-                strokeLinecap="round"
-              />
-            </svg>
-            <span className="font-serif text-xl font-medium tracking-tight">
-              Altar <span className="text-accent">&amp;</span> Sound
+            <span className="font-serif text-2xl font-medium tracking-tight sm:text-3xl">
+              ALTAR <span className="italic text-accent">&amp;</span> SOUND
             </span>
           </Link>
 
-          <nav aria-label="Primary" className="hidden items-center gap-7 md:flex">
+          <nav aria-label="Primary" className="hidden items-center gap-8 md:flex">
             {NAV_ITEMS.map((item) => (
               <NavLink
                 key={item.to}
@@ -91,7 +78,7 @@ export function Layout({ children }: { children: ReactNode }) {
                 end={item.end}
                 className={({ isActive }) =>
                   cn(
-                    'text-sm transition-colors',
+                    'font-mono text-xs uppercase tracking-[0.14em] transition-colors',
                     isActive
                       ? 'font-medium text-ink underline decoration-accent decoration-2 underline-offset-8'
                       : 'text-muted hover:text-ink'
@@ -119,8 +106,13 @@ export function Layout({ children }: { children: ReactNode }) {
               </span>
             </button>
 
-            <Button asChild size="sm" variant="default" className="hidden sm:inline-flex">
-              <Link to="/studio">Share Your Craft</Link>
+            <Button
+              asChild
+              size="sm"
+              variant="default"
+              className="hidden font-mono text-[11px] uppercase tracking-[0.12em] sm:inline-flex"
+            >
+              <Link to="/submit">Submit Demo</Link>
             </Button>
 
             <button
@@ -144,7 +136,7 @@ export function Layout({ children }: { children: ReactNode }) {
           <nav
             id="mobile-nav"
             aria-label="Mobile"
-            className="border-t border-border bg-bg px-5 py-4 md:hidden"
+            className="border-t border-border bg-surface/50 px-5 py-4 md:hidden"
           >
             <ul className="flex flex-col gap-3">
               {NAV_ITEMS.map((item) => (
@@ -154,7 +146,7 @@ export function Layout({ children }: { children: ReactNode }) {
                     end={item.end}
                     className={({ isActive }) =>
                       cn(
-                        'block py-1.5 text-base',
+                        'block py-1.5 font-mono text-xs uppercase tracking-[0.14em]',
                         isActive ? 'font-medium text-accent' : 'text-ink'
                       )
                     }
@@ -164,8 +156,8 @@ export function Layout({ children }: { children: ReactNode }) {
                 </li>
               ))}
               <li className="pt-2">
-                <Button asChild className="w-full">
-                  <Link to="/studio">Share Your Craft</Link>
+                <Button asChild className="w-full font-mono text-xs uppercase tracking-[0.12em]">
+                  <Link to="/submit">Submit Demo</Link>
                 </Button>
               </li>
             </ul>
@@ -177,44 +169,50 @@ export function Layout({ children }: { children: ReactNode }) {
         {children}
       </main>
 
-      <footer className="border-t border-border bg-surface/50">
-        <div className="mx-auto flex max-w-6xl flex-col gap-8 px-5 py-12 sm:px-8 md:flex-row md:items-end md:justify-between">
-          <div className="max-w-md space-y-2">
-            <p className="font-serif text-xl text-ink">
-              Altar <span className="text-accent">&amp;</span> Sound
+      <footer className="border-t border-border bg-surface/40">
+        <div className="mx-auto grid max-w-6xl grid-cols-1 gap-8 px-5 py-12 sm:px-8 md:grid-cols-12 md:items-end">
+          <div className="space-y-3 md:col-span-7">
+            <p className="font-serif text-2xl tracking-tight text-ink">
+              ALTAR <span className="italic text-accent">&amp;</span> SOUND
             </p>
-            <p className="text-sm leading-relaxed text-muted">
-              A quiet, craft-first home for musicians of faith to share their skill,
-              collaborate across churches and genres, and tell the stories that point
-              listeners toward God.
+            <p className="max-w-lg text-sm leading-relaxed text-muted">
+              An independent Christian netlabel and music journal discovering,
+              reviewing, and releasing unhurried sacred music—built to celebrate
+              craft and introduce listeners to the living God.
             </p>
           </div>
 
-          <nav aria-label="Footer" className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-muted">
+          <nav
+            aria-label="Footer"
+            className="flex flex-wrap gap-x-6 gap-y-2 font-mono text-xs uppercase tracking-[0.12em] text-muted md:col-span-5 md:justify-end"
+          >
             <Link to="/" className="hover:text-ink">
-              Showcase
+              Journal
             </Link>
-            <Link to="/artists" className="hover:text-ink">
-              Musicians
+            <Link to="/catalog" className="hover:text-ink">
+              Catalog
             </Link>
-            <Link to="/collabs" className="hover:text-ink">
-              Collabs
+            <Link to="/sessions" className="hover:text-ink">
+              Sessions
             </Link>
-            <Link to="/studio" className="hover:text-ink">
-              Studio Preview
+            <Link to="/submit" className="hover:text-ink">
+              Submit
             </Link>
-            <Link to="/about" className="hover:text-ink">
-              Mission &amp; Faith
+            <Link to="/manifesto" className="hover:text-ink">
+              Manifesto
             </Link>
           </nav>
         </div>
+
         <div className="border-t border-border/70 px-5 py-4 text-center text-xs text-muted sm:px-8">
           <span className="font-serif italic text-sm text-ink/80">
-            “Sing to him a new song; play skillfully on the strings, with loud shouts.”
+            “Sing to him a new song; play skillfully on the strings.”
           </span>{' '}
-          — Psalm 33:3 · altarandsound.com
+          — Psalm 33:3 · Netlabel Catalog A&amp;S · altarandsound.com
         </div>
       </footer>
+
+      <ListeningBar />
     </div>
   )
 }

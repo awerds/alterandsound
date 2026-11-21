@@ -5,83 +5,81 @@ export type MediaProvider =
   | 'bandcamp'
   | 'studio-preview'
 
-export type ThemeTag =
-  | 'Hope'
-  | 'Worship'
-  | 'Testimony'
-  | 'Stillness'
-  | 'Lament'
-  | 'Instrumental'
+export type ArticleCategory =
+  | 'Album Review'
+  | 'Essay'
+  | 'Artist Interview'
+  | 'Live Session'
+  | 'Listening Guide'
 
-export type AvailabilityTag = 'collab' | 'ministry' | 'mentoring'
+export type SleeveMotif = 'arch' | 'rings' | 'horizon' | 'monolith' | 'vesper'
 
-export interface MusicianProfile {
+export interface TrackItem {
   id: string
-  handle: string
-  displayName: string
-  initials: string
-  accentTone: string
-  location: string
-  tagline: string
-  bio: string
-  testimony: string
-  skills: string[]
-  genres: string[]
-  availability: AvailabilityTag[]
-  links: {
-    youtube?: string
-    spotify?: string
-    instagram?: string
-    website?: string
-  }
+  number: string
+  title: string
+  duration: string
+  musicalKey: string
+  previewChords: number[][]
 }
 
-export interface ShowcaseWork {
+export interface NetlabelRelease {
   id: string
+  catalogNumber: string // e.g., "A&S — 001"
   slug: string
-  profileId: string
   title: string
-  subtitle: string
+  artistName: string
+  artistOrigin: string
+  releaseDate: string
+  format: string // e.g., "Digital EP · 4 Tracks"
+  genre: string
+  moods: string[]
   provider: MediaProvider
   sourceUrl: string
   embedUrl?: string
   thumbnailUrl?: string
-  duration: string
-  musicalKey?: string
-  previewChords?: number[][]
-  coverGradient: string
-  story: string
+  sleeveMotif: SleeveMotif
+  sleevePalette: {
+    bg: string
+    fg: string
+    accent: string
+  }
+  linerNotes: string
+  faithNote: string
   scriptureRef?: string
   scriptureExcerpt?: string
-  skillsUsed: string[]
-  themes: ThemeTag[]
-  genre: string
-  createdAt: string
-  featured?: boolean
+  credits: string[]
+  tracks: TrackItem[]
+  essentialPick?: boolean
 }
 
-export interface CollabPost {
+export interface JournalArticle {
   id: string
-  profileId: string
-  authorName: string
-  authorHandle: string
+  slug: string
+  issueNumber: string
+  category: ArticleCategory
   title: string
-  description: string
-  rolesNeeded: string[]
-  isRemote: boolean
-  location: string
-  status: 'open' | 'filled'
-  createdAt: string
+  dek: string
+  author: string
+  authorRole: string
+  publishedAt: string
+  readingTime: string
+  coverStory?: boolean
+  rating?: string // e.g., "8.9" or "Essential"
+  releaseId: string // linked netlabel/reviewed record
+  pullQuote: string
+  paragraphs: string[]
+  scriptureRef?: string
+  scriptureExcerpt?: string
+  tags: string[]
 }
 
-export interface EncouragementNote {
+export interface ReaderNote {
   id: string
-  recipientId: string
   recipientName: string
-  workId?: string
-  workTitle?: string
+  contextTitle?: string
   senderName: string
-  kind: 'prayer' | 'encouragement'
+  kind: 'prayer' | 'note' | 'pitch'
   message: string
   createdAt: string
 }

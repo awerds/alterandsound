@@ -1,13 +1,13 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { Layout } from '@/components/Layout'
 import { StoreProvider } from '@/context/StoreContext'
-import { AboutPage } from '@/pages/AboutPage'
-import { ArtistFolioPage } from '@/pages/ArtistFolioPage'
-import { ArtistsPage } from '@/pages/ArtistsPage'
-import { CollabsPage } from '@/pages/CollabsPage'
+import { ArticlePage } from '@/pages/ArticlePage'
+import { CatalogPage } from '@/pages/CatalogPage'
 import { HomePage } from '@/pages/HomePage'
-import { StoryPage } from '@/pages/StoryPage'
-import { StudioPage } from '@/pages/StudioPage'
+import { ManifestoPage } from '@/pages/ManifestoPage'
+import { ReleasePage } from '@/pages/ReleasePage'
+import { SessionsPage } from '@/pages/SessionsPage'
+import { SubmitPage } from '@/pages/SubmitPage'
 
 export function App() {
   return (
@@ -16,12 +16,12 @@ export function App() {
         <Layout>
           <Routes>
             <Route path="/" element={<HomePage />} />
-            <Route path="/story/:slug" element={<StoryPage />} />
-            <Route path="/artists" element={<ArtistsPage />} />
-            <Route path="/artists/:handle" element={<ArtistFolioPage />} />
-            <Route path="/collabs" element={<CollabsPage />} />
-            <Route path="/studio" element={<StudioPage />} />
-            <Route path="/about" element={<AboutPage />} />
+            <Route path="/journal/:slug" element={<ArticlePage />} />
+            <Route path="/catalog" element={<CatalogPage />} />
+            <Route path="/releases/:slug" element={<ReleasePage />} />
+            <Route path="/sessions" element={<SessionsPage />} />
+            <Route path="/submit" element={<SubmitPage />} />
+            <Route path="/manifesto" element={<ManifestoPage />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </Layout>

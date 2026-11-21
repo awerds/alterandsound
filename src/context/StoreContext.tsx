@@ -1,21 +1,24 @@
-import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from 'react'
 import {
-  SEED_COLLABS,
-  SEED_ENCOURAGEMENTS,
-  SEED_PROFILES,
-  SEED_WORKS,
-} from '@/data/seed'
+  createContext,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+  type ReactNode,
+} from 'react'
+import { SEED_ARTICLES, SEED_NOTES, SEED_RELEASES } from '@/data/catalog'
 import type {
-  CollabPost,
-  EncouragementNote,
-  MusicianProfile,
-  ShowcaseWork,
+  ArticleCategory,
+  JournalArticle,
+  MediaProvider,
+  NetlabelRelease,
+  ReaderNote,
 } from '@/types/domain'
 
 const STORAGE_KEYS = {
-  works: 'altarandsound:works:v1',
-  collabs: 'altarandsound:collabs:v1',
-  encouragements: 'altarandsound:encouragements:v1',
+  releases: 'altarandsound:netlabel:releases:v2',
+  articles: 'altarandsound:netlabel:articles:v2',
+  notes: 'altarandsound:netlabel:notes:v2',
 } as const
 
 function loadStored<T>(key: string, fallback: T): T {
@@ -28,103 +31,175 @@ function loadStored<T>(key: string, fallback: T): T {
   }
 }
 
+export interface PublishSubmissionInput {
+  title: string
+  artistName: string
+  artistOrigin: string
+  genre: string
+  category: ArticleCategory
+  provider: Exclude<MediaProvider, 'studio-preview'>
+  sourceUrl: string
+  embedUrl: string
+  thumbnailUrl?: string
+  dek: string
+  linerNotes: string
+  faithNote: string
+  scriptureRef?: string
+  scriptureExcerpt?: string
+}
+
 interface StoreContextValue {
-  profiles: MusicianProfile[]
-  works: ShowcaseWork[]
-  collabs: CollabPost[]
-  encouragements: EncouragementNote[]
-  getProfileById: (id: string) => MusicianProfile | undefined
-  getProfileByHandle: (handle: string) => MusicianProfile | undefined
-  getWorkBySlug: (slug: string) => ShowcaseWork | undefined
-  addWork: (work: Omit<ShowcaseWork, 'id' | 'slug' | 'createdAt'>) => ShowcaseWork
-  addCollab: (collab: Omit<CollabPost, 'id' | 'createdAt' | 'status'>) => CollabPost
-  addEncouragement: (
-    note: Omit<EncouragementNote, 'id' | 'createdAt'>
-  ) => EncouragementNote
+  releases: NetlabelRelease[]
+  articles: JournalArticle[]
+  notes: ReaderNote[]
+  getReleaseById: (id: string) => NetlabelRelease | undefined
+  getReleaseBySlug: (slug: string) => NetlabelRelease | undefined
+  getArticleBySlug: (slug: string) => JournalArticle | undefined
+  getArticlesForRelease: (releaseId: string) => JournalArticle[]
+  publishSubmission: (
+    input: PublishSubmissionInput
+  ) => { release: NetlabelRelease; article: JournalArticle }
+  addReaderNote: (note: Omit<ReaderNote, 'id' | 'createdAt'>) => ReaderNote
 }
 
 const StoreContext = createContext<StoreContextValue | null>(null)
 
 export function StoreProvider({ children }: { children: ReactNode }) {
-  const [profiles] = useState<MusicianProfile[]>(SEED_PROFILES)
-  const [works, setWorks] = useState<ShowcaseWork[]>(() =>
-    loadStored(STORAGE_KEYS.works, SEED_WORKS)
+  const [releases, setReleases] = useState<NetlabelRelease[]>(() =>
+    loadStored(STORAGE_KEYS.releases, SEED_RELEASES)
   )
-  const [collabs, setCollabs] = useState<CollabPost[]>(() =>
-    loadStored(STORAGE_KEYS.collabs, SEED_COLLABS)
+  const [articles, setArticles] = useState<JournalArticle[]>(() =>
+    loadStored(STORAGE_KEYS.articles, SEED_ARTICLES)
   )
-  const [encouragements, setEncouragements] = useState<EncouragementNote[]>(() =>
-    loadStored(STORAGE_KEYS.encouragements, SEED_ENCOURAGEMENTS)
+  const [notes, setNotes] = useState<ReaderNote[]>(() =>
+    loadStored(STORAGE_KEYS.notes, SEED_NOTES)
   )
 
   useEffect(() => {
     try {
-      localStorage.setItem(STORAGE_KEYS.works, JSON.stringify(works))
-    } catch {
-      // Ignore quota / blocked storage errors
-    }
-  }, [works])
-
-  useEffect(() => {
-    try {
-      localStorage.setItem(STORAGE_KEYS.collabs, JSON.stringify(collabs))
+      localStorage.setItem(STORAGE_KEYS.releases, JSON.stringify(releases))
     } catch {}
-  }, [collabs])
+  }, [releases])
 
   useEffect(() => {
     try {
-      localStorage.setItem(
-        STORAGE_KEYS.encouragements,
-        JSON.stringify(encouragements)
-      )
+      localStorage.setItem(STORAGE_KEYS.articles, JSON.stringify(articles))
     } catch {}
-  }, [encouragements])
+  }, [articles])
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(STORAGE_KEYS.notes, JSON.stringify(notes))
+    } catch {}
+  }, [notes])
 
   const value = useMemo<StoreContextValue>(
     () => ({
-      profiles,
-      works,
-      collabs,
-      encouragements,
-      getProfileById: (id) => profiles.find((p) => p.id === id),
-      getProfileByHandle: (handle) => profiles.find((p) => p.handle === handle),
-      getWorkBySlug: (slug) =>
-        works.find((w) => w.slug === slug || w.id === slug),
-      addWork: (input) => {
+      releases,
+      articles,
+      notes,
+      getReleaseById: (id) => releases.find((r) => r.id === id),
+      getReleaseBySlug: (slug) =>
+        releases.find((r) => r.slug === slug || r.id === slug),
+      getArticleBySlug: (slug) =>
+        articles.find((a) => a.slug === slug || a.id === slug),
+      getArticlesForRelease: (releaseId) =>
+        articles.filter((a) => a.releaseId === releaseId),
+      publishSubmission: (input) => {
+        const nextNum = String(releases.length + 1).padStart(3, '0')
         const slugBase = input.title
           .toLowerCase()
           .replace(/[^a-z0-9]+/g, '-')
           .replace(/^-|-$/g, '')
-        const created: ShowcaseWork = {
-          ...input,
-          id: `work-${Date.now()}`,
-          slug: `${slugBase || 'work'}-${Date.now().toString(36).slice(-4)}`,
-          createdAt: new Date().toISOString().slice(0, 10),
+        const stamp = Date.now().toString(36).slice(-4)
+        const relId = `rel-${Date.now()}`
+        const relSlug = `${slugBase || 'release'}-${stamp}`
+
+        const release: NetlabelRelease = {
+          id: relId,
+          catalogNumber: `A&S — ${nextNum}`,
+          slug: relSlug,
+          title: input.title.trim(),
+          artistName: input.artistName.trim(),
+          artistOrigin: input.artistOrigin.trim() || 'Independent',
+          releaseDate: new Date().toLocaleDateString('en-US', {
+            month: 'long',
+            year: 'numeric',
+          }),
+          format: `Curated Stream · ${input.provider.toUpperCase()}`,
+          genre: input.genre.trim() || 'Sacred Indie',
+          moods: ['Curated Pick', input.genre.trim() || 'Worship'],
+          provider: input.provider,
+          sourceUrl: input.sourceUrl.trim(),
+          embedUrl: input.embedUrl,
+          thumbnailUrl: input.thumbnailUrl,
+          sleeveMotif: 'arch',
+          sleevePalette: {
+            bg: '#1c1814',
+            fg: '#f2ede4',
+            accent: '#d4aa78',
+          },
+          linerNotes: input.linerNotes.trim(),
+          faithNote: input.faithNote.trim(),
+          scriptureRef: input.scriptureRef?.trim() || undefined,
+          scriptureExcerpt: input.scriptureExcerpt?.trim() || undefined,
+          credits: [
+            `Performed by ${input.artistName.trim()}`,
+            'Published via Altar & Sound Submission Desk',
+          ],
+          tracks: [
+            {
+              id: `tr-${Date.now()}`,
+              number: '01',
+              title: input.title.trim(),
+              duration: 'Stream',
+              musicalKey: input.genre.trim() || 'Featured',
+              previewChords: [
+                [146.83, 220.0, 277.18, 369.99],
+                [196.0, 246.94, 293.66, 369.99],
+              ],
+            },
+          ],
         }
-        setWorks((prev) => [created, ...prev])
-        return created
+
+        const article: JournalArticle = {
+          id: `art-${Date.now()}`,
+          slug: `feature-${relSlug}`,
+          issueNumber: 'ISSUE 01',
+          category: input.category,
+          title: `${input.artistName.trim()} — ${input.title.trim()}`,
+          dek: input.dek.trim(),
+          author: 'Altar & Sound Desk',
+          authorRole: 'Community Curated',
+          publishedAt: new Date().toLocaleDateString('en-US', {
+            month: 'long',
+            day: 'numeric',
+            year: 'numeric',
+          }),
+          readingTime: '3 min read',
+          releaseId: relId,
+          pullQuote: input.faithNote.trim(),
+          paragraphs: [input.linerNotes.trim(), input.faithNote.trim()],
+          scriptureRef: input.scriptureRef?.trim() || undefined,
+          scriptureExcerpt: input.scriptureExcerpt?.trim() || undefined,
+          tags: [input.genre.trim() || 'Worship', input.category],
+        }
+
+        setReleases((prev) => [release, ...prev])
+        setArticles((prev) => [article, ...prev])
+        return { release, article }
       },
-      addCollab: (input) => {
-        const created: CollabPost = {
+      addReaderNote: (input) => {
+        const created: ReaderNote = {
           ...input,
-          id: `collab-${Date.now()}`,
-          status: 'open',
+          id: `note-${Date.now()}`,
           createdAt: new Date().toISOString().slice(0, 10),
         }
-        setCollabs((prev) => [created, ...prev])
-        return created
-      },
-      addEncouragement: (input) => {
-        const created: EncouragementNote = {
-          ...input,
-          id: `enc-${Date.now()}`,
-          createdAt: new Date().toISOString().slice(0, 10),
-        }
-        setEncouragements((prev) => [created, ...prev])
+        setNotes((prev) => [created, ...prev])
         return created
       },
     }),
-    [profiles, works, collabs, encouragements]
+    [releases, articles, notes]
   )
 
   return <StoreContext.Provider value={value}>{children}</StoreContext.Provider>

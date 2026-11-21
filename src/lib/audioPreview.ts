@@ -1,25 +1,39 @@
-// Minimal Web Audio studio chord progression previewer for seed sample showcases.
-// Keeps playback strictly singleton across cards and requires zero external audio bandwidth.
+// Singleton Web Audio studio player powering the persistent bottom Listening Bar.
+// Zero bandwidth cost for catalog previews; cleanly switches between tracks.
 
-type Listener = (activeWorkId: string | null) => void
+export interface ActiveTrackState {
+  trackId: string
+  releaseId: string
+  releaseSlug: string
+  catalogNumber: string
+  title: string
+  artistName: string
+  duration: string
+  musicalKey: string
+  sleevePalette: { bg: string; fg: string; accent: string }
+  isPlaying: boolean
+}
+
+type Listener = (state: ActiveTrackState | null) => void
 
 let audioCtx: AudioContext | null = null
-let activeId: string | null = null
 let loopTimer: number | null = null
 let activeGain: GainNode | null = null
+let currentState: ActiveTrackState | null = null
+let currentChords: number[][] = []
 const listeners = new Set<Listener>()
 
 function notify() {
-  listeners.forEach((fn) => fn(activeId))
+  listeners.forEach((fn) => fn(currentState ? { ...currentState } : null))
 }
 
-export function subscribeAudioPreview(listener: Listener): () => void {
+export function subscribePlayer(listener: Listener): () => void {
   listeners.add(listener)
-  listener(activeId)
+  listener(currentState ? { ...currentState } : null)
   return () => listeners.delete(listener)
 }
 
-export function stopStudioPreview(): void {
+function stopAudioNodes() {
   if (loopTimer !== null) {
     window.clearInterval(loopTimer)
     loopTimer = null
@@ -27,23 +41,16 @@ export function stopStudioPreview(): void {
   if (activeGain && audioCtx) {
     const now = audioCtx.currentTime
     activeGain.gain.cancelScheduledValues(now)
-    activeGain.gain.setTargetAtTime(0.0001, now, 0.12)
+    activeGain.gain.setTargetAtTime(0.0001, now, 0.14)
     activeGain = null
   }
-  activeId = null
-  notify()
 }
 
-export function toggleStudioPreview(workId: string, chords?: number[][]): void {
-  if (activeId === workId) {
-    stopStudioPreview()
-    return
-  }
-
-  stopStudioPreview()
+function startAudioLoop(chords: number[][]) {
+  stopAudioNodes()
 
   const progression =
-    chords && chords.length > 0
+    chords.length > 0
       ? chords
       : [
           [146.83, 220.0, 277.18, 369.99],
@@ -66,19 +73,16 @@ export function toggleStudioPreview(workId: string, chords?: number[][]): void {
   master.gain.setValueAtTime(0.18, audioCtx.currentTime)
   master.connect(audioCtx.destination)
   activeGain = master
-  activeId = workId
-  notify()
 
   let step = 0
 
-  const playChord = (freqs: number[]) => {
+  const playVoicing = (freqs: number[]) => {
     if (!audioCtx || !activeGain) return
     const now = audioCtx.currentTime
 
-    // Warm low-pass filter for acoustic felt-piano / ambient pad character
     const filter = audioCtx.createBiquadFilter()
     filter.type = 'lowpass'
-    filter.frequency.setValueAtTime(1050, now)
+    filter.frequency.setValueAtTime(1020, now)
     filter.connect(activeGain)
 
     freqs.forEach((freq, idx) => {
@@ -88,24 +92,66 @@ export function toggleStudioPreview(workId: string, chords?: number[][]): void {
       osc.type = idx === 0 ? 'triangle' : 'sine'
       osc.frequency.setValueAtTime(freq, now)
 
-      const start = now + idx * 0.085
+      const start = now + idx * 0.09
       noteGain.gain.setValueAtTime(0.0001, start)
-      noteGain.gain.linearRampToValueAtTime(0.18 / freqs.length, start + 0.16)
-      noteGain.gain.exponentialRampToValueAtTime(0.0008, start + 3.2)
+      noteGain.gain.linearRampToValueAtTime(0.17 / freqs.length, start + 0.18)
+      noteGain.gain.exponentialRampToValueAtTime(0.0007, start + 3.4)
 
       osc.connect(noteGain)
       noteGain.connect(filter)
       osc.start(start)
-      osc.stop(start + 3.35)
+      osc.stop(start + 3.5)
     })
   }
 
-  playChord(progression[step % progression.length])
+  playVoicing(progression[step % progression.length])
   step += 1
 
   loopTimer = window.setInterval(() => {
-    if (activeId !== workId) return
-    playChord(progression[step % progression.length])
+    if (!currentState?.isPlaying) return
+    playVoicing(progression[step % progression.length])
     step += 1
-  }, 3100)
+  }, 3200)
+}
+
+export function playOrToggleTrack(
+  meta: Omit<ActiveTrackState, 'isPlaying'>,
+  chords: number[][]
+): void {
+  if (currentState?.trackId === meta.trackId) {
+    if (currentState.isPlaying) {
+      stopAudioNodes()
+      currentState = { ...currentState, isPlaying: false }
+      notify()
+    } else {
+      currentState = { ...currentState, isPlaying: true }
+      startAudioLoop(currentChords)
+      notify()
+    }
+    return
+  }
+
+  currentChords = chords
+  currentState = { ...meta, isPlaying: true }
+  startAudioLoop(chords)
+  notify()
+}
+
+export function toggleCurrentTrack(): void {
+  if (!currentState) return
+  if (currentState.isPlaying) {
+    stopAudioNodes()
+    currentState = { ...currentState, isPlaying: false }
+    notify()
+  } else {
+    currentState = { ...currentState, isPlaying: true }
+    startAudioLoop(currentChords)
+    notify()
+  }
+}
+
+export function dismissPlayer(): void {
+  stopAudioNodes()
+  currentState = null
+  notify()
 }
