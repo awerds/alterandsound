@@ -16,9 +16,9 @@ import type {
 } from '@/types/domain'
 
 const STORAGE_KEYS = {
-  releases: 'altarandsound:netlabel:releases:v2',
-  articles: 'altarandsound:netlabel:articles:v2',
-  notes: 'altarandsound:netlabel:notes:v2',
+  releases: 'altarandsound:netlabel:releases:v3',
+  articles: 'altarandsound:netlabel:articles:v3',
+  notes: 'altarandsound:netlabel:notes:v3',
 } as const
 
 function loadStored<T>(key: string, fallback: T): T {
@@ -135,9 +135,12 @@ export function StoreProvider({ children }: { children: ReactNode }) {
           thumbnailUrl: input.thumbnailUrl,
           sleeveMotif: 'arch',
           sleevePalette: {
-            bg: '#1c1814',
-            fg: '#f2ede4',
-            accent: '#d4aa78',
+            bg: '#6d28d9',
+            via: '#ec4899',
+            to: '#f59e0b',
+            fg: '#fffaf5',
+            accent: '#fde68a',
+            glow: 'rgba(236, 72, 153, 0.52)',
           },
           linerNotes: input.linerNotes.trim(),
           faithNote: input.faithNote.trim(),

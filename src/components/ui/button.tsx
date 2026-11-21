@@ -4,20 +4,25 @@ import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from '@/lib/utils'
 
 const buttonVariants = cva(
-  'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-sm text-sm font-medium transition-colors disabled:pointer-events-none disabled:opacity-50 cursor-pointer',
+  'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full text-sm font-medium transition-all duration-200 disabled:pointer-events-none disabled:opacity-50 cursor-pointer',
   {
     variants: {
       variant: {
-        default: 'bg-ink text-bg hover:opacity-90',
-        accent: 'bg-accent text-accent-ink hover:opacity-92',
-        outline: 'border border-border bg-transparent text-ink hover:bg-surface',
-        subtle: 'bg-surface text-ink hover:bg-border/60',
-        ghost: 'text-muted hover:text-ink hover:bg-surface/70',
+        default:
+          'bg-ink text-bg shadow-md hover:opacity-90 hover:-translate-y-0.5',
+        accent:
+          'bg-gradient-to-r from-amber-500 via-pink-600 to-violet-600 text-white shadow-[0_10px_30px_-8px_rgba(219,39,119,0.65)] hover:brightness-110 hover:-translate-y-0.5 border border-white/25',
+        outline:
+          'border border-border bg-surface-elevated/80 text-ink backdrop-blur-md hover:border-accent/60 hover:bg-surface-elevated',
+        subtle:
+          'bg-surface text-ink hover:bg-surface-elevated',
+        ghost:
+          'text-muted hover:text-ink hover:bg-surface/80',
       },
       size: {
-        default: 'min-h-10 px-4 py-2',
-        sm: 'min-h-9 px-3 text-xs tracking-wide',
-        lg: 'min-h-11 px-6 text-sm tracking-wide',
+        default: 'min-h-10 px-5 py-2',
+        sm: 'min-h-9 px-3.5 text-xs tracking-wide',
+        lg: 'min-h-12 px-7 text-sm tracking-wide',
         icon: 'min-h-9 min-w-9 p-2',
       },
     },

@@ -123,7 +123,7 @@ export function CatalogPage() {
           return (
             <article
               key={release.id}
-              className="flex flex-col justify-between gap-4 rounded-sm border border-border bg-surface-elevated p-5"
+              className="prism-card flex flex-col justify-between gap-4 rounded-2xl p-5 transition-transform hover:-translate-y-1"
             >
               <div className="space-y-4">
                 <Link to={`/releases/${release.slug}`} className="block">

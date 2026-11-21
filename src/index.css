@@ -1,38 +1,42 @@
 @import "tailwindcss";
 
 :root {
-  /* Editorial Paper & Studio Obsidian Palette */
-  --bg-light: #f8f5ef;
-  --surface-light: #efeae0;
-  --surface-elevated-light: #fdfbf7;
-  --ink-light: #161412;
-  --muted-light: #5c564e;
-  --accent-light: #8d5f2f;
-  --accent-ink-light: #faf7f2;
-  --border-light: #dfd6c7;
-  --danger-light: #b42318;
-  --danger-bg-light: #fef3f2;
-  --success-light: #1e6b45;
+  /* Luminous Cathedral Prism — Light Mode (Opalescent Pearl & Sunlit Gold) */
+  --bg-light: #fcfaff;
+  --surface-light: rgba(255, 255, 255, 0.72);
+  --surface-elevated-light: rgba(255, 255, 255, 0.86);
+  --ink-light: #120f1c;
+  --muted-light: #514a63;
+  --accent-light: #7c3aed;
+  --accent-warm-light: #c26d18;
+  --accent-ink-light: #ffffff;
+  --border-light: rgba(124, 58, 237, 0.16);
+  --danger-light: #be123c;
+  --danger-bg-light: #fff1f2;
+  --success-light: #047857;
 
-  --bg-dark: #0c0b0a;
-  --surface-dark: #151311;
-  --surface-elevated-dark: #1b1916;
-  --ink-dark: #f2ede4;
-  --muted-dark: #a69e92;
-  --accent-dark: #d4aa78;
-  --accent-ink-dark: #13110f;
-  --border-dark: #2a2520;
-  --danger-dark: #f97066;
-  --danger-bg-dark: #2c1412;
-  --success-dark: #47cd89;
+  /* Luminous Cathedral Prism — Dark Mode (Cosmic Obsidian & Stained-Glass Radiance) */
+  --bg-dark: #07060e;
+  --surface-dark: rgba(21, 18, 36, 0.68);
+  --surface-elevated-dark: rgba(26, 22, 46, 0.82);
+  --ink-dark: #f8f5ff;
+  --muted-dark: #b4acc9;
+  --accent-dark: #f5b963;
+  --accent-warm-dark: #ff80b5;
+  --accent-ink-dark: #100c1a;
+  --border-dark: rgba(255, 255, 255, 0.14);
+  --danger-dark: #fb7185;
+  --danger-bg-dark: #2c1018;
+  --success-dark: #34d399;
 
-  /* Fallbacks for browsers without light-dark() */
+  /* Fallback tokens for browsers without light-dark() */
   --bg: var(--bg-light);
   --surface: var(--surface-light);
   --surface-elevated: var(--surface-elevated-light);
   --ink: var(--ink-light);
   --muted: var(--muted-light);
   --accent: var(--accent-light);
+  --accent-warm: var(--accent-warm-light);
   --accent-ink: var(--accent-ink-light);
   --border: var(--border-light);
   --danger: var(--danger-light);
@@ -46,6 +50,7 @@
     --ink: var(--ink-dark);
     --muted: var(--muted-dark);
     --accent: var(--accent-dark);
+    --accent-warm: var(--accent-warm-dark);
     --accent-ink: var(--accent-ink-dark);
     --border: var(--border-dark);
     --danger: var(--danger-dark);
@@ -64,6 +69,7 @@
     --ink: var(--ink-dark);
     --muted: var(--muted-dark);
     --accent: var(--accent-dark);
+    --accent-warm: var(--accent-warm-dark);
     --accent-ink: var(--accent-ink-dark);
     --border: var(--border-dark);
     --danger: var(--danger-dark);
@@ -79,6 +85,7 @@
     --ink: var(--ink-light);
     --muted: var(--muted-light);
     --accent: var(--accent-light);
+    --accent-warm: var(--accent-warm-light);
     --accent-ink: var(--accent-ink-light);
     --border: var(--border-light);
     --danger: var(--danger-light);
@@ -93,6 +100,7 @@
     --ink: light-dark(var(--ink-light), var(--ink-dark));
     --muted: light-dark(var(--muted-light), var(--muted-dark));
     --accent: light-dark(var(--accent-light), var(--accent-dark));
+    --accent-warm: light-dark(var(--accent-warm-light), var(--accent-warm-dark));
     --accent-ink: light-dark(var(--accent-ink-light), var(--accent-ink-dark));
     --border: light-dark(var(--border-light), var(--border-dark));
     --danger: light-dark(var(--danger-light), var(--danger-dark));
@@ -101,7 +109,20 @@
   }
 
   accent-color: var(--accent);
-  scrollbar-color: var(--muted) var(--surface);
+  scrollbar-color: var(--muted) var(--bg);
+}
+
+@media (forced-colors: active) {
+  :root {
+    --bg: Canvas;
+    --surface: Canvas;
+    --surface-elevated: Canvas;
+    --ink: CanvasText;
+    --muted: GrayText;
+    --accent: Highlight;
+    --accent-ink: HighlightText;
+    --border: CanvasText;
+  }
 }
 
 @theme inline {
@@ -111,6 +132,7 @@
   --color-ink: var(--ink);
   --color-muted: var(--muted);
   --color-accent: var(--accent);
+  --color-accent-warm: var(--accent-warm);
   --color-accent-ink: var(--accent-ink);
   --color-border: var(--border);
   --color-danger: var(--danger);
@@ -139,6 +161,7 @@
     min-height: 100dvh;
     background-color: var(--bg);
     color: var(--ink);
+    overflow-x: hidden;
     overflow-wrap: break-word;
   }
 
@@ -153,20 +176,258 @@
   }
 }
 
+/* ================================================================
+   LIVING STAINED-GLASS PRISM LIGHT CANVAS (GPU Compositor Only)
+   ================================================================ */
+@keyframes prism-drift-a {
+  0%, 100% {
+    transform: translate3d(-4%, -3%, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(6%, 5%, 0) scale(1.12);
+  }
+}
+
+@keyframes prism-drift-b {
+  0%, 100% {
+    transform: translate3d(5%, 4%, 0) scale(1.06);
+  }
+  50% {
+    transform: translate3d(-6%, -5%, 0) scale(0.95);
+  }
+}
+
+@keyframes prism-drift-c {
+  0%, 100% {
+    transform: translate3d(0%, 2%, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(4%, -6%, 0) scale(1.14);
+  }
+}
+
+@keyframes vinyl-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes shimmer-sweep {
+  0% {
+    transform: translate3d(-120%, 0, 0) skewX(-22deg);
+    opacity: 0;
+  }
+  20% {
+    opacity: 0.55;
+  }
+  50% {
+    transform: translate3d(220%, 0, 0) skewX(-22deg);
+    opacity: 0;
+  }
+  100% {
+    transform: translate3d(220%, 0, 0) skewX(-22deg);
+    opacity: 0;
+  }
+}
+
+@keyframes eq-pulse {
+  0%, 100% {
+    transform: scaleY(0.32);
+  }
+  50% {
+    transform: scaleY(1);
+  }
+}
+
+.aurora-orb-a {
+  opacity: 0.48;
+  @media (prefers-reduced-motion: no-preference) {
+    animation: prism-drift-a 18s ease-in-out infinite;
+  }
+}
+
+.aurora-orb-b {
+  opacity: 0.44;
+  @media (prefers-reduced-motion: no-preference) {
+    animation: prism-drift-b 22s ease-in-out infinite;
+  }
+}
+
+.aurora-orb-c {
+  opacity: 0.42;
+  @media (prefers-reduced-motion: no-preference) {
+    animation: prism-drift-c 26s ease-in-out infinite;
+  }
+}
+
+.vinyl-spinning {
+  @media (prefers-reduced-motion: no-preference) {
+    animation: vinyl-spin 11s linear infinite;
+  }
+}
+
+.eq-bar {
+  transform-origin: bottom;
+  @media (prefers-reduced-motion: no-preference) {
+    animation: eq-pulse 1.1s ease-in-out infinite;
+  }
+}
+
+/* User Pause Control (WCAG 2.2.2 Pause, Stop, Hide) */
+[data-shimmer="paused"] .aurora-orb-a,
+[data-shimmer="paused"] .aurora-orb-b,
+[data-shimmer="paused"] .aurora-orb-c,
+[data-shimmer="paused"] .shimmer-sweep-layer,
+[data-shimmer="paused"] .vinyl-spinning,
+[data-shimmer="paused"] .eq-bar {
+  animation-play-state: paused !important;
+}
+
+/* Liquid Prismatic Text & Specular Foil Surfaces */
+.prism-text {
+  background-image: linear-gradient(
+    108deg,
+    #d97706 0%,
+    #e11d74 34%,
+    #7c3aed 68%,
+    #0284c7 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not(:has(> head > meta[name="color-scheme"][content="light"])) .prism-text {
+    background-image: linear-gradient(
+      108deg,
+      #ffd480 0%,
+      #ff86c8 35%,
+      #a78bfa 68%,
+      #5eead4 100%
+    );
+  }
+}
+
+:root:has(> head > meta[name="color-scheme"][content="dark"]) .prism-text {
+  background-image: linear-gradient(
+    108deg,
+    #ffd480 0%,
+    #ff86c8 35%,
+    #a78bfa 68%,
+    #5eead4 100%
+  );
+}
+
+:root:has(> head > meta[name="color-scheme"][content="light"]) .prism-text {
+  background-image: linear-gradient(
+    108deg,
+    #c2650a 0%,
+    #db2777 35%,
+    #6d28d9 68%,
+    #0284c7 100%
+  );
+}
+
+@media (forced-colors: active) {
+  .prism-text {
+    background-image: none;
+    color: CanvasText;
+  }
+}
+
+/* Frosted Crystal Prism Card with Specular Sheen */
+.prism-card {
+  position: relative;
+  overflow: hidden;
+  background: var(--surface-elevated);
+  border: 1px solid var(--border);
+  backdrop-filter: blur(22px) saturate(165%);
+  -webkit-backdrop-filter: blur(22px) saturate(165%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.35),
+    0 18px 46px -22px rgba(91, 33, 182, 0.22);
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.3s ease, box-shadow 0.35s ease;
+}
+
+.prism-card:hover {
+  border-color: color-mix(in oklab, var(--accent) 55%, transparent);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.5),
+    0 24px 60px -20px rgba(124, 58, 237, 0.32);
+}
+
+.prism-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    115deg,
+    transparent 20%,
+    rgba(255, 255, 255, 0.22) 45%,
+    rgba(255, 214, 138, 0.16) 52%,
+    transparent 75%
+  );
+  transform: translate3d(-120%, 0, 0) skewX(-22deg);
+  transition: transform 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.prism-card:hover::after {
+  @media (prefers-reduced-motion: no-preference) {
+    transform: translate3d(130%, 0, 0) skewX(-22deg);
+  }
+}
+
+.shimmer-sweep-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    110deg,
+    transparent 25%,
+    rgba(255, 255, 255, 0.3) 48%,
+    rgba(255, 212, 128, 0.26) 52%,
+    transparent 72%
+  );
+  transform: translate3d(-120%, 0, 0) skewX(-22deg);
+  @media (prefers-reduced-motion: no-preference) {
+    animation: shimmer-sweep 7.5s ease-in-out infinite;
+  }
+}
+
+/* Prismatic Rainbow Hairline Divider */
+.prism-rule {
+  height: 1px;
+  border: 0;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(245, 185, 99, 0.7),
+    rgba(244, 114, 182, 0.7),
+    rgba(139, 92, 246, 0.7),
+    rgba(56, 189, 248, 0.7),
+    transparent
+  );
+}
+
 /* Fluid Editorial Display Scale (max <= 2.5x min for WCAG 1.4.4 200% zoom) */
 .display-cover {
   font-family: var(--font-serif);
-  font-size: clamp(2.25rem, 1.35rem + 3.4vw, 4.75rem);
-  line-height: 1.03;
-  letter-spacing: -0.02em;
+  font-size: clamp(2.4rem, 1.45rem + 3.6vw, 5.2rem);
+  line-height: 1.01;
+  letter-spacing: -0.024em;
   text-wrap: balance;
 }
 
 .display-section {
   font-family: var(--font-serif);
-  font-size: clamp(1.75rem, 1.25rem + 1.8vw, 3rem);
-  line-height: 1.1;
-  letter-spacing: -0.015em;
+  font-size: clamp(1.85rem, 1.3rem + 1.9vw, 3.2rem);
+  line-height: 1.08;
+  letter-spacing: -0.018em;
   text-wrap: balance;
 }
 
@@ -185,15 +446,14 @@
 .editorial-dropcap::first-letter {
   float: left;
   font-family: var(--font-serif);
-  font-size: 4.1rem;
-  line-height: 0.82;
+  font-size: 4.3rem;
+  line-height: 0.8;
   padding-top: 0.25rem;
-  padding-right: 0.65rem;
+  padding-right: 0.7rem;
   color: var(--accent);
   font-weight: 500;
 }
 
-/* Minimum touch target sizing */
 @media (pointer: coarse) {
   button,
   a[role="button"] {
@@ -202,7 +462,6 @@
   }
 }
 
-/* Visually hidden utility (opts out on focus-within / active for skip links) */
 .visually-hidden:where(:not(:focus-within, :active)) {
   position: absolute !important;
   clip-path: inset(50%) !important;

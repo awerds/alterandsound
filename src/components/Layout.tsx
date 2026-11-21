@@ -1,6 +1,6 @@
 import { useEffect, useState, type ReactNode } from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
-import { Menu, Moon, Sun, X } from 'lucide-react'
+import { Menu, Moon, Pause, Sparkles, Sun, X } from 'lucide-react'
 import { ListeningBar } from '@/components/ListeningBar'
 import { Button } from '@/components/ui/button'
 import { subscribePlayer } from '@/lib/audioPreview'
@@ -17,6 +17,7 @@ const NAV_ITEMS = [
 export function Layout({ children }: { children: ReactNode }) {
   const [mobileOpen, setMobileOpen] = useState(false)
   const [hasPlayer, setHasPlayer] = useState(false)
+  const [shimmerPaused, setShimmerPaused] = useState(false)
   const location = useLocation()
 
   useEffect(() => {
@@ -34,43 +35,98 @@ export function Layout({ children }: { children: ReactNode }) {
 
   return (
     <div
+      data-shimmer={shimmerPaused ? 'paused' : 'active'}
       className={cn(
-        'flex min-h-dvh flex-col bg-bg text-ink',
-        hasPlayer && 'pb-20'
+        'relative flex min-h-dvh flex-col bg-bg text-ink isolate',
+        hasPlayer && 'pb-24'
       )}
     >
+      {/* Living Cathedral Prism Light Field (fixed ambient backdrop) */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none fixed inset-0 -z-10 overflow-hidden"
+      >
+        <div
+          className="aurora-orb-a absolute -left-24 -top-28 h-[36rem] w-[36rem] rounded-full blur-[110px]"
+          style={{
+            background:
+              'radial-gradient(circle, rgba(255,180,67,0.52) 0%, rgba(244,114,182,0.36) 52%, transparent 74%)',
+          }}
+        />
+        <div
+          className="aurora-orb-b absolute -right-24 top-[14%] h-[38rem] w-[38rem] rounded-full blur-[120px]"
+          style={{
+            background:
+              'radial-gradient(circle, rgba(139,92,246,0.48) 0%, rgba(56,189,248,0.35) 55%, transparent 74%)',
+          }}
+        />
+        <div
+          className="aurora-orb-c absolute bottom-[-10%] left-[26%] h-[34rem] w-[44rem] rounded-full blur-[125px]"
+          style={{
+            background:
+              'radial-gradient(circle, rgba(45,212,191,0.32) 0%, rgba(251,146,60,0.34) 55%, transparent 74%)',
+          }}
+        />
+      </div>
+
       <a
         href="#main-content"
-        className="visually-hidden fixed left-4 top-4 z-[100] rounded-sm bg-ink px-4 py-2 text-sm font-medium text-bg"
+        className="visually-hidden fixed left-4 top-4 z-[100] rounded-full bg-ink px-4 py-2 text-sm font-medium text-bg"
       >
         Skip to main content
       </a>
 
-      {/* Magazine Publication Masthead */}
-      <header className="border-b border-border bg-bg">
-        {/* Top edition hairline bar */}
+      {/* Flagship Luminous Frosted Masthead */}
+      <header className="sticky top-0 z-40 border-b border-border bg-surface/85 backdrop-blur-2xl">
         <div className="border-b border-border/70">
-          <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-2 font-mono text-[10px] uppercase tracking-[0.18em] text-muted sm:px-8">
-            <span>Issue No. 01 · Autumn 2026</span>
+          <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-1.5 font-mono text-[10px] uppercase tracking-[0.2em] text-muted sm:px-8">
+            <span className="inline-flex items-center gap-2">
+              <span
+                aria-hidden="true"
+                className="h-1.5 w-1.5 rounded-full bg-gradient-to-r from-amber-400 via-pink-500 to-violet-500"
+              />
+              Issue No. 01 · Autumn 2026
+            </span>
             <span className="hidden sm:inline">
-              Independent Christian Netlabel &amp; Music Journal
+              Christian Netlabel &amp; Luminous Music Journal
             </span>
             <span>altarandsound.com</span>
           </div>
         </div>
 
-        {/* Masthead Brand + Primary Navigation */}
-        <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-5 sm:px-8">
+        <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-3.5 sm:px-8">
           <Link
             to="/"
-            className="group inline-flex items-baseline gap-2.5 text-ink hover:opacity-85 transition-opacity"
+            className="group inline-flex items-center gap-3 text-ink hover:opacity-90 transition-opacity"
           >
-            <span className="font-serif text-2xl font-medium tracking-tight sm:text-3xl">
-              ALTAR <span className="italic text-accent">&amp;</span> SOUND
+            <span
+              aria-hidden="true"
+              className="flex h-9 w-9 items-center justify-center rounded-xl border border-white/40 bg-gradient-to-br from-amber-400 via-pink-500 to-violet-600 shadow-md"
+            >
+              <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none">
+                <path
+                  d="M6.5 18V11.5C6.5 8.46 8.96 6 12 6C15.04 6 17.5 8.46 17.5 11.5V18"
+                  stroke="#ffffff"
+                  strokeWidth="1.8"
+                  strokeLinecap="round"
+                />
+                <line
+                  x1="12"
+                  y1="6"
+                  x2="12"
+                  y2="18.5"
+                  stroke="#fde68a"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                />
+              </svg>
+            </span>
+            <span className="font-serif text-2xl font-medium tracking-tight sm:text-[1.7rem]">
+              ALTAR <span className="prism-text italic">&amp;</span> SOUND
             </span>
           </Link>
 
-          <nav aria-label="Primary" className="hidden items-center gap-8 md:flex">
+          <nav aria-label="Primary" className="hidden items-center gap-2 md:flex">
             {NAV_ITEMS.map((item) => (
               <NavLink
                 key={item.to}
@@ -78,10 +134,10 @@ export function Layout({ children }: { children: ReactNode }) {
                 end={item.end}
                 className={({ isActive }) =>
                   cn(
-                    'font-mono text-xs uppercase tracking-[0.14em] transition-colors',
+                    'rounded-full px-4 py-2 font-mono text-[11px] uppercase tracking-[0.15em] transition-all',
                     isActive
-                      ? 'font-medium text-ink underline decoration-accent decoration-2 underline-offset-8'
-                      : 'text-muted hover:text-ink'
+                      ? 'bg-ink text-bg font-medium shadow-sm'
+                      : 'text-muted hover:bg-surface-elevated hover:text-ink'
                   )
                 }
               >
@@ -91,10 +147,27 @@ export function Layout({ children }: { children: ReactNode }) {
           </nav>
 
           <div className="flex items-center gap-2">
+            {/* WCAG 2.2.2 Pause / Resume Ambient Shimmer Control */}
+            <button
+              type="button"
+              onClick={() => setShimmerPaused((prev) => !prev)}
+              aria-label={shimmerPaused ? 'Resume light shimmer' : 'Pause light shimmer'}
+              className="inline-flex min-h-9 items-center gap-1.5 rounded-full border border-border bg-surface-elevated px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.14em] text-muted hover:text-ink cursor-pointer"
+            >
+              {shimmerPaused ? (
+                <Sparkles className="h-3.5 w-3.5 text-accent" aria-hidden="true" />
+              ) : (
+                <Pause className="h-3 w-3 text-accent" aria-hidden="true" />
+              )}
+              <span className="hidden lg:inline">
+                {shimmerPaused ? 'Shimmer' : 'Still'}
+              </span>
+            </button>
+
             <button
               type="button"
               onClick={toggleColorScheme}
-              className="inline-flex min-h-9 min-w-9 items-center justify-center rounded-sm border border-border bg-transparent p-2 text-muted hover:bg-surface hover:text-ink cursor-pointer"
+              className="inline-flex min-h-9 min-w-9 items-center justify-center rounded-full border border-border bg-surface-elevated p-2 text-muted hover:text-ink cursor-pointer"
             >
               <span className="theme-icon-to-dark items-center">
                 <Moon className="h-4 w-4" aria-hidden="true" />
@@ -109,8 +182,8 @@ export function Layout({ children }: { children: ReactNode }) {
             <Button
               asChild
               size="sm"
-              variant="default"
-              className="hidden font-mono text-[11px] uppercase tracking-[0.12em] sm:inline-flex"
+              variant="accent"
+              className="hidden rounded-full font-mono text-[11px] uppercase tracking-[0.12em] sm:inline-flex"
             >
               <Link to="/submit">Submit Demo</Link>
             </Button>
@@ -121,7 +194,7 @@ export function Layout({ children }: { children: ReactNode }) {
               aria-controls="mobile-nav"
               aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
               onClick={() => setMobileOpen((prev) => !prev)}
-              className="inline-flex min-h-9 min-w-9 items-center justify-center rounded-sm border border-border p-2 text-ink md:hidden cursor-pointer"
+              className="inline-flex min-h-9 min-w-9 items-center justify-center rounded-full border border-border bg-surface-elevated p-2 text-ink md:hidden cursor-pointer"
             >
               {mobileOpen ? (
                 <X className="h-4 w-4" aria-hidden="true" />
@@ -136,9 +209,9 @@ export function Layout({ children }: { children: ReactNode }) {
           <nav
             id="mobile-nav"
             aria-label="Mobile"
-            className="border-t border-border bg-surface/50 px-5 py-4 md:hidden"
+            className="border-t border-border bg-surface-elevated/95 px-5 py-4 backdrop-blur-xl md:hidden"
           >
-            <ul className="flex flex-col gap-3">
+            <ul className="flex flex-col gap-2">
               {NAV_ITEMS.map((item) => (
                 <li key={item.to}>
                   <NavLink
@@ -146,8 +219,10 @@ export function Layout({ children }: { children: ReactNode }) {
                     end={item.end}
                     className={({ isActive }) =>
                       cn(
-                        'block py-1.5 font-mono text-xs uppercase tracking-[0.14em]',
-                        isActive ? 'font-medium text-accent' : 'text-ink'
+                        'block rounded-lg px-3 py-2 font-mono text-xs uppercase tracking-[0.14em]',
+                        isActive
+                          ? 'bg-ink text-bg font-medium'
+                          : 'text-ink hover:bg-surface'
                       )
                     }
                   >
@@ -156,7 +231,7 @@ export function Layout({ children }: { children: ReactNode }) {
                 </li>
               ))}
               <li className="pt-2">
-                <Button asChild className="w-full font-mono text-xs uppercase tracking-[0.12em]">
+                <Button asChild variant="accent" className="w-full rounded-full font-mono text-xs uppercase tracking-[0.12em]">
                   <Link to="/submit">Submit Demo</Link>
                 </Button>
               </li>
@@ -169,16 +244,17 @@ export function Layout({ children }: { children: ReactNode }) {
         {children}
       </main>
 
-      <footer className="border-t border-border bg-surface/40">
+      <footer className="mt-16 border-t border-border bg-surface/80 backdrop-blur-xl">
+        <div className="prism-rule" />
         <div className="mx-auto grid max-w-6xl grid-cols-1 gap-8 px-5 py-12 sm:px-8 md:grid-cols-12 md:items-end">
           <div className="space-y-3 md:col-span-7">
-            <p className="font-serif text-2xl tracking-tight text-ink">
-              ALTAR <span className="italic text-accent">&amp;</span> SOUND
+            <p className="font-serif text-3xl tracking-tight text-ink">
+              ALTAR <span className="prism-text italic">&amp;</span> SOUND
             </p>
             <p className="max-w-lg text-sm leading-relaxed text-muted">
-              An independent Christian netlabel and music journal discovering,
-              reviewing, and releasing unhurried sacred music—built to celebrate
-              craft and introduce listeners to the living God.
+              An independent Christian netlabel and luminous music journal
+              discovering, reviewing, and releasing radiant sacred records that
+              open doors to God.
             </p>
           </div>
 
@@ -205,10 +281,10 @@ export function Layout({ children }: { children: ReactNode }) {
         </div>
 
         <div className="border-t border-border/70 px-5 py-4 text-center text-xs text-muted sm:px-8">
-          <span className="font-serif italic text-sm text-ink/80">
-            “Sing to him a new song; play skillfully on the strings.”
+          <span className="font-serif italic text-sm text-ink/85">
+            “The light shines in the darkness, and the darkness has not overcome it.”
           </span>{' '}
-          — Psalm 33:3 · Netlabel Catalog A&amp;S · altarandsound.com
+          — John 1:5 · Netlabel Catalog A&amp;S · altarandsound.com
         </div>
       </footer>
 

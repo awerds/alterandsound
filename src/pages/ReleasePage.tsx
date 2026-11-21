@@ -90,6 +90,7 @@ export function ReleasePage() {
           <AlbumSleeve
             release={release}
             size="lg"
+            showVinyl
             isPlaying={isPlaying}
             onTogglePlay={handlePlayFirst}
           />

@@ -14,6 +14,15 @@ export type ArticleCategory =
 
 export type SleeveMotif = 'arch' | 'rings' | 'horizon' | 'monolith' | 'vesper'
 
+export interface SleevePalette {
+  bg: string
+  via: string
+  to: string
+  fg: string
+  accent: string
+  glow: string
+}
+
 export interface TrackItem {
   id: string
   number: string
@@ -31,7 +40,7 @@ export interface NetlabelRelease {
   artistName: string
   artistOrigin: string
   releaseDate: string
-  format: string // e.g., "Digital EP · 4 Tracks"
+  format: string
   genre: string
   moods: string[]
   provider: MediaProvider
@@ -39,11 +48,7 @@ export interface NetlabelRelease {
   embedUrl?: string
   thumbnailUrl?: string
   sleeveMotif: SleeveMotif
-  sleevePalette: {
-    bg: string
-    fg: string
-    accent: string
-  }
+  sleevePalette: SleevePalette
   linerNotes: string
   faithNote: string
   scriptureRef?: string
@@ -65,8 +70,8 @@ export interface JournalArticle {
   publishedAt: string
   readingTime: string
   coverStory?: boolean
-  rating?: string // e.g., "8.9" or "Essential"
-  releaseId: string // linked netlabel/reviewed record
+  rating?: string
+  releaseId: string
   pullQuote: string
   paragraphs: string[]
   scriptureRef?: string

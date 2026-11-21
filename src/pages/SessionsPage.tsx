@@ -42,7 +42,7 @@ export function SessionsPage() {
           return (
             <section
               key={release.id}
-              className="grid grid-cols-1 gap-6 rounded-sm border border-border bg-surface-elevated p-6 lg:grid-cols-12"
+              className="prism-card grid grid-cols-1 gap-6 rounded-2xl p-6 lg:grid-cols-12"
             >
               <div className="space-y-3 lg:col-span-5">
                 <div className="flex flex-wrap items-center gap-2 font-mono text-[11px] uppercase tracking-[0.15em] text-accent">

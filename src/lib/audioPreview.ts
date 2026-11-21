@@ -1,6 +1,8 @@
 // Singleton Web Audio studio player powering the persistent bottom Listening Bar.
 // Zero bandwidth cost for catalog previews; cleanly switches between tracks.
 
+import type { SleevePalette } from '@/types/domain'
+
 export interface ActiveTrackState {
   trackId: string
   releaseId: string
@@ -10,7 +12,7 @@ export interface ActiveTrackState {
   artistName: string
   duration: string
   musicalKey: string
-  sleevePalette: { bg: string; fg: string; accent: string }
+  sleevePalette: SleevePalette
   isPlaying: boolean
 }
 

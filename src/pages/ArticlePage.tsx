@@ -157,7 +157,7 @@ export function ArticlePage() {
         {/* Sticky Record Dossier Sidebar */}
         <aside className="space-y-6 lg:col-span-4">
           {release ? (
-            <div className="sticky top-6 space-y-5 rounded-sm border border-border bg-surface-elevated p-5">
+            <div className="prism-card sticky top-24 space-y-5 rounded-2xl p-5">
               <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-accent">
                 Featured Record · {release.catalogNumber}
               </p>

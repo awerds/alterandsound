@@ -79,7 +79,7 @@ export function ManifestoPage() {
             return (
               <div
                 key={p.title}
-                className="rounded-sm border border-border bg-surface-elevated p-6 space-y-3"
+                className="prism-card rounded-2xl p-6 space-y-3"
               >
                 <Icon className="h-5 w-5 text-accent" aria-hidden="true" />
                 <h3 className="font-serif text-2xl font-medium text-ink">
