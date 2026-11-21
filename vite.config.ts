@@ -10,6 +10,6 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
   },
-  // Serves from /alterandsound/ on github.io, or / once custom domain is attached
-  base: process.env.VITE_CUSTOM_DOMAIN === 'true' ? '/' : '/alterandsound/',
+  // Custom domain altarandsound.com serves from root '/'
+  base: '/',
 })
