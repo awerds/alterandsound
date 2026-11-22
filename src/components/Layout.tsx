@@ -15,6 +15,19 @@ import { Button } from '@/components/ui/button'
 import { subscribeColorSchemeStorage, toggleColorScheme } from '@/lib/theme'
 import { cn } from '@/lib/utils'
 
+const SOCIAL_LINKS = [
+  {
+    label: 'Instagram',
+    handle: '@alterandsound',
+    href: 'https://www.instagram.com/alterandsound/',
+  },
+  {
+    label: 'Facebook',
+    handle: 'Altar & Sound',
+    href: 'https://www.facebook.com/profile.php?id=61596785071846',
+  },
+] as const
+
 const NAV_ITEMS = [
   { to: '/', label: 'Manifesto', icon: Compass, end: true },
   { to: '/journal', label: 'Journal', icon: BookOpen, end: false },
@@ -92,7 +105,21 @@ export function Layout({ children }: { children: ReactNode }) {
               Love &amp; Light · Sacred Heart of Jesus
             </span>
             <span>Christian Music Journal &amp; Independent Artist Spotlight</span>
-            <span>altarandsound.com</span>
+            <div className="flex items-center gap-4">
+              {SOCIAL_LINKS.map((s) => (
+                <a
+                  key={s.label}
+                  href={s.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-accent transition-colors"
+                >
+                  {s.label}
+                </a>
+              ))}
+              <span aria-hidden="true">·</span>
+              <span>altarandsound.com</span>
+            </div>
           </div>
         </div>
 
@@ -196,6 +223,34 @@ export function Layout({ children }: { children: ReactNode }) {
               reviewing, and promoting independent artists whose music points
               hearts to Jesus.
             </p>
+            <div className="flex flex-wrap items-center gap-2.5 pt-1">
+              <a
+                href={SOCIAL_LINKS[0].href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Follow Altar & Sound on Instagram"
+                className="inline-flex min-h-10 items-center gap-2 rounded-full border border-border bg-surface-elevated px-4 py-1.5 font-mono text-[11px] uppercase tracking-[0.12em] text-ink hover:border-accent/60 hover:text-accent transition-colors"
+              >
+                <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+                  <rect x="2.5" y="2.5" width="19" height="19" rx="5" />
+                  <circle cx="12" cy="12" r="4.2" />
+                  <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />
+                </svg>
+                Instagram
+              </a>
+              <a
+                href={SOCIAL_LINKS[1].href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Follow Altar & Sound on Facebook"
+                className="inline-flex min-h-10 items-center gap-2 rounded-full border border-border bg-surface-elevated px-4 py-1.5 font-mono text-[11px] uppercase tracking-[0.12em] text-ink hover:border-accent/60 hover:text-accent transition-colors"
+              >
+                <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="currentColor" aria-hidden="true">
+                  <path d="M13.5 21v-8h2.7l.4-3h-3.1V8.1c0-.9.3-1.5 1.6-1.5h1.6V3.9c-.3 0-1.3-.1-2.4-.1-2.4 0-4 1.5-4 4.1V10H7.8v3h2.5v8h3.2z" />
+                </svg>
+                Facebook
+              </a>
+            </div>
           </div>
 
           <nav
