@@ -1,9 +1,8 @@
 import { useEffect, useId, useMemo, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { CheckCircle2, HeartHandshake, Link2, Sparkles } from 'lucide-react'
+import { CheckCircle2, Link2 } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { useStore } from '@/context/StoreContext'
 import { usePageTitle } from '@/hooks/usePageTitle'
 import { parseMediaUrl } from '@/lib/embed'
@@ -21,7 +20,7 @@ const COLUMN_OPTIONS: ArticleCategory[] = [
 export function SubmitPage() {
   usePageTitle('Submit Music for Review')
   const navigate = useNavigate()
-  const { notes, publishFeature } = useStore()
+  const { publishFeature } = useStore()
   const uid = useId()
   const formRef = useRef<HTMLFormElement | null>(null)
 
@@ -118,21 +117,12 @@ export function SubmitPage() {
         </p>
       </header>
 
-      <Tabs defaultValue="submit">
-        <TabsList>
-          <TabsTrigger value="submit">Publish / Preview Feature</TabsTrigger>
-          <TabsTrigger value="inbox">
-            Prayer &amp; Reader Inbox ({notes.length})
-          </TabsTrigger>
-        </TabsList>
-
-        <TabsContent value="submit">
-          <form
-            ref={formRef}
-            onSubmit={handleSubmit}
-            noValidate
-            className="prism-card grid grid-cols-1 gap-6 rounded-3xl p-6 sm:p-8 lg:p-10"
-          >
+      <form
+        ref={formRef}
+        onSubmit={handleSubmit}
+        noValidate
+        className="prism-card grid grid-cols-1 gap-6 rounded-3xl p-6 sm:p-8 lg:p-10"
+      >
             <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
               <div className="flex flex-col">
                 <label htmlFor={`${uid}-artist`} className="text-sm font-medium text-ink">
@@ -446,55 +436,6 @@ export function SubmitPage() {
               </Button>
             </div>
           </form>
-        </TabsContent>
-
-        <TabsContent value="inbox">
-          <div className="space-y-4">
-            <p className="text-sm text-muted">
-              Private prayers and encouragement notes sent by readers from artist
-              features.
-            </p>
-            {notes.length === 0 ? (
-              <div className="prism-card rounded-2xl p-8 text-center">
-                <p className="font-serif text-2xl text-ink">Inbox is clear.</p>
-                <p className="mt-1 text-sm text-muted">
-                  Send a prayer or encouragement note from any artist feature to see
-                  it delivered here.
-                </p>
-              </div>
-            ) : (
-              notes.map((note) => (
-                <article
-                  key={note.id}
-                  className="prism-card rounded-2xl p-5 space-y-2"
-                >
-                  <div className="flex flex-wrap items-center justify-between gap-2 font-mono text-xs text-muted">
-                    <div className="flex items-center gap-2">
-                      <Badge variant="accent">
-                        {note.kind === 'prayer' ? (
-                          <Sparkles className="h-3 w-3" aria-hidden="true" />
-                        ) : (
-                          <HeartHandshake className="h-3 w-3" aria-hidden="true" />
-                        )}
-                        {note.kind === 'prayer' ? 'Prayer' : 'Reader Note'}
-                      </Badge>
-                      <span>
-                        To <strong className="text-ink">{note.recipientName}</strong>
-                        {note.contextTitle ? ` · ${note.contextTitle}` : ''}
-                      </span>
-                    </div>
-                    <span>{note.createdAt}</span>
-                  </div>
-                  <p className="font-serif text-xl leading-relaxed text-ink">
-                    “{note.message}”
-                  </p>
-                  <p className="font-mono text-xs text-muted">— {note.senderName}</p>
-                </article>
-              ))
-            )}
-          </div>
-        </TabsContent>
-      </Tabs>
     </div>
   )
 }

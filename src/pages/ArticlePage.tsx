@@ -3,7 +3,6 @@ import { Link, useParams } from 'react-router-dom'
 import { ArrowLeft, BookOpen, Check, Flame, Share2, Sparkles } from 'lucide-react'
 import { ArtistLinksCard } from '@/components/ArtistLinksCard'
 import { EmbeddedTrackCard } from '@/components/EmbeddedTrackCard'
-import { EncourageDialog } from '@/components/EncourageDialog'
 import { SacredHeartEmblem } from '@/components/SacredHeartEmblem'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -95,12 +94,6 @@ export function ArticlePage() {
           </div>
 
           <div className="flex flex-wrap items-center gap-2">
-            <EncourageDialog
-              recipientName={article.artistName}
-              contextTitle={article.title}
-              triggerLabel={`Pray for ${article.artistName}`}
-              triggerVariant="accent"
-            />
             <Button type="button" variant="outline" size="sm" onClick={handleCopy}>
               {copied ? (
                 <>

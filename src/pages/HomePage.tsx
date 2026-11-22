@@ -9,7 +9,6 @@ import {
 } from 'lucide-react'
 import { ArtistLinksCard } from '@/components/ArtistLinksCard'
 import { EmbeddedTrackCard } from '@/components/EmbeddedTrackCard'
-import { EncourageDialog } from '@/components/EncourageDialog'
 import { SacredHeartEmblem } from '@/components/SacredHeartEmblem'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -140,13 +139,18 @@ export function HomePage() {
                     <ArrowRight className="h-4 w-4" aria-hidden="true" />
                   </Link>
                 </Button>
-                <EncourageDialog
-                  recipientName={coverArticle.artistName}
-                  contextTitle={coverArticle.title}
-                  triggerLabel={`Pray for ${coverArticle.artistName}`}
-                  triggerVariant="outline"
-                  triggerSize="lg"
-                />
+                {coverArticle.outlets.youtube ? (
+                  <Button asChild size="lg" variant="outline" className="w-full sm:w-auto">
+                    <a
+                      href={coverArticle.outlets.youtube}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Visit YouTube Channel
+                      <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
+                    </a>
+                  </Button>
+                ) : null}
               </div>
 
               {/* Direct Artist Promotion Strip right on the Front Page */}
