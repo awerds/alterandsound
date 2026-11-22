@@ -53,74 +53,91 @@ export function ArticlePage() {
         </Link>
       </div>
 
-      {/* Full-Width Magazine Header */}
-      <header className="prism-card w-full space-y-5 rounded-3xl p-6 sm:p-10 lg:p-12">
-        <div className="flex flex-wrap items-center gap-2.5 font-mono text-xs uppercase tracking-[0.16em] text-accent">
-          <span className="inline-flex items-center gap-1.5">
-            <Flame className="h-3.5 w-3.5" aria-hidden="true" />
-            {article.issueNumber} · {article.category}
-          </span>
-          {article.rating ? (
-            <Badge variant="accent" className="font-mono">
-              {article.rating}
-            </Badge>
+      {/* Full-Width Balanced Magazine Hero Banner with Embedded Lead Video */}
+      <header className="prism-card relative w-full rounded-3xl p-6 sm:p-10 lg:p-12 xl:p-14">
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute -right-16 -top-24 h-[26rem] w-[26rem] rounded-full blur-[95px] opacity-60"
+          style={{
+            background:
+              'radial-gradient(circle, rgba(251,191,36,0.85) 0%, rgba(244,63,94,0.45) 52%, transparent 74%)',
+          }}
+        />
+
+        <div className="relative z-10 grid grid-cols-1 gap-8 lg:grid-cols-12 lg:items-center lg:gap-12">
+          <div className="space-y-5 lg:col-span-7">
+            <div className="flex flex-wrap items-center gap-2.5 font-mono text-xs uppercase tracking-[0.16em] text-accent">
+              <span className="inline-flex items-center gap-1.5">
+                <Flame className="h-3.5 w-3.5" aria-hidden="true" />
+                {article.issueNumber} · {article.category}
+              </span>
+              {article.rating ? (
+                <Badge variant="accent" className="font-mono">
+                  {article.rating}
+                </Badge>
+              ) : null}
+              <Badge variant="default" className="font-mono">
+                {article.artistName} · {article.artistOrigin}
+              </Badge>
+            </div>
+
+            <h1
+              id="main-content"
+              tabIndex={-1}
+              className="display-cover font-medium text-ink focus:outline-none"
+            >
+              {article.title}
+            </h1>
+
+            <p className="max-w-2xl font-editorial text-lg leading-relaxed text-muted sm:text-xl">
+              {article.dek}
+            </p>
+
+            <div className="flex flex-wrap items-center justify-between gap-4 border-t border-border/80 pt-5">
+              <div className="flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-xs text-muted">
+                <span className="font-medium text-ink">{article.author}</span>
+                <span aria-hidden="true">·</span>
+                <span>{article.authorRole}</span>
+                <span aria-hidden="true">·</span>
+                <span>{article.publishedAt}</span>
+                <span aria-hidden="true">·</span>
+                <span>{article.readingTime}</span>
+              </div>
+
+              <div className="flex flex-wrap items-center gap-2">
+                <Button type="button" variant="outline" size="sm" onClick={handleCopy}>
+                  {copied ? (
+                    <>
+                      <Check className="h-3.5 w-3.5 text-success" aria-hidden="true" />
+                      Link Copied
+                    </>
+                  ) : (
+                    <>
+                      <Share2 className="h-3.5 w-3.5" aria-hidden="true" />
+                      Share Feature
+                    </>
+                  )}
+                </Button>
+              </div>
+            </div>
+          </div>
+
+          {leadTrack ? (
+            <div className="lg:col-span-5">
+              <EmbeddedTrackCard
+                track={leadTrack}
+                artistName={article.artistName}
+                featured
+                showNotes={false}
+              />
+            </div>
           ) : null}
-          <Badge variant="default" className="font-mono">
-            {article.artistName} · {article.artistOrigin}
-          </Badge>
-        </div>
-
-        <h1
-          id="main-content"
-          tabIndex={-1}
-          className="display-cover max-w-5xl font-medium text-ink focus:outline-none"
-        >
-          {article.title}
-        </h1>
-
-        <p className="max-w-3xl font-editorial text-lg leading-relaxed text-muted sm:text-xl">
-          {article.dek}
-        </p>
-
-        <div className="flex flex-wrap items-center justify-between gap-4 border-t border-border/80 pt-5">
-          <div className="flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-xs text-muted">
-            <span className="font-medium text-ink">{article.author}</span>
-            <span aria-hidden="true">·</span>
-            <span>{article.authorRole}</span>
-            <span aria-hidden="true">·</span>
-            <span>{article.publishedAt}</span>
-            <span aria-hidden="true">·</span>
-            <span>{article.readingTime}</span>
-          </div>
-
-          <div className="flex flex-wrap items-center gap-2">
-            <Button type="button" variant="outline" size="sm" onClick={handleCopy}>
-              {copied ? (
-                <>
-                  <Check className="h-3.5 w-3.5 text-success" aria-hidden="true" />
-                  Link Copied
-                </>
-              ) : (
-                <>
-                  <Share2 className="h-3.5 w-3.5" aria-hidden="true" />
-                  Share Feature
-                </>
-              )}
-            </Button>
-          </div>
         </div>
       </header>
 
       {/* Full-Width Editorial Spread + Sticky Artist Promotion Sidebar */}
       <div className="grid w-full grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-14">
         <div className="space-y-8 lg:col-span-8">
-          {leadTrack ? (
-            <EmbeddedTrackCard
-              track={leadTrack}
-              artistName={article.artistName}
-              featured
-            />
-          ) : null}
 
           <div className="editorial-prose space-y-6 text-ink/92">
             {article.paragraphs.map((para, idx) => (
