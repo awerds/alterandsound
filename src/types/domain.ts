@@ -13,6 +13,7 @@ export type ArticleCategory =
 
 export interface ArtistOutlets {
   youtube?: string
+  youtubeMusic?: string
   spotify?: string
   appleMusic?: string
   instagram?: string

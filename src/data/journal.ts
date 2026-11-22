@@ -103,6 +103,105 @@ export const SEED_ARTICLES: JournalArticle[] = [
     ],
     tags: ['Christian Americana', 'Indie Folk', 'North Carolina', 'YouTube Spotlight'],
   },
+  {
+    id: 'art-damion-suomi-2026',
+    slug: 'damion-suomi-minor-prophets-go-and-sell-all-your-things',
+    issueNumber: 'ISSUE 01',
+    category: 'Album Review',
+    title: 'Damion Suomi & The Minor Prophets: Prophetic Folk-Rock That Refuses Easy Answers',
+    dek: 'Revisiting the Florida roots-rock ensemble whose Scripture-steeped cult classic “Go, and Sell All of Your Things” still hits like a brass-and-acoustic thunderclap for anyone wrestling honestly with God.',
+    artistName: 'Damion Suomi & The Minor Prophets',
+    artistOrigin: 'Florida',
+    genre: 'Indie Folk-Rock & Roots Americana',
+    forFansOf: ['Neutral Milk Hotel', 'Bright Eyes', 'Josh Garrels', 'The Tallest Man on Earth'],
+    author: 'Altar & Sound Editorial',
+    authorRole: 'Music Criticism & Curation',
+    publishedAt: 'November 21, 2026',
+    readingTime: '6 min read',
+    rating: 'Essential Classic',
+    pullQuote:
+      'Suomi writes with the fearless candor of the Psalms and Ecclesiastes—staging doubt, longing, and sacrifice inside foot-stomping folk-rock that makes both saints and skeptics stop in their tracks.',
+    verdict:
+      'An essential cult landmark of Scripture-saturated indie folk-rock. Start with “The Teacher” and “Pearls (Before the Swine),” then let the emotional collapse and quiet grace of “Holy Ghost” and “Let My Love” wash over you.',
+    paragraphs: [
+      'Great faith-wrestling art has never belonged exclusively to safe, predictable worship playlists. Long before indie folk became a streaming genre algorithm, Florida singer-songwriter Damion Suomi—fresh off a year at Bible college, a season singing Irish rebel ballads in pubs across Ireland, and a standout 2010 SXSW turn that caught Esquire’s eye—assembled The Minor Prophets and recorded something unforgettable: a blazing, theatrical, deeply human folk-rock sermon titled Go, and Sell All of Your Things.',
+      'Named directly after Christ’s startling invitation to the rich young ruler (Matthew 19:21), the record refuses glossy escapism. Marching snare drums, ragged acoustic strumming, sudden trumpet flares, and Suomi’s weathered, razor-edged voice collide like an old revival meeting held inside a neighborhood bar. It is raw enough for indie-rock purists and steeped deeply enough in biblical literature to reward every careful listen.',
+      'On “The Teacher” (32.9K+ views on YouTube Music), Suomi channels Qoheleth—the narrator of Ecclesiastes—repeating the ancient verdict “Vanity of vanities, all is meaningless” not with cold cynicism, but with the urgent desperation of someone tired of counterfeit idols. Follow it straight into “Pearls (Before the Swine)” (25K+ views), where Matthew 7:6 becomes a gritty, driving reflection on guarding what is sacred in a world eager to trample it.',
+      'The emotional center of the band’s catalog arrives on “Holy Ghost” (16K+ views), a track Paste Magazine rightly hailed as the album’s devastating turning point. After climbing through roaring guitars and cymbal storms, the arrangement suddenly strips away to a lone fingerpicked acoustic guitar and a stark, trembling confession of spiritual dryness before dissolving into ocean waves. Like Psalm 42, it proves that crying out in the dark is still a form of prayer.',
+      'Yet Suomi never leaves the listener stranded in ashes. On “Let My Love” (11.9K+ views), the storm gives way to warmth, devotion, and open-handed mercy—reminding us why Damion Suomi & The Minor Prophets remain a touchstone for artists trying to bridge honest human struggle and the living light of Christ.',
+    ],
+    scriptureRef: 'Matthew 19:21',
+    scriptureExcerpt:
+      'If you would be perfect, go, sell what you possess and give to the poor, and you will have treasure in heaven; and come, follow me.',
+    outlets: {
+      youtubeMusic: 'https://music.youtube.com/channel/UCrmRAMqjZrp_Lr39Rp8KHDg',
+      youtube: 'https://www.youtube.com/channel/UCrmRAMqjZrp_Lr39Rp8KHDg',
+      appleMusic: 'https://music.apple.com/us/artist/damion-suomi-the-minor-prophets/415265878',
+    },
+    featuredTracks: [
+      {
+        id: 'ds-the-teacher',
+        title: 'The Teacher',
+        provider: 'youtube',
+        sourceUrl: 'https://www.youtube.com/watch?v=uOGTRrSVeso',
+        embedUrl: 'https://www.youtube-nocookie.com/embed/uOGTRrSVeso?rel=0',
+        thumbnailUrl: 'https://i.ytimg.com/vi/uOGTRrSVeso/hqdefault.jpg',
+        releaseDate: 'Go, and Sell All of Your Things',
+        tractionLabel: '32.9K+ views',
+        scriptureRef: 'Ecclesiastes 1:2',
+        scriptureExcerpt:
+          'Vanity of vanities, says the Preacher, vanity of vanities! All is vanity.',
+        reviewNote:
+          'The band’s most-played YouTube Music track—a fiery, roots-driven meditation on Ecclesiastes that tears down hollow ambition with unforgettable acoustic momentum.',
+      },
+      {
+        id: 'ds-pearls',
+        title: 'Pearls (Before the Swine)',
+        provider: 'youtube',
+        sourceUrl: 'https://www.youtube.com/watch?v=shM11xpMC-g',
+        embedUrl: 'https://www.youtube-nocookie.com/embed/shM11xpMC-g?rel=0',
+        thumbnailUrl: 'https://i.ytimg.com/vi/shM11xpMC-g/hqdefault.jpg',
+        releaseDate: 'Go, and Sell All of Your Things',
+        tractionLabel: '25K+ views',
+        scriptureRef: 'Matthew 7:6',
+        scriptureExcerpt:
+          'Do not give dogs what is holy, and do not throw your pearls before pigs.',
+        reviewNote:
+          'Prophetic Americana storytelling carried by biting vocal grit and surging band dynamics—unflinching about the cost of protecting what is holy.',
+      },
+      {
+        id: 'ds-holy-ghost',
+        title: 'Holy Ghost',
+        provider: 'youtube',
+        sourceUrl: 'https://www.youtube.com/watch?v=9UNPVnGGEHo',
+        embedUrl: 'https://www.youtube-nocookie.com/embed/9UNPVnGGEHo?rel=0',
+        thumbnailUrl: 'https://i.ytimg.com/vi/9UNPVnGGEHo/hqdefault.jpg',
+        releaseDate: 'Go, and Sell All of Your Things',
+        tractionLabel: '16K+ views',
+        scriptureRef: 'Psalm 51:11',
+        scriptureExcerpt:
+          'Cast me not away from your presence, and take not your Holy Spirit from me.',
+        reviewNote:
+          'A breathtaking dynamic arc—moving from roaring folk-rock intensity to bare acoustic lament and ocean waves, capturing raw spiritual hunger without a trace of pretense.',
+      },
+      {
+        id: 'ds-let-my-love',
+        title: 'Let My Love',
+        provider: 'youtube',
+        sourceUrl: 'https://www.youtube.com/watch?v=m4HgJzm-Y2Y',
+        embedUrl: 'https://www.youtube-nocookie.com/embed/m4HgJzm-Y2Y?rel=0',
+        thumbnailUrl: 'https://i.ytimg.com/vi/m4HgJzm-Y2Y/hqdefault.jpg',
+        releaseDate: 'Go, and Sell All of Your Things',
+        tractionLabel: '11.9K+ views',
+        scriptureRef: '1 Corinthians 13:13',
+        scriptureExcerpt:
+          'So now faith, hope, and love abide, these three; but the greatest of these is love.',
+        reviewNote:
+          'Warm, open-hearted, and redemptive—revealing the tender longing for genuine love and mercy beating beneath the band’s thunderous folk-rock exterior.',
+      },
+    ],
+    tags: ['Indie Folk-Rock', 'Roots Americana', 'Florida', 'Cult Classic'],
+  },
 ]
 
 export const SEED_NOTES: ReaderNote[] = []

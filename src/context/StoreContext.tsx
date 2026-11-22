@@ -16,8 +16,8 @@ import type {
 } from '@/types/domain'
 
 const STORAGE_KEYS = {
-  articles: 'altarandsound:journal:articles:v5',
-  notes: 'altarandsound:journal:notes:v5',
+  articles: 'altarandsound:journal:articles:v6',
+  notes: 'altarandsound:journal:notes:v6',
 } as const
 
 function loadStored<T>(key: string, fallback: T): T {

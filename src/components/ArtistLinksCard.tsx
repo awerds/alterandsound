@@ -22,6 +22,14 @@ export function ArtistLinksCard({
     outlets.youtube
       ? { label: 'YouTube Channel', href: outlets.youtube, icon: PlayCircle, highlight: true }
       : null,
+    outlets.youtubeMusic
+      ? {
+          label: 'YouTube Music',
+          href: outlets.youtubeMusic,
+          icon: PlayCircle,
+          highlight: !outlets.youtube,
+        }
+      : null,
     outlets.spotify
       ? { label: 'Listen on Spotify', href: outlets.spotify, icon: Music2, highlight: false }
       : null,
